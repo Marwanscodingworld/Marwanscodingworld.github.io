@@ -87,17 +87,28 @@
             }
         }
 
-       .cursor-interaction {
-    position: fixed; /* Use fixed positioning */
-    width: 50px;
-    height: 50px;
-    background: red;
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease;
-    z-index: 1; /* Set appropriate z-index */
-}
+        .cursor-interaction {
+            position: fixed; /* Use fixed positioning */
+            width: 50px;
+            height: 50px;
+            background: red;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+            z-index: 1; /* Set appropriate z-index */
+        }
+
+        #three-container {
+            position: fixed; /* Use fixed positioning */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Translate back to center */
+            width: 50%; /* Adjust width as needed */
+            height: 50%; /* Adjust height as needed */
+            pointer-events: none; /* Allow clicks to pass through */
+            z-index: 0; /* Set appropriate z-index */
+        }
 
         @keyframes warpEffect {
             0% { transform: scale(1); }
@@ -287,19 +298,6 @@
             font-family: 'Press Start 2P', sans-serif;
         }
 
-        /* Add this to your CSS to position the Three.js container */
-#three-container {
-    position: fixed; /* Use fixed positioning */
-    top: 50%; /* Center vertically */
-    left: 50%; /* Center horizontally */
-    transform: translate(-50%, -50%); /* Translate back to center */
-    width: 50%; /* Adjust width as needed */
-    height: 50%; /* Adjust height as needed */
-    pointer-events: none; /* Allow clicks to pass through */
-    z-index: 0; /* Set appropriate z-index */
-}
-
-
         @keyframes pulsate {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -351,64 +349,99 @@
             50% { transform: scale(1.5) translateY(-50%) rotate(-15deg); }
         }
     </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-    <div class="parallax">
-        <div class="parallax__layer parallax__layer--back"></div>
-        <div class="parallax__layer parallax__layer--base">
-            <div class="stars" style="background-image: url('stars.png');"></div>
-            <div class="stars2" style="background-image: url('stars2.png');"></div>
-            <div class="stars3" style="background-image: url('stars3.png');"></div>
-            <div class="brightness-overlay" id="brightnessOverlay"></div>
-            <div class="stopwatch" id="stopwatch">00:00:00</div>
-            <div class="fight-text" id="fightText">Fight!</div>
-        </div>
-    </div>
+    <!-- Your existing HTML content -->
+
+    <!-- Three.js container -->
     <div id="three-container"></div>
-    <div class="container" id="container">
-        <audio id="backgroundMusic" loop></audio>
-        <audio id="celebrationSound"></audio>
-        <audio id="taskCompleteSound"></audio>
-        <div class="header">
-            <p id="motivationalText" class="motivational-text">Just getting started!</p>
-            <h1>Daily Tracker</h1>
-            <p>Track your daily tasks efficiently and visualize your progress.</p>
-        </div>
-        <div class="start-game" onclick="startGame()">
-            <img src="start-game.png" alt="Start Game">
-        </div>
-        <div class="completion-bar">
-            <div id="completion-bar-inner" class="completion-bar-inner" style="width: 0%">0%</div>
-        </div>
-        <div class="images">
-            <div class="image-container">
-                <h3>Goku Progress</h3>
-                <img id="gokuImage" src="goku_0.png" alt="Goku Progress">
-            </div>
-            <div class="image-container">
-                <img id="gtr_skyline_r32" src="gtr_skyline_r32.gif" alt="GTR Skyline R32 Progress">
-            </div>
-            <div class="image-container">
-                <img id="topgImage" src="topg.gif" alt="Top G Progress">
-            </div>
-        </div>
-        <div class="task-list">
-            <h2>Task List</h2>
-            <div id="task-list-content"></div>
-        </div>
-        <div class="footer">
-            <div class="counter" id="completedTasksCounter">0</div>
-            &copy; 2024 Daily Tracker. All rights reserved.
-        </div>
-    </div>
-    <div class="breakout">I'm breaking the fourth wall!</div>
+
+    <!-- Cursor interaction -->
     <div class="cursor-interaction" id="cursorInteraction"></div>
 
+    <!-- Your existing JavaScript -->
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            init3D();
+            fetchTasks();
+            setInterval(fetchTasks, 20000); // Refresh tasks every 20 seconds
+        });
+
+        function init3D() {
+            const container = document.getElementById('three-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            // Create a grid-like texture dynamically
+            function createGridTexture() {
+                const size = 256; // Texture size
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const context = canvas.getContext('2d');
+                context.fillStyle = 'green';
+                context.fillRect(0, 0, size, size);
+
+                // Draw grid lines
+                context.strokeStyle = 'white';
+                context.lineWidth = 2;
+                for (let i = 0; i < size; i += 16) {
+                    context.beginPath();
+                    context.moveTo(i, 0);
+                    context.lineTo(i, size);
+                    context.stroke();
+                    context.beginPath();
+                    context.moveTo(0, i);
+                    context.lineTo(size, i);
+                    context.stroke();
+                }
+
+                return new THREE.CanvasTexture(canvas);
+            }
+
+            const texture = createGridTexture();
+            const materials = [
+                new THREE.MeshStandardMaterial({ map: texture }),
+                new THREE.MeshStandardMaterial({ map: texture }),
+                new THREE.MeshStandardMaterial({ map: texture }),
+                new THREE.MeshStandardMaterial({ map: texture }),
+                new THREE.MeshStandardMaterial({ map: texture }),
+                new THREE.MeshStandardMaterial({ map: texture })
+            ];
+            const geometry = new THREE.BoxGeometry();
+            const cube = new THREE.Mesh(geometry, materials);
+            scene.add(cube);
+
+            // Add lighting
+            const ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft white light
+            scene.add(ambientLight);
+
+            const pointLight = new THREE.PointLight(0xffffff, 1);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
+
+            camera.position.z = 5;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
+                renderer.render(scene, camera);
+            }
+
+            animate();
+        }
+
+        document.addEventListener('mousemove', (event) => {
+            const cursorInteraction = document.getElementById('cursorInteraction');
+            cursorInteraction.style.left = `${event.clientX}px`;
+            cursorInteraction.style.top = `${event.clientY}px`;
+        });
+
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
         let previousCompletedTasksCount = 0;
         let totalTasksCount = 0;
@@ -575,7 +608,7 @@
         setInterval(updateStopwatch, 1000);
 
         function updateBackgroundEffects(completionPercentage) {
-            const brightness = 0.8 - (completionPercentage / 100) * 0.8; // Ranges from 0.8 to 0
+            const brightness  = 0.8 - (completionPercentage / 100) * 0.8; // Ranges from 0.8 to 0
             const starsOpacity = 0.2 + (completionPercentage / 100) * 0.8; // Ranges from 0.2 to 1
             const parallaxSpeed = 1 + (completionPercentage / 100) * 4; // Ranges from 1 to 5
 
@@ -718,91 +751,10 @@
                 console.error('Error starting audio playback:', error); // Debugging: Log any errors
             });
         }
-        document.addEventListener('DOMContentLoaded', () => {
-        init3D();
-        fetchTasks();
-        setInterval(fetchTasks, 20000); // Refresh tasks every 20 seconds
-    });
-
-        // Initialize 3D
-        function init3D() {
-    const container = document.getElementById('three-container');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
-
-    // Create a grid-like texture dynamically
-    function createGridTexture() {
-        const size = 256; // Texture size
-        const canvas = document.createElement('canvas');
-        canvas.width = size;
-        canvas.height = size;
-        const context = canvas.getContext('2d');
-        context.fillStyle = 'green';
-        context.fillRect(0, 0, size, size);
-
-        // Draw grid lines
-        context.strokeStyle = 'white';
-        context.lineWidth = 2;
-        for (let i = 0; i < size; i += 16) {
-            context.beginPath();
-            context.moveTo(i, 0);
-            context.lineTo(i, size);
-            context.stroke();
-            context.beginPath();
-            context.moveTo(0, i);
-            context.lineTo(size, i);
-            context.stroke();
-        }
-
-        return new THREE.CanvasTexture(canvas);
-    }
-
-    const texture = createGridTexture();
-    const materials = [
-        new THREE.MeshStandardMaterial({ map: texture }),
-        new THREE.MeshStandardMaterial({ map: texture }),
-        new THREE.MeshStandardMaterial({ map: texture }),
-        new THREE.MeshStandardMaterial({ map: texture }),
-        new THREE.MeshStandardMaterial({ map: texture }),
-        new THREE.MeshStandardMaterial({ map: texture })
-    ];
-    const geometry = new THREE.BoxGeometry();
-    const cube = new THREE.Mesh(geometry, materials);
-    scene.add(cube);
-
-    // Add lighting
-    const ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft white light
-    scene.add(ambientLight);
-
-    const pointLight = new THREE.PointLight(0xffffff, 1);
-    pointLight.position.set(5, 5, 5);
-    scene.add(pointLight);
-
-    camera.position.z = 5;
-
-    function animate() {
-        requestAnimationFrame(animate);
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
-        renderer.render(scene, camera);
-    }
-
-    animate();
-}
-
-
-        // Cursor interaction
-        document.addEventListener('mousemove', (event) => {
-            const cursorInteraction = document.getElementById('cursorInteraction');
-            cursorInteraction.style.left = `${event.clientX}px`;
-            cursorInteraction.style.top = `${event.clientY}px`;
-        });
 
         fetchTasks();
         setInterval(fetchTasks, 20000); // Refresh tasks every 20 seconds
     </script>
 </body>
 </html>
+
