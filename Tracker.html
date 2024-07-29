@@ -214,15 +214,45 @@
             localStorage.setItem('tasks', JSON.stringify(tasks));
         }
 
-                async function fetchCompletedTasks() {
+        async function fetchTasks() {
             try {
-                const today = new Date().toISOString().split('T')[0];
+                const response = await axios.post('https://api.todoist.com/sync/v9/sync', {
+                    sync_token: '*',
+                    resource_types: ['items']
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`
+                    }
+                });
+                const tasks = response.data.items;
+                console.log('Fetched tasks:', tasks); // Debugging: Log fetched tasks
+                const localTasks = loadLocalTasks();
+
+                tasks.forEach(task => {
+                    if (localTasks[task.id] !== undefined) {
+                        task.completed = localTasks[task.id];
+                    }
+                });
+
+                updateTaskList(tasks);
+                renderCharts(tasks);
+                updateCompletionBar(tasks);
+                fetchCompletedTasks(); // Fetch completed tasks for today
+            } catch (error) {
+                console.error('Error fetching data:', error.response ? error.response.data : error.message);
+            }
+        }
+
+        async function fetchCompletedTasks() {
+            try {
+                                const today = new Date().toISOString().split('T')[0];
                 const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}`, {
                     headers: {
                         'Authorization': `Bearer ${API_KEY}`
                     }
                 });
                 const completedTasks = response.data.items;
+                console.log('Fetched completed tasks:', completedTasks); // Debugging: Log fetched completed tasks
                 updateCompletedTasksCounter(completedTasks.length);
             } catch (error) {
                 console.error('Error fetching completed tasks:', error.response ? error.response.data : error.message);
@@ -348,5 +378,7 @@
     </script>
 </body>
 </html>
+
+
 
 
