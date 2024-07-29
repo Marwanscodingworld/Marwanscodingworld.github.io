@@ -293,10 +293,11 @@
             }
         }
 
-       async function fetchCompletedTasks() {
+      async function fetchCompletedTasks() {
     try {
         const today = new Date().toISOString().split('T')[0];
-        const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}T00:00:00Z`, {
+        const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0];
+        const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}T00:00:00Z&until=${tomorrow}T00:00:00Z`, {
             headers: {
                 'Authorization': `Bearer ${API_KEY}`
             }
@@ -315,6 +316,7 @@
         console.error('Error fetching completed tasks:', error.response ? error.response.data : error.message);
     }
 }
+
 
         
 
