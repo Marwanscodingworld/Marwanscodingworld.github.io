@@ -239,18 +239,19 @@
     height: 100%;
     background: transparent url('stars.png') repeat top center;
     opacity: var(--stars-opacity);
-    animation: moveStars calc(50s / var(--parallax-speed)) linear infinite;
+    animation: moveStars var(--stars-duration) linear infinite;
 }
 
 .stars2 {
     background: transparent url('stars2.png') repeat top center;
-    animation: moveStars calc(100s / var(--parallax-speed)) linear infinite;
+    animation: moveStars var(--stars2-duration) linear infinite;
 }
 
 .stars3 {
     background: transparent url('stars3.png') repeat top center;
-    animation: moveStars calc(150s / var(--parallax-speed)) linear infinite;
+    animation: moveStars var(--stars3-duration) linear infinite;
 }
+
 @keyframes moveStars {
     from { background-position: 0 0; }
     to { background-position: -10000px 10000px; }
