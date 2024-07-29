@@ -244,7 +244,7 @@
         }
 
         function saveLocalTasks(tasks) {
-                        localStorage.setItem('tasks', JSON.stringify(tasks));
+                  localStorage.setItem('tasks', JSON.stringify(tasks));
         }
 
         async function fetchTasks() {
@@ -446,10 +446,12 @@
         }
 
         fetchTasks();
-        setInterval(fetchTasks, 60000); // Refresh tasks every minute
+        setInterval(fetchTasks, 20000); // Refresh tasks every 20 seconds
     </script>
 </body>
 </html>
+
+
 
 
 
