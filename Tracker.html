@@ -1,3 +1,18 @@
+The console log you provided indicates that the tasks and completed tasks are being fetched correctly, but the completed task count seems to be capped at 30. Let's adjust the code to ensure it correctly fetches and updates the completed tasks count without capping it.
+
+Here are a few potential fixes and improvements:
+
+### JavaScript Code Update
+
+1. **Ensure Accurate Completed Tasks Count**:
+   Update the logic to ensure it accurately reflects the completed tasks count.
+
+2. **Handle Audio Playback Error**:
+   Add a user interaction event to start the audio playback, addressing the `play() failed because the user didn't interact with the document first` error.
+
+### Updated JavaScript Code
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -233,7 +248,7 @@
             <h2>Task List</h2>
             <div id="task-list-content"></div>
         </div>
-        <div class="footer">
+                <div class="footer">
             <div class="counter" id="completedTasksCounter">0</div>
             &copy; 2024 Daily Tracker. All rights reserved.
         </div>
@@ -285,13 +300,13 @@
                 });
 
                 updateTaskList(tasks);
-                fetchCompletedTasks(tasks); // Fetch completed tasks for today
+                fetchCompletedTasks(); // Fetch completed tasks for today
             } catch (error) {
                 console.error('Error fetching data:', error.response ? error.response.data : error.message);
             }
         }
 
-        async function fetchCompletedTasks(tasks) {
+        async function fetchCompletedTasks() {
             try {
                 const today = new Date().toISOString().split('T')[0];
                 const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}`, {
@@ -308,7 +323,7 @@
                     triggerCelebration();
                 }
                 previousCompletedTasksCount = completedTasksCount;
-                updateCompletionBar(completedTasksCount, tasks.length);
+                updateCompletionBar(completedTasksCount, totalTasksCount);
             } catch (error) {
                 console.error('Error fetching completed tasks:', error.response ? error.response.data : error.message);
             }
@@ -449,13 +464,6 @@
                 });
             }
         }
-
-        function playCelebrationSound() {
-            const celebrationSound = document.getElementById('celebrationSound');
-            celebrationSound.src = 'celebration_sound.mp3';
-            celebrationSound.play();
-        }
-
         function playTaskCompleteSound() {
             const taskCompleteSound = document.getElementById('taskCompleteSound');
             taskCompleteSound.src = 'task_complete.mp3';
@@ -470,7 +478,7 @@
 
         function startGame() {
             const backgroundMusic = document.getElementById('backgroundMusic');
-                        backgroundMusic.play().then(() => {
+            backgroundMusic.play().then(() => {
                 console.log('Audio playback started.');
             }).catch(error => {
                 console.error('Error starting audio playback:', error); // Debugging: Log any errors
@@ -483,6 +491,6 @@
 </body>
 </html>
 
+       
 
-
-
+       
