@@ -241,7 +241,7 @@
     </div>
     <script>
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
-                let previousCompletedTasksCount = 0;
+        let previousCompletedTasksCount = 0;
         const gokuImages = [
             'goku_0.png',   // 0-10%
             'goku_10.png',  // 11-20%
@@ -291,55 +291,39 @@
             }
         }
 
-      async function fetchCompletedTasks() {
-    try {
-        const today = new Date().toISOString().split('T')[0];
-        const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}`, {
-            headers: {
-                'Authorization': `Bearer ${API_KEY}`
+        async function fetchCompletedTasks(tasks) {
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}`, {
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`
+                    }
+                });
+                const completedTasks = response.data.items;
+                console.log('Fetched completed tasks:', completedTasks); // Debugging: Log fetched completed tasks
+                const completedTasksCount = completedTasks.length;
+                console.log('Completed Tasks Count:', completedTasksCount); // Log the count of completed tasks
+                updateCompletedTasksCounter(completedTasksCount);
+                if (completedTasksCount > previousCompletedTasksCount) {
+                    triggerCelebration();
+                }
+                previousCompletedTasksCount = completedTasksCount;
+                updateCompletionBar(completedTasksCount, tasks.length);
+            } catch (error) {
+                console.error('Error fetching completed tasks:', error.response ? error.response.data : error.message);
             }
-        });
-        const completedTasks = response.data.items;
-        console.log('Fetched completed tasks:', completedTasks); // Debugging: Log fetched completed tasks
-        const completedTasksCount = completedTasks.length;
-        console.log('Completed Tasks Count:', completedTasksCount); // Log the count of completed tasks
-        updateCompletedTasksCounter(completedTasksCount);
-        if (completedTasksCount > previousCompletedTasksCount) {
-            triggerCelebration();
         }
-        previousCompletedTasksCount = completedTasksCount;
-        updateCompletionBar(completedTasksCount, totalTasksCount);
-    } catch (error) {
-        console.error('Error fetching completed tasks:', error.response ? error.response.data : error.message);
-    }
-}
-
 
         function updateCompletedTasksCounter(completedCount) {
-    const counterElement = document.getElementById('completedTasksCounter');
-    counterElement.textContent = completedCount;
-    counterElement.style.color = `hsl(${completedCount * 36}, 100%, 50%)`; // Change color based on the number
-    counterElement.classList.add('animate');
+            const counterElement = document.getElementById('completedTasksCounter');
+            counterElement.textContent = completedCount;
+            counterElement.style.color = `hsl(${completedCount * 36}, 100%, 50%)`; // Change color based on the number
+            counterElement.classList.add('animate');
 
-    setTimeout(() => {
-        counterElement.classList.remove('animate');
-    }, 500);
-}
-
-function triggerCelebration() {
-    const gokuImage = document.getElementById('gokuImage');
-    const topgImage = document.getElementById('topgImage');
-
-    gokuImage.classList.add('celebration');
-    topgImage.classList.add('celebration');
-    playCelebrationSound();
-
-    setTimeout(() => {
-        gokuImage.classList.remove('celebration');
-        topgImage.classList.remove('celebration');
-    }, 10000); // Remove the celebration class after 10 seconds
-}
-
+            setTimeout(() => {
+                counterElement.classList.remove('animate');
+            }, 500);
+        }
 
         function updateTaskList(tasks) {
             const taskListContent = document.getElementById('task-list-content');
@@ -486,11 +470,11 @@ function triggerCelebration() {
 
         function startGame() {
             const backgroundMusic = document.getElementById('backgroundMusic');
-            backgroundMusic.play().then(() => {
-                                console.log('Audio playback started.');
-                }).catch(error => {
-                    console.error('Error starting audio playback:', error); // Debugging: Log any errors
-                });
+                        backgroundMusic.play().then(() => {
+                console.log('Audio playback started.');
+            }).catch(error => {
+                console.error('Error starting audio playback:', error); // Debugging: Log any errors
+            });
         }
 
         fetchTasks();
@@ -498,5 +482,7 @@ function triggerCelebration() {
     </script>
 </body>
 </html>
+
+
 
 
