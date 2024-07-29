@@ -129,6 +129,15 @@
             margin-top: 20px;
             transition: color 0.5s ease;
         }
+        .debug-info {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            color: #333;
+            font-size: 0.9em;
+            font-family: monospace;
+        }
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -183,6 +192,7 @@
             <div class="counter" id="completedTasksCounter">0</div>
             &copy; 2024 Daily Tracker. All rights reserved.
         </div>
+        <div class="debug-info" id="debugInfo"></div>
     </div>
     <script>
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
@@ -238,12 +248,6 @@
 
         async function fetchCompletedTasks(tasks) {
             try {
-                const today = new Date().toISOString().split('T')[0];
-                const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}`, {
-                    headers: {
-                        'Authorization': `Bearer ${API_KEY}`
-                    }
-                });
                                 const completedTasks = response.data.items;
                 console.log('Fetched completed tasks:', completedTasks); // Debugging: Log fetched completed tasks
                 const completedTasksCount = completedTasks.length;
@@ -329,12 +333,20 @@
         }
 
         function updateCompletionBar(completedTasksCount, totalTasksCount) {
-            const completionPercentage = totalTasksCount > 0 ? Math.round((completedTasksCount / totalTasksCount) * 100) : 0;
-            console.log(`Total tasks: ${totalTasksCount}, Completed tasks: ${completedTasksCount}, Completion percentage: ${completionPercentage}`); // Debugging
+            const totalCount = totalTasksCount + completedTasksCount;
+            const completionPercentage = totalCount > 0 ? Math.round((completedTasksCount / totalCount) * 100) : 0;
+            console.log(`Total tasks: ${totalTasksCount}, Completed tasks: ${completedTasksCount}, Total count: ${totalCount}, Completion percentage: ${completionPercentage}`); // Debugging
             const completionBarInner = document.getElementById('completion-bar-inner');
             completionBarInner.style.width = `${completionPercentage}%`;
             completionBarInner.textContent = `${completionPercentage}%`;
             updateGokuImage(completionPercentage);
+
+            const debugInfo = document.getElementById('debugInfo');
+            debugInfo.innerHTML = `
+                <p>Total tasks: ${totalTasksCount}</p>
+                <p>Completed tasks: ${completedTasksCount}</p>
+                <p>Completion percentage: ${completionPercentage}%</p>
+            `;
         }
 
         function updateGokuImage(completionPercentage) {
