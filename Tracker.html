@@ -88,7 +88,7 @@
         }
 
         .cursor-interaction {
-            position: fixed; /* Use fixed positioning */
+            position: fixed;
             width: 50px;
             height: 50px;
             background: red;
@@ -96,18 +96,18 @@
             pointer-events: none;
             transform: translate(-50%, -50%);
             transition: transform 0.1s ease;
-            z-index: 1; /* Set appropriate z-index */
+            z-index: 1;
         }
 
         #three-container {
-            position: fixed; /* Use fixed positioning */
-            top: 50%; /* Center vertically */
-            left: 50%; /* Center horizontally */
-            transform: translate(-50%, -50%); /* Translate back to center */
-            width: 50%; /* Adjust width as needed */
-            height: 50%; /* Adjust height as needed */
-            pointer-events: none; /* Allow clicks to pass through */
-            z-index: 0; /* Set appropriate z-index */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            height: 50%;
+            pointer-events: none;
+            z-index: 0;
         }
 
         @keyframes warpEffect {
@@ -349,34 +349,31 @@
             50% { transform: scale(1.5) translateY(-50%) rotate(-15deg); }
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <!-- Your existing HTML content -->
-
-    <!-- Three.js container -->
     <div id="three-container"></div>
-
-    <!-- Cursor interaction -->
     <div class="cursor-interaction" id="cursorInteraction"></div>
+    <div id="task-list-content"></div>
+    <div id="completedTasksCounter"></div>
+    <div id="stopwatch"></div>
 
-    <!-- Your existing JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-    init3D();
-    fetchTasks();
-    setInterval(fetchTasks, 20000); // Refresh tasks every 20 seconds
+            init3D();
+            fetchTasks();
+            setInterval(fetchTasks, 20000); // Refresh tasks every 20 seconds
 
-    // Add mousemove event listener after DOM content is loaded
-    document.addEventListener('mousemove', (event) => {
-        const cursorInteraction = document.getElementById('cursorInteraction');
-        if (cursorInteraction) {
-            cursorInteraction.style.left = `${event.clientX}px`;
-            cursorInteraction.style.top = `${event.clientY}px`;
-        }
-    });
-});
+            document.addEventListener('mousemove', (event) => {
+                const cursorInteraction = document.getElementById('cursorInteraction');
+                if (cursorInteraction) {
+                    cursorInteraction.style.left = `${event.clientX}px`;
+                    cursorInteraction.style.top = `${event.clientY}px`;
+                }
+            });
+        });
 
         function init3D() {
             const container = document.getElementById('three-container');
@@ -446,11 +443,26 @@
             animate();
         }
 
-        document.addEventListener('mousemove', (event) => {
-            const cursorInteraction = document.getElementById('cursorInteraction');
-            cursorInteraction.style.left = `${event.clientX}px`;
-            cursorInteraction.style.top = `${event.clientY}px`;
-        });
+        function updateStopwatch() {
+            const now = new Date();
+            const target = new Date();
+            target.setHours(21, 0, 0, 0); // Set target to 9 PM
+            const diff = target - now;
+
+            const stopwatchElement = document.getElementById('stopwatch');
+            if (stopwatchElement) {
+                if (diff > 0) {
+                    const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+                    const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+                    const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+                    stopwatchElement.textContent = `${hours}:${minutes}:${seconds}`;
+                } else {
+                    stopwatchElement.textContent = '00:00:00';
+                }
+            }
+        }
+
+        setInterval(updateStopwatch, 1000);
 
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
         let previousCompletedTasksCount = 0;
@@ -538,31 +550,35 @@
 
         function updateCompletedTasksCounter(completedCount) {
             const counterElement = document.getElementById('completedTasksCounter');
-            counterElement.textContent = completedCount;
-            counterElement.style.color = `hsl(${completedCount * 36}, 100%, 50%)`; // Change color based on the number
-            counterElement.classList.add('animate');
+            if (counterElement) {
+                counterElement.textContent = completedCount;
+                counterElement.style.color = `hsl(${completedCount * 36}, 100%, 50%)`; // Change color based on the number
+                               counterElement.classList.add('animate');
 
-            setTimeout(() => {
-                counterElement.classList.remove('animate');
-            }, 500);
+                setTimeout(() => {
+                    counterElement.classList.remove('animate');
+                }, 500);
+            }
         }
 
         function updateTaskList(tasks) {
             const taskListContent = document.getElementById('task-list-content');
-            taskListContent.innerHTML = '';
-            tasks.forEach(task => {
-                if (task.due && task.due.date) {
-                    const taskDate = new Date(task.due.date).toLocaleString();
-                    const taskElement = document.createElement('div');
-                    taskElement.className = 'task';
-                    taskElement.innerHTML = `
-                        <h3>${task.content}</h3>
-                        <p>Due: ${taskDate}</p>
-                        <label><input type="checkbox" ${task.completed ? 'checked' : ''} onchange="updateTaskStatus(${task.id}, ${!task.completed})"> Done</label>
-                    `;
-                    taskListContent.appendChild(taskElement);
-                }
-            });
+            if (taskListContent) {
+                taskListContent.innerHTML = '';
+                tasks.forEach(task => {
+                    if (task.due && task.due.date) {
+                        const taskDate = new Date(task.due.date).toLocaleString();
+                        const taskElement = document.createElement('div');
+                        taskElement.className = 'task';
+                        taskElement.innerHTML = `
+                            <h3>${task.content}</h3>
+                            <p>Due: ${taskDate}</p>
+                            <label><input type="checkbox" ${task.completed ? 'checked' : ''} onchange="updateTaskStatus(${task.id}, ${!task.completed})"> Done</label>
+                        `;
+                        taskListContent.appendChild(taskElement);
+                    }
+                });
+            }
         }
 
         async function updateTaskStatus(taskId, isChecked) {
@@ -589,39 +605,20 @@
             const gokuImage = document.getElementById('gokuImage');
             const topgImage = document.getElementById('topgImage');
 
-            gokuImage.classList.add('celebration');
-            topgImage.classList.add('celebration');
-            playCelebrationSound();
+            if (gokuImage && topgImage) {
+                gokuImage.classList.add('celebration');
+                topgImage.classList.add('celebration');
+                playCelebrationSound();
 
-            setTimeout(() => {
-                gokuImage.classList.remove('celebration');
-                topgImage.classList.remove('celebration');
-            }, 10000); // Remove the celebration class after 10 seconds
+                setTimeout(() => {
+                    gokuImage.classList.remove('celebration');
+                    topgImage.classList.remove('celebration');
+                }, 10000); // Remove the celebration class after 10 seconds
+            }
         }
-function updateStopwatch() {
-    const now = new Date();
-    const target = new Date();
-    target.setHours(21, 0, 0, 0); // Set target to 9 PM
-    const diff = target - now;
-
-    const stopwatchElement = document.getElementById('stopwatch');
-    if (stopwatchElement) {
-        if (diff > 0) {
-            const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
-            const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-            const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-            stopwatchElement.textContent = `${hours}:${minutes}:${seconds}`;
-        } else {
-            stopwatchElement.textContent = '00:00:00';
-        }
-    }
-}
-
-
-        setInterval(updateStopwatch, 1000);
 
         function updateBackgroundEffects(completionPercentage) {
-            const brightness  = 0.8 - (completionPercentage / 100) * 0.8; // Ranges from 0.8 to 0
+            const brightness = 0.8 - (completionPercentage / 100) * 0.8; // Ranges from 0.8 to 0
             const starsOpacity = 0.2 + (completionPercentage / 100) * 0.8; // Ranges from 0.2 to 1
             const parallaxSpeed = 1 + (completionPercentage / 100) * 4; // Ranges from 1 to 5
 
@@ -632,12 +629,14 @@ function updateStopwatch() {
 
         function updateStopwatchEffect(completionPercentage) {
             const stopwatch = document.getElementById('stopwatch');
-            if (completionPercentage === 100) {
-                stopwatch.style.animation = 'breakApart 1s infinite';
-                stopwatch.style.letterSpacing = '1em';
-            } else {
-                stopwatch.style.animation = '';
-                stopwatch.style.letterSpacing = 'normal';
+            if (stopwatch) {
+                if (completionPercentage === 100) {
+                    stopwatch.style.animation = 'breakApart 1s infinite';
+                    stopwatch.style.letterSpacing = '1em';
+                } else {
+                    stopwatch.style.animation = '';
+                    stopwatch.style.letterSpacing = 'normal';
+                }
             }
         }
 
@@ -646,8 +645,10 @@ function updateStopwatch() {
             const completionPercentage = total > 0 ? Math.round((completedTasksCount / total) * 100) : 0;
             console.log(`Total tasks: ${totalTasksCount}, Completed tasks: ${completedTasksCount}, Completion percentage: ${completionPercentage}`); // Debugging
             const completionBarInner = document.getElementById('completion-bar-inner');
-            completionBarInner.style.width = `${completionPercentage}%`;
-            completionBarInner.textContent = `${completionPercentage}%`;
+            if (completionBarInner) {
+                completionBarInner.style.width = `${completionPercentage}%`;
+                completionBarInner.textContent = `${completionPercentage}%`;
+            }
             updateGokuImage(completionPercentage);
             updateMotivationalPhrase(completionPercentage);
             updateMusic(completionPercentage);
@@ -678,21 +679,29 @@ function updateStopwatch() {
 
             // Update page aesthetics based on completion percentage
             const header = document.querySelector('.header');
-            header.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+            if (header) {
+                header.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+            }
             const footer = document.querySelector('.footer');
-            footer.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+            if (footer) {
+                footer.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+            }
 
             // Apply vibrational effect based on completion percentage
             const container = document.getElementById('container');
             const vibrateIntensity = completionPercentage / 10;
-            container.style.animation = `vibrate ${0.1 * vibrateIntensity}s infinite`;
+            if (container) {
+                container.style.animation = `vibrate ${0.1 * vibrateIntensity}s infinite`;
+            }
         }
 
         function updateGokuImage(completionPercentage) {
             let imageIndex = Math.min(Math.floor(completionPercentage / 10), 9);
             const gokuImage = document.getElementById('gokuImage');
-            gokuImage.src = gokuImages[imageIndex];
-            console.log(`Goku image updated to: ${gokuImages[imageIndex]}`); // Debugging
+            if (gokuImage) {
+                gokuImage.src = gokuImages[imageIndex];
+                console.log(`Goku image updated to: ${gokuImages[imageIndex]}`); // Debugging
+            }
         }
 
         const motivationalPhrases = [
@@ -711,7 +720,9 @@ function updateStopwatch() {
         function updateMotivationalPhrase(completionPercentage) {
             const phraseIndex = Math.min(Math.floor(completionPercentage / 10), 9);
             const motivationalText = document.getElementById('motivationalText');
-            motivationalText.textContent = motivationalPhrases[phraseIndex];
+            if (motivationalText) {
+                motivationalText.textContent = motivationalPhrases[phraseIndex];
+            }
         }
 
         const musicTracks = [
@@ -725,7 +736,7 @@ function updateStopwatch() {
             const backgroundMusic = document.getElementById('backgroundMusic');
 
             // Only change the music if the track needs to be updated
-            if (!backgroundMusic.src.includes(musicTracks[musicIndex])) {
+            if (backgroundMusic && !backgroundMusic.src.includes(musicTracks[musicIndex])) {
                 backgroundMusic.src = musicTracks[musicIndex];
                 console.log(`Changing music to: ${musicTracks[musicIndex]}`); // Debugging: Log the music change
                 backgroundMusic.load(); // Ensure the new track is loaded
@@ -740,29 +751,38 @@ function updateStopwatch() {
 
         function playCelebrationSound() {
             const celebrationSound = document.getElementById('celebrationSound');
-            celebrationSound.src = 'celebration_sound.mp3';
-            celebrationSound.play();
+            if (celebrationSound) {
+                celebrationSound.src = 'celebration_sound.mp3';
+                celebrationSound.play();
+            }
         }
 
         function playTaskCompleteSound() {
             const taskCompleteSound = document.getElementById('taskCompleteSound');
-            taskCompleteSound.src = 'task_complete.mp3';
-            taskCompleteSound.play();
+            if (taskCompleteSound) {
+                taskCompleteSound.src = 'task_complete.mp3';
+                taskCompleteSound.play();
+            }
         }
 
         // Ensure that the music plays in a loop
-        document.getElementById('backgroundMusic').addEventListener('ended', function() {
-            this.currentTime = 0;
-            this.play();
-        });
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        if (backgroundMusic) {
+            backgroundMusic.addEventListener('ended', function() {
+                this.currentTime = 0;
+                this.play();
+            });
+        }
 
         function startGame() {
             const backgroundMusic = document.getElementById('backgroundMusic');
-            backgroundMusic.play().then(() => {
-                console.log('Audio playback started.');
-            }).catch(error => {
-                console.error('Error starting audio playback:', error); // Debugging: Log any errors
-            });
+            if (backgroundMusic) {
+                backgroundMusic.play().then(() => {
+                    console.log('Audio playback started.');
+                }).catch(error => {
+                    console.error('Error starting audio playback:', error); // Debugging: Log any errors
+                });
+            }
         }
 
         fetchTasks();
@@ -770,4 +790,3 @@ function updateStopwatch() {
     </script>
 </body>
 </html>
-
