@@ -133,11 +133,11 @@
         }
 
         .motivational-text {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-bottom: 10px;
-    transition: color 1s ease;
-}
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            transition: color 1s ease;
+        }
 
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -158,11 +158,6 @@
 <body>
     <div class="container">
         <audio id="backgroundMusic" loop></audio>
-    <div class="header">
-        <p id="motivationalText" class="motivational-text">Just getting started!</p>
-        <h1>Daily Tracker</h1>
-        <p>Track your daily tasks efficiently and visualize your progress.</p>
-    </div>
         <div class="header">
             <p id="motivationalText" class="motivational-text">Just getting started!</p>
             <h1>Daily Tracker</h1>
@@ -258,7 +253,7 @@
                         'Authorization': `Bearer ${API_KEY}`
                     }
                 });
-                                const completedTasks = response.data.items;
+                const completedTasks = response.data.items;
                 console.log('Fetched completed tasks:', completedTasks); // Debugging: Log fetched completed tasks
                 const completedTasksCount = completedTasks.length;
                 updateCompletedTasksCounter(completedTasksCount);
@@ -351,7 +346,7 @@
             completionBarInner.textContent = `${completionPercentage}%`;
             updateGokuImage(completionPercentage);
             updateMotivationalPhrase(completionPercentage);
-             updateMusic(completionPercentage);
+            updateMusic(completionPercentage);
 
             // Update page aesthetics based on completion percentage
             document.body.style.background = `linear-gradient(to right, hsl(${completionPercentage}, 100%, 50%), #2575fc)`;
@@ -367,44 +362,54 @@
             gokuImage.src = gokuImages[imageIndex];
             console.log(`Goku image updated to: ${gokuImages[imageIndex]}`); // Debugging
         }
+
         const motivationalPhrases = [
-    "Just getting started!",
-    "Keep the momentum going!",
-    "You're doing great!",
-    "Keep pushing, almost there!",
-    "Halfway there, stay strong!",
-    "You're on fire!",
-    "Almost at the finish line!",
-    "Just a little more to go!",
-    "So close, don't give up now!",
-    "You did it, you're amazing!"
-];
+            "Just getting started!",
+            "Keep the momentum going!",
+            "You're doing great!",
+            "Keep pushing, almost there!",
+            "Halfway there, stay strong!",
+            "You're on fire!",
+            "Almost at the finish line!",
+            "Just a little more to go!",
+            "So close, don't give up now!",
+            "You did it, you're amazing!"
+        ];
 
-function updateMotivationalPhrase(completionPercentage) {
-    const phraseIndex = Math.min(Math.floor(completionPercentage / 10), 9);
-    const motivationalText = document.getElementById('motivationalText');
-    motivationalText.textContent = motivationalPhrases[phraseIndex];
-}
+        function updateMotivationalPhrase(completionPercentage) {
+            const phraseIndex = Math.min(Math.floor(completionPercentage / 10), 9);
+            const motivationalText = document.getElementById('motivationalText');
+            motivationalText.textContent = motivationalPhrases[phraseIndex];
+        }
+
         const musicTracks = [
-    'music1.mp3', // 0-33%
-    'music2.mp3', // 34-66%
-    'music3.mp3'  // 67-100%
-];
+            'music1.mp3', // 0-33%
+            'music2.mp3', // 34-66%
+            'music3.mp3'  // 67-100%
+        ];
+        function updateMusic(completionPercentage) {
+            const musicIndex = Math.min(Math.floor(completionPercentage / 34), 2);
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            
+            // Only change the music if the track needs to be updated
+            if (backgroundMusic.src.indexOf(musicTracks[musicIndex]) === -1) {
+                backgroundMusic.src = musicTracks[musicIndex];
+                backgroundMusic.play();
+            }
+        }
 
-function updateMusic(completionPercentage) {
-    const musicIndex = Math.min(Math.floor(completionPercentage / 34), 2);
-    const backgroundMusic = document.getElementById('backgroundMusic');
-    backgroundMusic.src = musicTracks[musicIndex];
-    backgroundMusic.play();
-}
-
-
+        // Ensure that the music plays in a loop
+        document.getElementById('backgroundMusic').addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        });
 
         fetchTasks();
         setInterval(fetchTasks, 60000); // Refresh tasks every minute
     </script>
 </body>
 </html>
+
 
 
 
