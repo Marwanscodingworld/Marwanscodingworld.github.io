@@ -191,6 +191,8 @@
 <body>
     <div class="container" id="container">
         <audio id="backgroundMusic" loop></audio>
+        <audio id="celebrationSound"></audio>
+        <audio id="taskCompleteSound"></audio>
         <div class="header">
             <p id="motivationalText" class="motivational-text">Just getting started!</p>
             <h1>Daily Tracker</h1>
@@ -244,7 +246,7 @@
         }
 
         function saveLocalTasks(tasks) {
-                  localStorage.setItem('tasks', JSON.stringify(tasks));
+            localStorage.setItem('tasks', JSON.stringify(tasks));
         }
 
         async function fetchTasks() {
@@ -335,6 +337,8 @@
                 saveLocalTasks(localTasks);
 
                 fetchTasks();
+
+                playTaskCompleteSound();
                 
                 if (isChecked) {
                     triggerCelebration();
@@ -350,6 +354,7 @@
 
             gokuImage.classList.add('celebration');
             topgImage.classList.add('celebration');
+            playCelebrationSound();
 
             setTimeout(() => {
                 gokuImage.classList.remove('celebration');
@@ -430,6 +435,18 @@
             }
         }
 
+        function playCelebrationSound() {
+            const celebrationSound = document.getElementById('celebrationSound');
+            celebrationSound.src = 'celebration_sound.mp3';
+            celebrationSound.play();
+        }
+
+        function playTaskCompleteSound() {
+            const taskCompleteSound = document.getElementById('taskCompleteSound');
+            taskCompleteSound.src = 'task_complete.mp3';
+            taskCompleteSound.play();
+        }
+
         // Ensure that the music plays in a loop
         document.getElementById('backgroundMusic').addEventListener('ended', function() {
             this.currentTime = 0;
@@ -450,22 +467,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
