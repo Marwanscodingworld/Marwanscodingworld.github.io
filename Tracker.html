@@ -100,23 +100,24 @@
         .completion-bar {
             margin: 20px 0;
             text-align: center;
-        }
-        .completion-bar div {
+            height: 20px;
             width: 100%;
-            background: #fff;
+            background-color: #fff;
             border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             position: relative;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         .completion-bar-inner {
-            height: 20px;
-            background: #ff6347;
+            height: 100%;
+            background: linear-gradient(to right, #ff6347, #ff6347);
             color: white;
             line-height: 20px;
             text-align: center;
             border-radius: 10px 0 0 10px;
             transition: width 1s ease, background 1s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
         .footer {
             text-align: center;
@@ -153,10 +154,7 @@
             <p>Track your daily tasks efficiently and visualize your progress.</p>
         </div>
         <div class="completion-bar">
-            <h3>Task Completion</h3>
-            <div>
-                <div id="completion-bar-inner" class="completion-bar-inner" style="width: 0%">0%</div>
-            </div>
+            <div id="completion-bar-inner" class="completion-bar-inner" style="width: 0%">0%</div>
         </div>
         <div class="images">
             <div class="image-container">
@@ -358,7 +356,6 @@
     </script>
 </body>
 </html>
-
 
 
 
