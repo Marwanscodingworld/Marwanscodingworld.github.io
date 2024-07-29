@@ -154,8 +154,8 @@
                 <img id="gokuImage" src="goku_0.png" alt="Goku Progress">
             </div>
             <div class="image-container">
-                <!-- <h3>GTR R32 Progress</h3> -->
-                <img id="gtrImage" src="gtr_r32_skyline.gif" alt="GTR R32 Progress">
+                <!-- <h3>GTR Skyline R32 Progress</h3> -->
+                <img id="gtr_skyline_r32" src="gtr_r32.gif" alt="GTR Skyline R32 Progress">
             </div>
             <div class="image-container">
                 <!-- <h3>Top G Progress</h3> -->
@@ -170,6 +170,10 @@
             <div class="chart-container pie-chart">
                 <h3>Pie Chart</h3>
                 <canvas id="pieChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Completed Tasks</h3>
+                <canvas id="completedTasksBar"></canvas>
             </div>
         </div>
         <div class="footer">
@@ -215,26 +219,20 @@
 
                 tasks.forEach(task => {
                     if (localTasks[task.id] !== undefined) {
-                        task.completed = localTasks[task.id];
-                    }
-                });
-
-                updateTaskList(tasks);
-                renderCharts(tasks);
-                updateCompletionBar(tasks);
-            } catch (error) {
-                console.error('Error fetching data:', error.response ? error.response.data : error.message);
-            }
+                                       task.completed = localTasks[task.id];
+            });
         }
 
         function updateTaskList(tasks) {
             const taskListContent = document.getElementById('task-list-content');
             taskListContent.innerHTML = '';
             tasks.forEach(task => {
+                const taskDate = new Date(task.due.date).toLocaleString();
                 const taskElement = document.createElement('div');
                 taskElement.className = 'task';
                 taskElement.innerHTML = `
                     <h3>${task.content}</h3>
+                    <p>Due: ${taskDate}</p>
                     <label><input type="checkbox" ${task.completed ? 'checked' : ''} onchange="updateTaskStatus(${task.id}, ${!task.completed})"> Done</label>
                 `;
                 taskListContent.appendChild(taskElement);
@@ -261,6 +259,10 @@
         }
 
         function renderCharts(tasks) {
+            const todayTasks = tasks.filter(task => new Date(task.due.date).toDateString() === new Date().toDateString());
+            const completedTasks = todayTasks.filter(task => task.completed).length;
+            const totalTasks = todayTasks.length;
+
             const taskNames = tasks.map(task => task.content);
             const taskDurations = tasks.map(task => task.completed ? 1 : 0);
             const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
@@ -280,12 +282,36 @@
                     maintainAspectRatio: true
                 }
             });
+
+            const completedTasksCtx = document.getElementById('completedTasksBar').getContext('2d');
+            new Chart(completedTasksCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Completed Tasks'],
+                    datasets: [{
+                        label: 'Tasks',
+                        data: [completedTasks],
+                        backgroundColor: ['#4BC0C0']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: totalTasks
+                        }
+                    }
+                }
+            });
         }
 
         function updateCompletionBar(tasks) {
-            const completedTasks = tasks.filter(task => task.completed).length;
-            const totalTasks = tasks.length;
-            const completionPercentage = Math.round((completedTasks / totalTasks) * 100);
+            const todayTasks = tasks.filter(task => new Date(task.due.date).toDateString() === new Date().toDateString());
+            const completedTasks = todayTasks.filter(task => task.completed).length;
+            const totalTasks = todayTasks.length;
+            const completionPercentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
             const completionBarInner = document.getElementById('completion-bar-inner');
             completionBarInner.style.width = `${completionPercentage}%`;
             completionBarInner.textContent = `${completionPercentage}%`;
@@ -304,14 +330,7 @@
 </body>
 </html>
 
-
-
-
-
-
-
-
-
+                
 
 
 
