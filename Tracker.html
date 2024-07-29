@@ -241,7 +241,7 @@
 
         async function fetchCompletedTasks() {
             try {
-                                const today = new Date().toISOString().split('T')[0];
+                               const today = new Date().toISOString().split('T')[0];
                 const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}`, {
                     headers: {
                         'Authorization': `Bearer ${API_KEY}`
@@ -351,6 +351,7 @@
     </script>
 </body>
 </html>
+
 
 
 
