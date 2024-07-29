@@ -15,7 +15,6 @@
             overflow-y: hidden;
             display: flex;
             flex-direction: column;
-            transition: background 1s ease;
             background: url('background.gif') no-repeat center center fixed;
             background-size: cover;
         }
@@ -241,7 +240,7 @@
                         'Authorization': `Bearer ${API_KEY}`
                     }
                 });
-                                const tasks = response.data.items;
+                const tasks = response.data.items;
                 console.log('Fetched tasks:', tasks); // Debugging: Log fetched tasks
                 const localTasks = loadLocalTasks();
 
@@ -254,7 +253,7 @@
                 updateTaskList(tasks);
                 fetchCompletedTasks(tasks); // Fetch completed tasks for today
             } catch (error) {
-                console.error('Error fetching data:', error.response ? error.response.data : error.message);
+                  console.error('Error fetching data:', error.response ? error.response.data : error.message);
             }
         }
 
@@ -336,7 +335,6 @@
             updateMusic(completionPercentage);
 
             // Update page aesthetics based on completion percentage
-            document.body.style.background = `linear-gradient(to right, hsl(${completionPercentage * 1.2}, 100%, 50%), #330000)`;
             const header = document.querySelector('.header');
             header.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
             const footer = document.querySelector('.footer');
@@ -413,6 +411,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
