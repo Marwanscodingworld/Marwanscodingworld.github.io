@@ -191,6 +191,15 @@
             'goku_90.png',  // 91-100%
         ];
 
+        function loadLocalTasks() {
+            const tasks = localStorage.getItem('tasks');
+            return tasks ? JSON.parse(tasks) : {};
+        }
+
+        function saveLocalTasks(tasks) {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
         async function fetchTasks() {
             try {
                 const response = await axios.post('https://api.todoist.com/sync/v9/sync', {
@@ -202,7 +211,14 @@
                     }
                 });
                 const tasks = response.data.items;
-                console.log(tasks); // Debugging: Log tasks to the console
+                const localTasks = loadLocalTasks();
+
+                tasks.forEach(task => {
+                    if (localTasks[task.id] !== undefined) {
+                        task.completed = localTasks[task.id];
+                    }
+                });
+
                 updateTaskList(tasks);
                 renderCharts(tasks);
                 updateCompletionBar(tasks);
@@ -232,7 +248,12 @@
                     headers: {
                         'Authorization': `Bearer ${API_KEY}`
                     }
-                               });
+                });
+
+                const localTasks = loadLocalTasks();
+                localTasks[taskId] = isChecked;
+                saveLocalTasks(localTasks);
+
                 fetchTasks();
             } catch (error) {
                 console.error('Error updating task status:', error.response ? error.response.data : error.message);
@@ -282,6 +303,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
