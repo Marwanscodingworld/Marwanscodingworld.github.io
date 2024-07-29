@@ -293,18 +293,24 @@
             }
         }
 
-      async function fetchCompletedTasks() {
+     async function fetchCompletedTasks() {
     try {
         const today = new Date().toISOString().split('T')[0];
-        const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0];
-        const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}T00:00:00Z&until=${tomorrow}T00:00:00Z`, {
+        const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all`, {
             headers: {
                 'Authorization': `Bearer ${API_KEY}`
             }
         });
         const completedTasks = response.data.items;
         console.log('Fetched completed tasks:', completedTasks); // Debugging: Log fetched completed tasks
-        const completedTasksCount = completedTasks.length;
+        
+        // Filter tasks to include only those completed today
+        const todayCompletedTasks = completedTasks.filter(task => {
+            const completedDate = new Date(task.completed_at).toISOString().split('T')[0];
+            return completedDate === today;
+        });
+
+        const completedTasksCount = todayCompletedTasks.length;
         console.log('Completed Tasks Count:', completedTasksCount); // Log the count of completed tasks
         updateCompletedTasksCounter(completedTasksCount);
         if (completedTasksCount > previousCompletedTasksCount) {
@@ -316,6 +322,7 @@
         console.error('Error fetching completed tasks:', error.response ? error.response.data : error.message);
     }
 }
+
 
 
         
