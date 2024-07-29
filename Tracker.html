@@ -167,12 +167,19 @@
             from { transform: scale(0.5); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
+        @keyframes vibrate {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(2px, 2px); }
+            50% { transform: translate(0, 2px); }
+            75% { transform: translate(2px, 0); }
+            100% { transform: translate(0, 0); }
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="container">
         <audio id="backgroundMusic" loop></audio>
         <div class="header">
             <p id="motivationalText" class="motivational-text">Just getting started!</p>
@@ -237,9 +244,7 @@
                     resource_types: ['items']
                 }, {
                     headers: {
-                        'Authorization': `Bearer ${API_KEY}`
-                    }
-                });
+                        'Authorization': `Bearer ${API
                 const tasks = response.data.items;
                 console.log('Fetched tasks:', tasks); // Debugging: Log fetched tasks
                 const localTasks = loadLocalTasks();
@@ -253,7 +258,7 @@
                 updateTaskList(tasks);
                 fetchCompletedTasks(tasks); // Fetch completed tasks for today
             } catch (error) {
-                  console.error('Error fetching data:', error.response ? error.response.data : error.message);
+                console.error('Error fetching data:', error.response ? error.response.data : error.message);
             }
         }
 
@@ -339,6 +344,11 @@
             header.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
             const footer = document.querySelector('.footer');
             footer.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+
+            // Apply vibrational effect based on completion percentage
+            const container = document.getElementById('container');
+            const vibrateIntensity = completionPercentage / 10;
+            container.style.animation = `vibrate ${0.1 * vibrateIntensity}s infinite`;
         }
 
         function updateGokuImage(completionPercentage) {
@@ -411,6 +421,7 @@
     </script>
 </body>
 </html>
+
 
 
 
