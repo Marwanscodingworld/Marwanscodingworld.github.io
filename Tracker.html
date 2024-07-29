@@ -6,27 +6,124 @@
     <title>Daily Tracker</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap">
     <style>
-        body { font-family: 'Montserrat', sans-serif; background: linear-gradient(to right, #6a11cb, #2575fc); margin: 0; padding: 0; color: #333; }
-        .container { width: 80%; margin: 20px auto; padding: 20px; background-color: #fff; box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); border-radius: 10px; animation: fadeIn 1.5s ease; }
-        .header { text-align: center; margin-top: 20px; }
-        .header h1 { margin: 0; font-size: 2.5em; color: #2c3e50; }
-        .header p { margin: 10px 0; color: #7f8c8d; }
-        .images { display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 20px; }
-        .image-container { width: 30%; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); animation: zoomIn 1s ease; margin-bottom: 20px; }
-        .image-container img { width: 100%; border-radius: 10px; }
-        .task-list, .todo-list { margin-top: 30px; }
-        .task, .todo-item { margin-bottom: 20px; background-color: #ecf0f1; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); animation: slideIn 0.5s ease; }
-        .task h3, .todo-item label { margin: 0; }
-        .task label, .todo-item label { display: block; margin-top: 5px; }
-        .charts { display: flex; justify-content: space-around; margin-top: 40px; flex-wrap: wrap; }
-        .pie-chart { width: 45%; }
-        .chart-container { padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); animation: zoomIn 1s ease; margin-bottom: 20px; }
-        .completion-bar { margin-top: 40px; text-align: center; }
-        .completion-bar div { height: 20px; background-color: #2c3e50; color: white; line-height: 20px; border-radius: 10px; transition: width 0.5s ease; }
-        .footer { text-align: center; padding: 20px; color: #7f8c8d; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideIn { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            margin: 0;
+            padding: 0;
+            color: #333;
+            height: 100vh;
+            overflow-y: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            animation: fadeIn 1.5s ease;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        .header {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #2c3e50;
+        }
+        .header p {
+            margin: 10px 0;
+            color: #7f8c8d;
+        }
+        .images {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .image-container {
+            width: 30%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            animation: zoomIn 1s ease;
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .task-list, .todo-list {
+            margin-top: 30px;
+        }
+        .task, .todo-item {
+            margin-bottom: 20px;
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s ease;
+        }
+        .task h3, .todo-item label {
+            margin: 0;
+        }
+        .task label, .todo-item label {
+            display: block;
+            margin-top: 5px;
+        }
+        .charts {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .pie-chart {
+            width: 45%;
+        }
+        .chart-container {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            animation: zoomIn 1s ease;
+            margin-bottom: 20px;
+        }
+        .completion-bar {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .completion-bar div {
+            height: 20px;
+            background-color: #2c3e50;
+            color: white;
+            line-height: 20px;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -37,6 +134,10 @@
             <h1>Daily Tracker</h1>
             <p>Track your daily tasks efficiently and visualize your progress.</p>
         </div>
+        <div class="completion-bar">
+            <h3>Task Completion</h3>
+            <div id="completion-bar-inner" style="width: 0%">0%</div>
+        </div>
         <div class="images">
             <div class="image-container">
                 <h3>Goku Progress</h3>
@@ -44,16 +145,12 @@
             </div>
             <div class="image-container">
                 <h3>GTR R32 Progress</h3>
-                <img id="gtrImage" src="gtr_r32_skyline.gif" alt="GTR R32 Progress">
+                <img id="gtrImage" src="gtr_r32.gif" alt="GTR R32 Progress">
             </div>
             <div class="image-container">
                 <h3>Top G Progress</h3>
                 <img id="topgImage" src="topg.gif" alt="Top G Progress">
             </div>
-        </div>
-        <div class="completion-bar">
-            <h3>Task Completion</h3>
-            <div id="completion-bar-inner" style="width: 0%">0%</div>
         </div>
         <div class="task-list">
             <h2>Task List</h2>
@@ -76,7 +173,7 @@
     <script>
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
         const gokuImages = [
-            'goku0.png',   // 0-10%
+            'goku_0.png',   // 0-10%
             'goku_10.png',  // 11-20%
             'goku_20.png',  // 21-30%
             'goku_30.png',  // 31-40%
@@ -85,7 +182,7 @@
             'goku_60.png',  // 61-70%
             'goku_70.png',  // 71-80%
             'goku_80.png',  // 81-90%
-            'goku10.png',  // 91-100%
+            'goku_90.png',  // 91-100%
         ];
 
         async function fetchTasks() {
@@ -136,7 +233,7 @@
             });
         }
 
-        async function updateTaskStatus(taskId, isChecked) {
+               async function updateTaskStatus(taskId, isChecked) {
             try {
                 const endpoint = isChecked ? 'close' : 'reopen';
                 await axios.post(`https://api.todoist.com/rest/v1/tasks/${taskId}/${endpoint}`, {}, {
@@ -153,7 +250,7 @@
         function renderCharts(tasks) {
             const taskNames = tasks.map(task => task.content);
             const taskDurations = tasks.map(task => task.completed ? 1 : 0);
-                        const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+            const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
 
             const pieCtx = document.getElementById('pieChart').getContext('2d');
             new Chart(pieCtx, {
@@ -167,7 +264,7 @@
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false
+                    maintainAspectRatio: true
                 }
             });
         }
@@ -192,6 +289,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
