@@ -8,7 +8,6 @@
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
             margin: 0;
             padding: 0;
             color: #333;
@@ -16,6 +15,7 @@
             overflow-y: hidden;
             display: flex;
             flex-direction: column;
+            transition: background 1s ease;
         }
         .container {
             width: 80%;
@@ -31,15 +31,14 @@
         .header {
             text-align: center;
             margin-top: 20px;
+            transition: color 1s ease;
         }
         .header h1 {
             margin: 0;
             font-size: 2.5em;
-            color: #2c3e50;
         }
         .header p {
             margin: 10px 0;
-            color: #7f8c8d;
         }
         .images {
             display: flex;
@@ -104,24 +103,26 @@
         }
         .completion-bar div {
             width: 100%;
-            background: linear-gradient(to right, #ff6347, #ff6347);
+            background: #fff;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
         .completion-bar-inner {
             height: 20px;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
+            background: #ff6347;
             color: white;
             line-height: 20px;
             text-align: center;
-            border-radius: 10px;
+            border-radius: 10px 0 0 10px;
             transition: width 1s ease, background 1s ease;
         }
         .footer {
             text-align: center;
             padding: 20px;
             color: #7f8c8d;
+            transition: color 1s ease;
         }
         .counter {
             font-size: 2em;
@@ -330,12 +331,19 @@
 
         function updateCompletionBar(completedTasksCount, totalTasksCount) {
             const total = completedTasksCount + totalTasksCount;
-            const completionPercentage = totalTasksCount > 0 ? Math.round((completedTasksCount / total) * 100) : 0;
+            const completionPercentage = total > 0 ? Math.round((completedTasksCount / total) * 100) : 0;
             console.log(`Total tasks: ${totalTasksCount}, Completed tasks: ${completedTasksCount}, Completion percentage: ${completionPercentage}`); // Debugging
             const completionBarInner = document.getElementById('completion-bar-inner');
             completionBarInner.style.width = `${completionPercentage}%`;
             completionBarInner.textContent = `${completionPercentage}%`;
             updateGokuImage(completionPercentage);
+
+            // Update page aesthetics based on completion percentage
+            document.body.style.background = `linear-gradient(to right, hsl(${completionPercentage}, 100%, 50%), #2575fc)`;
+            const header = document.querySelector('.header');
+            header.style.color = `hsl(${completionPercentage}, 100%, 50%)`;
+            const footer = document.querySelector('.footer');
+            footer.style.color = `hsl(${completionPercentage}, 100%, 50%)`;
         }
 
         function updateGokuImage(completionPercentage) {
@@ -350,6 +358,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
