@@ -195,7 +195,7 @@
     </div>
     <script>
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
-        const gokuImages = [
+                const gokuImages = [
             'goku_0.png',   // 0-10%
             'goku_10.png',  // 11-20%
             'goku_20.png',  // 21-30%
@@ -387,6 +387,7 @@
             'music2.mp3', // 34-66%
             'music3.mp3'  // 67-100%
         ];
+
         function updateMusic(completionPercentage) {
             const musicIndex = Math.min(Math.floor(completionPercentage / 34), 2);
             const backgroundMusic = document.getElementById('backgroundMusic');
@@ -394,7 +395,10 @@
             // Only change the music if the track needs to be updated
             if (backgroundMusic.src.indexOf(musicTracks[musicIndex]) === -1) {
                 backgroundMusic.src = musicTracks[musicIndex];
-                backgroundMusic.play();
+                console.log(`Changing music to: ${musicTracks[musicIndex]}`); // Debugging: Log the music change
+                backgroundMusic.play().catch(error => {
+                    console.error('Error playing audio:', error); // Debugging: Log any errors
+                });
             }
         }
 
@@ -409,6 +413,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
