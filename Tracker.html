@@ -193,9 +193,9 @@
             &copy; 2024 Daily Tracker. All rights reserved.
         </div>
     </div>
-    <script>
+       <script>
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
-                const gokuImages = [
+        const gokuImages = [
             'goku_0.png',   // 0-10%
             'goku_10.png',  // 11-20%
             'goku_20.png',  // 21-30%
@@ -393,11 +393,15 @@
             const backgroundMusic = document.getElementById('backgroundMusic');
             
             // Only change the music if the track needs to be updated
-            if (backgroundMusic.src.indexOf(musicTracks[musicIndex]) === -1) {
+            if (!backgroundMusic.src.includes(musicTracks[musicIndex])) {
                 backgroundMusic.src = musicTracks[musicIndex];
                 console.log(`Changing music to: ${musicTracks[musicIndex]}`); // Debugging: Log the music change
-                backgroundMusic.play().catch(error => {
+                backgroundMusic.load(); // Ensure the new track is loaded
+                backgroundMusic.play().then(() => {
+                    console.log('Audio is playing.');
+                }).catch(error => {
                     console.error('Error playing audio:', error); // Debugging: Log any errors
+                    alert('Please interact with the page to enable audio playback.');
                 });
             }
         }
@@ -408,11 +412,27 @@
             this.play();
         });
 
+        // Initial user interaction prompt
+        document.body.addEventListener('click', function() {
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            backgroundMusic.play().then(() => {
+                console.log('Audio playback started.');
+            }).catch(error => {
+                                console.error('Error starting audio playback:', error); // Debugging: Log any errors
+            });
+            // Remove the event listener after the first interaction
+            document.body.removeEventListener('click', arguments.callee);
+        });
+
         fetchTasks();
         setInterval(fetchTasks, 60000); // Refresh tasks every minute
     </script>
 </body>
 </html>
+
+
+       
+
 
 
 
