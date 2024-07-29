@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Tracker</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">
     <style>
         body {
             font-family: 'Press Start 2P', sans-serif;
@@ -153,6 +154,17 @@
         .start-game:hover {
             background-color: #cc0000;
         }
+
+        .stopwatch {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    font-size: 3em;
+    font-weight: bold;
+    color: red;
+    animation: pulsate 1s infinite ease-in-out;
+    font-family: 'Orbitron', sans-serif;
+}
         .fight-text {
             position: absolute;
             top: 50%;
@@ -164,6 +176,17 @@
             animation: enlargeReduce 2s infinite ease-in-out;
             font-family: 'Press Start 2P', sans-serif;
         }
+
+        @keyframes pulsate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes breakApart {
+    0% { letter-spacing: normal; }
+    100% { letter-spacing: 1em; }
+}
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -239,6 +262,9 @@
         </div>
         <div class="fight-text" id="fightText">Fight!</div>
     </div>
+    <div class="stopwatch" id="stopwatch">00:00:00</div>
+<div class="fight-text" id="fightText">Fight!</div>
+
     <script>
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
         let previousCompletedTasksCount = 0;
@@ -389,6 +415,33 @@ async function fetchCompletedTasks() {
             }, 10000); // Remove the celebration class after 10 seconds
         }
 
+        function updateStopwatch() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('stopwatch').textContent = `${hours}:${minutes}:${seconds}`;
+}
+
+setInterval(updateStopwatch, 1000);
+
+        function updateBackgroundBrightness(completionPercentage) {
+    const brightness = 0.3 + (completionPercentage / 100) * 0.7; // Ranges from 0.3 to 1
+    document.body.style.background = `linear-gradient(to right, rgba(0, 0, 0, ${brightness}), rgba(0, 0, 0, ${brightness})), url('background.gif') no-repeat center center fixed`;
+    document.body.style.backgroundSize = 'cover';
+}
+
+        function updateStopwatchEffect(completionPercentage) {
+    const stopwatch = document.getElementById('stopwatch');
+    if (completionPercentage === 100) {
+        stopwatch.style.animation = 'breakApart 1s infinite';
+        stopwatch.style.letterSpacing = '1em';
+    } else {
+        stopwatch.style.animation = '';
+        stopwatch.style.letterSpacing = 'normal';
+    }
+        }
+
         function updateCompletionBar(completedTasksCount, totalTasksCount) {
             const total = completedTasksCount + totalTasksCount;
             const completionPercentage = total > 0 ? Math.round((completedTasksCount / total) * 100) : 0;
@@ -399,6 +452,7 @@ async function fetchCompletedTasks() {
             updateGokuImage(completionPercentage);
             updateMotivationalPhrase(completionPercentage);
             updateMusic(completionPercentage);
+            updateStopwatchEffect(completionPercentage);
 
             // Update page aesthetics based on completion percentage
             const header = document.querySelector('.header');
