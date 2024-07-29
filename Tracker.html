@@ -163,7 +163,7 @@
                 <img id="gokuImage" src="goku_0.png" alt="Goku Progress">
             </div>
             <div class="image-container">
-                <img id="gtr_skyline_r32" src="gtr_r32.gif" alt="GTR Skyline R32 Progress">
+                <img id="gtr_skyline_r32" src="gtr_skyline_r32.gif" alt="GTR Skyline R32 Progress">
             </div>
             <div class="image-container">
                 <img id="topgImage" src="topg.gif" alt="Top G Progress">
@@ -230,14 +230,13 @@
 
                 updateTaskList(tasks);
                 renderCharts(tasks);
-                updateCompletionBar(tasks);
-                fetchCompletedTasks(); // Fetch completed tasks for today
+                fetchCompletedTasks(tasks); // Fetch completed tasks for today
             } catch (error) {
                 console.error('Error fetching data:', error.response ? error.response.data : error.message);
             }
         }
 
-        async function fetchCompletedTasks() {
+        async function fetchCompletedTasks(tasks) {
             try {
                 const today = new Date().toISOString().split('T')[0];
                 const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}`, {
@@ -351,9 +350,4 @@
 </body>
 </html>
 
-
-
-
-
-
-
+               
