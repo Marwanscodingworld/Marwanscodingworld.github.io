@@ -241,7 +241,7 @@
     </div>
     <script>
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
-        let previousCompletedTasksCount = 0;
+                let previousCompletedTasksCount = 0;
         const gokuImages = [
             'goku_0.png',   // 0-10%
             'goku_10.png',  // 11-20%
@@ -469,11 +469,11 @@
 
         function startGame() {
             const backgroundMusic = document.getElementById('backgroundMusic');
-            backgroundMusic.play            .then(() => {
-                console.log('Audio playback started.');
-            }).catch(error => {
-                console.error('Error starting audio playback:', error); // Debugging: Log any errors
-            });
+            backgroundMusic.play().then(() => {
+                                console.log('Audio playback started.');
+                }).catch(error => {
+                    console.error('Error starting audio playback:', error); // Debugging: Log any errors
+                });
         }
 
         fetchTasks();
@@ -481,7 +481,5 @@
     </script>
 </body>
 </html>
-
-
 
 
