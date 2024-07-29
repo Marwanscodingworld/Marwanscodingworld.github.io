@@ -19,28 +19,58 @@
             background: url('background.gif') no-repeat center center fixed;
             background-size: cover;
         }
+        
+        :root {
+    --brightness: 0.8;
+    --stars-opacity: 0.2;
+    --parallax-speed: 1;
+}
 
-       .background-container {
+.background-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('background.gif') no-repeat center center fixed;
-    background-size: cover;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradientBackground 15s ease infinite;
     z-index: -1;
+    filter: brightness(var(--brightness));
 }
 
+@keyframes gradientBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 .brightness-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(255, 255, 255, 0);
     pointer-events: none;
     transition: background-color 1s ease;
     z-index: 1;
+}
+
+.parallax-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -2;
+    animation: parallaxMove calc(20s / var(--parallax-speed)) linear infinite;
+}
+
+@keyframes parallaxMove {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
 }
 
         .container {
@@ -201,6 +231,33 @@
             font-family: 'Press Start 2P', sans-serif;
         }
 
+      
+.stars, .stars2, .stars3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent url('stars.png') repeat top center;
+    opacity: var(--stars-opacity);
+    animation: moveStars calc(50s / var(--parallax-speed)) linear infinite;
+}
+
+.stars2 {
+    background: transparent url('stars2.png') repeat top center;
+    animation: moveStars calc(100s / var(--parallax-speed)) linear infinite;
+}
+
+.stars3 {
+    background: transparent url('stars3.png') repeat top center;
+    animation: moveStars calc(150s / var(--parallax-speed)) linear infinite;
+}
+@keyframes moveStars {
+    from { background-position: 0 0; }
+    to { background-position: -10000px 10000px; }
+}
+
+        
         @keyframes pulsate {
     0% { transform: scale(1); }
     50% { transform: scale(1.1); }
@@ -251,6 +308,11 @@
 </head>
 <body>
     <div class="background-container">
+        <div class="parallax-layer" style="background-image: url('layer1.png');"></div>
+    <div class="parallax-layer" style="background-image: url('layer2.png');"></div>
+        <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
     <div class="brightness-overlay" id="brightnessOverlay"></div>
     <div class="stopwatch" id="stopwatch">00:00:00</div>
     <div class="fight-text" id="fightText">Fight!</div>
@@ -291,6 +353,7 @@
             &copy; 2024 Daily Tracker. All rights reserved.
         </div>
     </div>
+    
     
     <script>
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
@@ -461,11 +524,15 @@ async function fetchCompletedTasks() {
 
 setInterval(updateStopwatch, 1000);
 
-      function updateBackgroundBrightness(completionPercentage) {
+      function updateBackgroundEffects(completionPercentage) {
     const brightness = 0.8 - (completionPercentage / 100) * 0.8; // Ranges from 0.8 to 0
-    document.getElementById('brightnessOverlay').style.backgroundColor = `rgba(255, 255, 255, ${brightness})`;
-}
+    const starsOpacity = 0.2 + (completionPercentage / 100) * 0.8; // Ranges from 0.2 to 1
+    const parallaxSpeed = 1 + (completionPercentage / 100) * 4; // Ranges from 1 to 5
 
+    document.documentElement.style.setProperty('--brightness', brightness);
+    document.documentElement.style.setProperty('--stars-opacity', starsOpacity);
+    document.documentElement.style.setProperty('--parallax-speed', parallaxSpeed);
+}
 
 
         function updateStopwatchEffect(completionPercentage) {
@@ -490,7 +557,8 @@ setInterval(updateStopwatch, 1000);
             updateMotivationalPhrase(completionPercentage);
             updateMusic(completionPercentage);
             updateStopwatchEffect(completionPercentage);
-            updateBackgroundBrightness(completionPercentage);
+            updateBackgroundEffects(completionPercentage);
+            updateBackgroundBrightness(completionpercentage);
 
             // Update page aesthetics based on completion percentage
             const header = document.querySelector('.header');
