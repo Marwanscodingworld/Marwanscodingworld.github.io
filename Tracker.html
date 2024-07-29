@@ -16,8 +16,8 @@
         .task h3, .todo-item label { margin: 0; }
         .task label, .todo-item label { display: block; margin-top: 5px; }
         .charts { display: flex; justify-content: space-around; margin-top: 40px; }
-        .pie-chart, .bar-chart { width: 45%; }
-        .chart-container { padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); animation: zoomIn 1s ease; }
+        .pie-chart, .goku-progress { width: 45%; }
+        .chart-container, .goku-container { padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); animation: zoomIn 1s ease; }
         .completion-bar { margin-top: 40px; text-align: center; }
         .completion-bar div { height: 20px; background-color: #2c3e50; color: white; line-height: 20px; border-radius: 10px; transition: width 0.5s ease; }
         .footer { text-align: center; padding: 20px; color: #7f8c8d; }
@@ -56,9 +56,9 @@
                 <h3>Pie Chart</h3>
                 <canvas id="pieChart"></canvas>
             </div>
-            <div class="chart-container bar-chart">
-                <h3>Bar Chart</h3>
-                <canvas id="barChart"></canvas>
+            <div class="goku-container">
+                <h3>Goku Progress</h3>
+                <img id="gokuImage" src="" alt="Goku Progress" style="width: 100%; border-radius: 10px;">
             </div>
         </div>
         <div class="completion-bar">
@@ -71,6 +71,18 @@
     </div>
     <script>
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
+        const gokuImages = [
+            'path_to_goku_0.png',  // 0-10%
+            'path_to_goku_10.png', // 11-20%
+            'path_to_goku_20.png', // 21-30%
+            'path_to_goku_30.png', // 31-40%
+            'path_to_goku_40.png', // 41-50%
+            'path_to_goku_50.png', // 51-60%
+            'path_to_goku_60.png', // 61-70%
+            'path_to_goku_70.png', // 71-80%
+            'path_to_goku_80.png', // 81-90%
+            'path_to_goku_90.png', // 91-100%
+        ];
 
         async function fetchTasks() {
             try {
@@ -87,6 +99,7 @@
                 updateTodoList(tasks);
                 renderCharts(tasks);
                 updateCompletionBar(tasks);
+                updateGokuImage(tasks);
             } catch (error) {
                 console.error('Error fetching data:', error.response ? error.response.data : error.message);
             }
@@ -153,28 +166,6 @@
                     maintainAspectRatio: false
                 }
             });
-
-            const barCtx = document.getElementById('barChart').getContext('2d');
-            new Chart(barCtx, {
-                type: 'bar',
-                data: {
-                    labels: taskNames,
-                    datasets: [{
-                        label: 'Task Durations',
-                        data: taskDurations,
-                        backgroundColor: colors
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
         }
 
         function updateCompletionBar(tasks) {
@@ -183,10 +174,5 @@
             const completionPercentage = Math.round((completedTasks / totalTasks) * 100);
             const completionBar = document.getElementById('completion-bar-inner');
             completionBar.style.width = `${completionPercentage}%`;
-            completionBar.textContent = `${completionPercentage}%`;
-        }
+            completionBar.textContent
 
-        fetchTasks();
-    </script>
-</body>
-</html>
