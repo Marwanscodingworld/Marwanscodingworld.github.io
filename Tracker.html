@@ -329,7 +329,7 @@
         }
 
         function updateCompletionBar(completedTasksCount, totalTasksCount) {
-            const completionPercentage = totalTasksCount > 0 ? Math.round((completedTasksCount / totalTasksCount) * 100) : 0;
+            const completionPercentage = totalTasksCount > 0 ? Math.round((completedTasksCount / (completedTasksCount + (totalTasksCount - completedTasksCount))) * 100) : 0;
             console.log(`Total tasks: ${totalTasksCount}, Completed tasks: ${completedTasksCount}, Completion percentage: ${completionPercentage}`); // Debugging
             const completionBarInner = document.getElementById('completion-bar-inner');
             completionBarInner.style.width = `${completionPercentage}%`;
@@ -350,4 +350,3 @@
 </body>
 </html>
 
-               
