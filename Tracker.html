@@ -167,6 +167,16 @@
             from { transform: scale(0.5); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
+        @keyframes celebration {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1.2); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .celebration {
+            animation: celebration 10s ease;
+        }
         @keyframes vibrate {
             0% { transform: translate(0, 0); }
             25% { transform: translate(2px, 2px); }
@@ -234,7 +244,7 @@
         }
 
         function saveLocalTasks(tasks) {
-            localStorage.setItem('tasks', JSON.stringify(tasks));
+                        localStorage.setItem('tasks', JSON.stringify(tasks));
         }
 
         async function fetchTasks() {
@@ -244,7 +254,9 @@
                     resource_types: ['items']
                 }, {
                     headers: {
-                        'Authorization': `Bearer ${API
+                        'Authorization': `Bearer ${API_KEY}`
+                    }
+                });
                 const tasks = response.data.items;
                 console.log('Fetched tasks:', tasks); // Debugging: Log fetched tasks
                 const localTasks = loadLocalTasks();
@@ -323,9 +335,26 @@
                 saveLocalTasks(localTasks);
 
                 fetchTasks();
+                
+                if (isChecked) {
+                    triggerCelebration();
+                }
             } catch (error) {
                 console.error('Error updating task status:', error.response ? error.response.data : error.message);
             }
+        }
+
+        function triggerCelebration() {
+            const gokuImage = document.getElementById('gokuImage');
+            const topgImage = document.getElementById('topgImage');
+
+            gokuImage.classList.add('celebration');
+            topgImage.classList.add('celebration');
+
+            setTimeout(() => {
+                gokuImage.classList.remove('celebration');
+                topgImage.classList.remove('celebration');
+            }, 10000); // Remove the celebration class after 10 seconds
         }
 
         function updateCompletionBar(completedTasksCount, totalTasksCount) {
@@ -421,6 +450,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
