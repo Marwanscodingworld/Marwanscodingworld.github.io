@@ -440,17 +440,26 @@ async function fetchCompletedTasks() {
 
         function updateStopwatch() {
     const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    document.getElementById('stopwatch').textContent = `${hours}:${minutes}:${seconds}`;
+    const target = new Date();
+    target.setHours(21, 0, 0, 0); // Set target to 9 PM
+    const diff = target - now;
+    
+    if (diff > 0) {
+        const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+        const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+        const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+        document.getElementById('stopwatch').textContent = `${hours}:${minutes}:${seconds}`;
+    } else {
+        document.getElementById('stopwatch').textContent = '00:00:00';
+    }
 }
+
 
 setInterval(updateStopwatch, 1000);
 
-        function updateBackgroundBrightness(completionPercentage) {
+      function updateBackgroundBrightness(completionPercentage) {
     const brightness = 0.8 - (completionPercentage / 100) * 0.8; // Ranges from 0.8 to 0
-    document.getElementById('brightnessOverlay').style.backgroundColor = `rgba(0, 0, 0, ${brightness})`;
+    document.getElementById('brightnessOverlay').style.backgroundColor = `rgba(255, 255, 255, ${brightness})`;
 }
 
 
