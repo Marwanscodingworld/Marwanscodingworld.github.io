@@ -262,6 +262,16 @@
     50% { transform: scale(1.1); }
     100% { transform: scale(1); }
 }
+        @keyframes warpEffect {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.warping {
+    animation: warpEffect 5s infinite ease-in-out;
+}
+
 
 @keyframes breakApart {
     0% { letter-spacing: normal; }
@@ -558,7 +568,15 @@ setInterval(updateStopwatch, 1000);
             updateStopwatchEffect(completionPercentage);
             updateBackgroundEffects(completionPercentage);
             
+ const body = document.body;
+    const warpIntensity = completionPercentage / 100; // Warping intensity from 0 to 1
+    body.style.animationDuration = `${5 - (4 * warpIntensity)}s`; // Reduce duration as percentage increases
 
+    if (completionPercentage > 0) {
+        body.classList.add('warping');
+    } else {
+        body.classList.remove('warping');
+    }
             // Update page aesthetics based on completion percentage
             const header = document.querySelector('.header');
             header.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
