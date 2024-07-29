@@ -5,19 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Tracker</title>
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; }
-        .container { width: 80%; margin: 0 auto; padding: 20px; background-color: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        body { font-family: 'Arial', sans-serif; background-color: #f4f4f9; margin: 0; padding: 0; color: #333; }
+        .container { width: 80%; margin: 0 auto; padding: 20px; background-color: #fff; box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); border-radius: 10px; }
         .header { text-align: center; margin-top: 20px; }
-        .header h1 { margin: 0; font-size: 2.5em; color: #333; }
-        .header p { margin: 10px 0; color: #666; }
+        .header h1 { margin: 0; font-size: 2.5em; color: #2c3e50; }
+        .header p { margin: 10px 0; color: #7f8c8d; }
         .task-list, .todo-list { margin-top: 30px; }
-        .task, .todo-item { margin-bottom: 20px; background-color: #fafafa; padding: 10px; border-radius: 5px; }
+        .task, .todo-item { margin-bottom: 20px; background-color: #ecf0f1; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
         .task h3, .todo-item label { margin: 0; }
         .task label, .todo-item label { display: block; margin-top: 5px; }
         .charts { display: flex; justify-content: space-around; margin-top: 40px; }
         .pie-chart, .bar-chart { width: 45%; }
-        .pie-chart img, .bar-chart img { width: 100%; border-radius: 5px; }
+        .chart-container { padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+        .footer { text-align: center; padding: 20px; color: #7f8c8d; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
@@ -34,17 +37,19 @@
             <div id="todo-list-content"></div>
         </div>
         <div class="charts">
-            <div class="pie-chart">
+            <div class="chart-container pie-chart">
                 <h3>Pie Chart</h3>
-                <!-- Pie Chart Image Here -->
+                <canvas id="pieChart"></canvas>
             </div>
-            <div class="bar-chart">
+            <div class="chart-container bar-chart">
                 <h3>Bar Chart</h3>
-                <!-- Bar Chart Image Here -->
+                <canvas id="barChart"></canvas>
             </div>
         </div>
+        <div class="footer">
+            &copy; 2024 Daily Tracker. All rights reserved.
+        </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
 
@@ -62,6 +67,7 @@
                 console.log(tasks); // Debugging: Log tasks to the console
                 updateTaskList(tasks);
                 updateTodoList(tasks);
+                renderCharts(tasks);
             } catch (error) {
                 console.error('Error fetching data:', error.response ? error.response.data : error.message); // Debugging: Log detailed error
             }
@@ -108,7 +114,52 @@
             }
         }
 
+        function renderCharts(tasks) {
+            const taskNames = tasks.map(task => task.content);
+            const taskDurations = tasks.map(task => task.checked ? 1 : 0); // Dummy durations for example
+            const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+
+            const pieCtx = document.getElementById('pieChart').getContext('2d');
+            new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: taskNames,
+                    datasets: [{
+                        data: taskDurations,
+                        backgroundColor: colors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: taskNames,
+                    datasets: [{
+                        label: 'Task Durations',
+                        data: taskDurations,
+                        backgroundColor: colors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
         fetchTasks();
     </script>
 </body>
 </html>
+
