@@ -273,6 +273,7 @@
 }
 
 
+
 @keyframes breakApart {
     0% { letter-spacing: normal; }
     100% { letter-spacing: 1em; }
@@ -543,32 +544,21 @@ setInterval(updateStopwatch, 1000);
     document.documentElement.style.setProperty('--parallax-speed', parallaxSpeed);
 }
 
+function updateCompletionBar(completedTasksCount, totalTasksCount) {
+    const total = completedTasksCount + totalTasksCount;
+    const completionPercentage = total > 0 ? Math.round((completedTasksCount / total) * 100) : 0;
+    console.log(`Total tasks: ${totalTasksCount}, Completed tasks: ${completedTasksCount}, Completion percentage: ${completionPercentage}`); // Debugging
+    const completionBarInner = document.getElementById('completion-bar-inner');
+    completionBarInner.style.width = `${completionPercentage}%`;
+    completionBarInner.textContent = `${completionPercentage}%`;
+    updateGokuImage(completionPercentage);
+    updateMotivationalPhrase(completionPercentage);
+    updateMusic(completionPercentage);
+    updateStopwatchEffect(completionPercentage);
+    updateBackgroundEffects(completionPercentage);
 
-        function updateStopwatchEffect(completionPercentage) {
-    const stopwatch = document.getElementById('stopwatch');
-    if (completionPercentage === 100) {
-        stopwatch.style.animation = 'breakApart 1s infinite';
-        stopwatch.style.letterSpacing = '1em';
-    } else {
-        stopwatch.style.animation = '';
-        stopwatch.style.letterSpacing = 'normal';
-    }
-        }
-
-        function updateCompletionBar(completedTasksCount, totalTasksCount) {
-            const total = completedTasksCount + totalTasksCount;
-            const completionPercentage = total > 0 ? Math.round((completedTasksCount / total) * 100) : 0;
-            console.log(`Total tasks: ${totalTasksCount}, Completed tasks: ${completedTasksCount}, Completion percentage: ${completionPercentage}`); // Debugging
-            const completionBarInner = document.getElementById('completion-bar-inner');
-            completionBarInner.style.width = `${completionPercentage}%`;
-            completionBarInner.textContent = `${completionPercentage}%`;
-            updateGokuImage(completionPercentage);
-            updateMotivationalPhrase(completionPercentage);
-            updateMusic(completionPercentage);
-            updateStopwatchEffect(completionPercentage);
-            updateBackgroundEffects(completionPercentage);
-            
- const body = document.body;
+    // Apply warp effect based on completion percentage
+    const body = document.body;
     const warpIntensity = completionPercentage / 100; // Warping intensity from 0 to 1
     body.style.animationDuration = `${5 - (4 * warpIntensity)}s`; // Reduce duration as percentage increases
 
@@ -577,17 +567,29 @@ setInterval(updateStopwatch, 1000);
     } else {
         body.classList.remove('warping');
     }
-            // Update page aesthetics based on completion percentage
-            const header = document.querySelector('.header');
-            header.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
-            const footer = document.querySelector('.footer');
-            footer.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
 
-            // Apply vibrational effect based on completion percentage
-            const container = document.getElementById('container');
-            const vibrateIntensity = completionPercentage / 10;
-            container.style.animation = `vibrate ${0.1 * vibrateIntensity}s infinite`;
-        }
+    // Update star speeds based on completion percentage
+    const longestDuration = 15 - (completionPercentage * 0.1); // 15s at 0%, 5s at 100%
+    const starsDuration = `${longestDuration}s`;
+    const stars2Duration = `${longestDuration / 2}s`;
+    const stars3Duration = `${longestDuration / 3}s`;
+
+    document.documentElement.style.setProperty('--stars-duration', starsDuration);
+    document.documentElement.style.setProperty('--stars2-duration', stars2Duration);
+    document.documentElement.style.setProperty('--stars3-duration', stars3Duration);
+
+    // Update page aesthetics based on completion percentage
+    const header = document.querySelector('.header');
+    header.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+    const footer = document.querySelector('.footer');
+    footer.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+
+    // Apply vibrational effect based on completion percentage
+    const container = document.getElementById('container');
+    const vibrateIntensity = completionPercentage / 10;
+    container.style.animation = `vibrate ${0.1 * vibrateIntensity}s infinite`;
+}
+
 
         function updateGokuImage(completionPercentage) {
             let imageIndex = Math.min(Math.floor(completionPercentage / 10), 9);
