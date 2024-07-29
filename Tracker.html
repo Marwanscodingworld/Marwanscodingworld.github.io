@@ -163,11 +163,9 @@
                 <img id="gokuImage" src="goku_0.png" alt="Goku Progress">
             </div>
             <div class="image-container">
-                <!-- <h3>GTR Skyline R32 Progress</h3> -->
-                <img id="gtr_skyline_r32" src="gtr_r32.gif" alt="GTR Skyline R32 Progress">
+                <img id="gtr_skyline_r32" src="gtr_skyline_r32.gif" alt="GTR Skyline R32 Progress">
             </div>
             <div class="image-container">
-                <!-- <h3>Top G Progress</h3> -->
                 <img id="topgImage" src="topg.gif" alt="Top G Progress">
             </div>
         </div>
@@ -241,13 +239,13 @@
 
         async function fetchCompletedTasks() {
             try {
-                               const today = new Date().toISOString().split('T')[0];
+                const today = new Date().toISOString().split('T')[0];
                 const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}`, {
                     headers: {
                         'Authorization': `Bearer ${API_KEY}`
                     }
                 });
-                const completedTasks = response.data.items;
+                                const completedTasks = response.data.items;
                 console.log('Fetched completed tasks:', completedTasks); // Debugging: Log fetched completed tasks
                 updateCompletedTasksCounter(completedTasks.length);
             } catch (error) {
@@ -334,6 +332,7 @@
             const completedTasks = todayTasks.filter(task => task.completed).length;
             const totalTasks = todayTasks.length;
             const completionPercentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            console.log(`Total tasks: ${totalTasks}, Completed tasks: ${completedTasks}, Completion percentage: ${completionPercentage}`); // Debugging
             const completionBarInner = document.getElementById('completion-bar-inner');
             completionBarInner.style.width = `${completionPercentage}%`;
             completionBarInner.textContent = `${completionPercentage}%`;
@@ -344,6 +343,7 @@
             let imageIndex = Math.min(Math.floor(completionPercentage / 10), 9);
             const gokuImage = document.getElementById('gokuImage');
             gokuImage.src = gokuImages[imageIndex];
+            console.log(`Goku image updated to: ${gokuImages[imageIndex]}`); // Debugging
         }
 
         fetchTasks();
