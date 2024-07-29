@@ -126,14 +126,12 @@
             margin-top: 20px;
             transition: color 0.5s ease;
         }
-
         .motivational-text {
             font-size: 1.2em;
             font-weight: bold;
             margin-bottom: 10px;
             transition: color 1s ease;
         }
-
         .start-game {
             display: block;
             width: 200px;
@@ -150,11 +148,20 @@
             width: 100%;
             border-radius: 10px;
         }
-
         .start-game:hover {
             background-color: #cc0000;
         }
-
+        .fight-text {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%) rotate(-15deg);
+            font-size: 3em;
+            font-weight: bold;
+            color: red;
+            animation: enlargeReduce 2s infinite ease-in-out;
+            font-family: 'Press Start 2P', sans-serif;
+        }
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -183,6 +190,10 @@
             50% { transform: translate(0, 2px); }
             75% { transform: translate(2px, 0); }
             100% { transform: translate(0, 0); }
+        }
+        @keyframes enlargeReduce {
+            0%, 100% { transform: scale(1) translateY(-50%) rotate(-15deg); }
+            50% { transform: scale(1.5) translateY(-50%) rotate(-15deg); }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -224,9 +235,11 @@
             <div class="counter" id="completedTasksCounter">0</div>
             &copy; 2024 Daily Tracker. All rights reserved.
         </div>
+        <div class="fight-text" id="fightText">Fight!</div>
     </div>
     <script>
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
+        let previousCompletedTasksCount = 0;
         const gokuImages = [
             'goku_0.png',   // 0-10%
             'goku_10.png',  // 11-20%
@@ -288,6 +301,10 @@
                 console.log('Fetched completed tasks:', completedTasks); // Debugging: Log fetched completed tasks
                 const completedTasksCount = completedTasks.length;
                 updateCompletedTasksCounter(completedTasksCount);
+                if (completedTasksCount > previousCompletedTasksCount) {
+                    triggerCelebration();
+                }
+                previousCompletedTasksCount = completedTasksCount;
                 updateCompletionBar(completedTasksCount, tasks.length);
             } catch (error) {
                 console.error('Error fetching completed tasks:', error.response ? error.response.data : error.message);
@@ -337,12 +354,7 @@
                 saveLocalTasks(localTasks);
 
                 fetchTasks();
-
                 playTaskCompleteSound();
-                
-                if (isChecked) {
-                    triggerCelebration();
-                }
             } catch (error) {
                 console.error('Error updating task status:', error.response ? error.response.data : error.message);
             }
@@ -451,6 +463,7 @@
         document.getElementById('backgroundMusic').addEventListener('ended', function() {
             this.currentTime = 0;
             this.play();
+       
         });
 
         function startGame() {
@@ -467,3 +480,4 @@
     </script>
 </body>
 </html>
+
