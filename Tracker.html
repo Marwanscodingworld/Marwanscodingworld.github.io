@@ -270,7 +270,7 @@
 }
 
 .warping {
-    animation: warpEffect 5s infinite ease-in-out;
+    animation: warpEffect var(--warp-duration) infinite ease-in-out;
 }
 
 
@@ -559,9 +559,10 @@ function updateCompletionBar(completedTasksCount, totalTasksCount) {
     updateBackgroundEffects(completionPercentage);
 
     // Apply warp effect based on completion percentage
-    const body = document.body;
+   const body = document.body;
     const warpIntensity = completionPercentage / 100; // Warping intensity from 0 to 1
-    body.style.animationDuration = `${5 - (4 * warpIntensity)}s`; // Reduce duration as percentage increases
+    const warpDuration = 5 - (4 * warpIntensity); // Duration ranges from 5s to 1s
+    document.documentElement.style.setProperty('--warp-duration', `${warpDuration}s`);
 
     if (completionPercentage > 0) {
         body.classList.add('warping');
