@@ -426,10 +426,10 @@ async function fetchCompletedTasks() {
 setInterval(updateStopwatch, 1000);
 
         function updateBackgroundBrightness(completionPercentage) {
-    const brightness = 0.3 + (completionPercentage / 100) * 0.7; // Ranges from 0.3 to 1
-    document.body.style.background = `linear-gradient(to right, rgba(0, 0, 0, ${brightness}), rgba(0, 0, 0, ${brightness})), url('background.gif') no-repeat center center fixed`;
-    document.body.style.backgroundSize = 'cover';
+    const brightness = 0.2 + (completionPercentage / 100) * 1.8; // Ranges from 0.2 to 2
+    document.body.style.filter = `brightness(${brightness})`;
 }
+
 
         function updateStopwatchEffect(completionPercentage) {
     const stopwatch = document.getElementById('stopwatch');
