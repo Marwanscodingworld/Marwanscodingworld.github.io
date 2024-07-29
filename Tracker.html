@@ -123,6 +123,12 @@
             padding: 20px;
             color: #7f8c8d;
         }
+        .counter {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: color 0.5s ease;
+        }
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -180,6 +186,7 @@
             </div>
         </div>
         <div class="footer">
+            <div class="counter" id="completedTasksCounter">0</div>
             &copy; 2024 Daily Tracker. All rights reserved.
         </div>
     </div>
@@ -207,32 +214,30 @@
             localStorage.setItem('tasks', JSON.stringify(tasks));
         }
 
-        async function fetchTasks() {
+                async function fetchCompletedTasks() {
             try {
-                const response = await axios.post('https://api.todoist.com/sync/v9/sync', {
-                    sync_token: '*',
-                    resource_types: ['items']
-                }, {
+                const today = new Date().toISOString().split('T')[0];
+                const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}`, {
                     headers: {
                         'Authorization': `Bearer ${API_KEY}`
                     }
                 });
-                const tasks = response.data.items;
-                console.log('Fetched tasks:', tasks); // Debugging: Log fetched tasks
-                const localTasks = loadLocalTasks();
-
-                tasks.forEach(task => {
-                    if (localTasks[task.id] !== undefined) {
-                        task.completed = localTasks[task.id];
-                    }
-                });
-
-                updateTaskList(tasks);
-                renderCharts(tasks);
-                updateCompletionBar(tasks);
+                const completedTasks = response.data.items;
+                updateCompletedTasksCounter(completedTasks.length);
             } catch (error) {
-                console.error('Error fetching data:', error.response ? error.response.data : error.message);
+                console.error('Error fetching completed tasks:', error.response ? error.response.data : error.message);
             }
+        }
+
+        function updateCompletedTasksCounter(completedCount) {
+            const counterElement = document.getElementById('completedTasksCounter');
+            counterElement.textContent = completedCount;
+            counterElement.style.color = `hsl(${completedCount * 36}, 100%, 50%)`; // Change color based on the number
+            counterElement.classList.add('animate');
+
+            setTimeout(() => {
+                counterElement.classList.remove('animate');
+            }, 500);
         }
 
         function updateTaskList(tasks) {
@@ -245,7 +250,7 @@
                     taskElement.className = 'task';
                     taskElement.innerHTML = `
                         <h3>${task.content}</h3>
-                                                <p>Due: ${taskDate}</p>
+                        <p>Due: ${taskDate}</p>
                         <label><input type="checkbox" ${task.completed ? 'checked' : ''} onchange="updateTaskStatus(${task.id}, ${!task.completed})"> Done</label>
                     `;
                     taskListContent.appendChild(taskElement);
@@ -343,4 +348,5 @@
     </script>
 </body>
 </html>
+
 
