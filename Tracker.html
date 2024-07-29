@@ -293,27 +293,29 @@
             }
         }
 
-        async function fetchCompletedTasks() {
-            try {
-                const today = new Date().toISOString().split('T')[0];
-                const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}`, {
-                    headers: {
-                        'Authorization': `Bearer ${API_KEY}`
-                    }
-                });
-                const completedTasks = response.data.items;
-                console.log('Fetched completed tasks:', completedTasks); // Debugging: Log fetched completed tasks
-                const completedTasksCount = completedTasks.length;
-                console.log('Completed Tasks Count:', completedTasksCount); // Log the count of completed tasks
-                updateCompletedTasksCounter(completedTasksCount);
-                if (completedTasksCount > previousCompletedTasksCount) {
-                    triggerCelebration();
-                }
-                previousCompletedTasksCount = completedTasksCount;
-                updateCompletionBar(completedTasksCount, totalTasksCount);
-            } catch (error) {
-                console.error('Error fetching completed tasks:', error.response ? error.response.data : error.message);
+       async function fetchCompletedTasks() {
+    try {
+        const today = new Date().toISOString().split('T')[0];
+        const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all?since=${today}T00:00:00Z`, {
+            headers: {
+                'Authorization': `Bearer ${API_KEY}`
             }
+        });
+        const completedTasks = response.data.items;
+        console.log('Fetched completed tasks:', completedTasks); // Debugging: Log fetched completed tasks
+        const completedTasksCount = completedTasks.length;
+        console.log('Completed Tasks Count:', completedTasksCount); // Log the count of completed tasks
+        updateCompletedTasksCounter(completedTasksCount);
+        if (completedTasksCount > previousCompletedTasksCount) {
+            triggerCelebration();
+        }
+        previousCompletedTasksCount = completedTasksCount;
+        updateCompletionBar(completedTasksCount, totalTasksCount);
+    } catch (error) {
+        console.error('Error fetching completed tasks:', error.response ? error.response.data : error.message);
+    }
+}
+
         }
 
         function updateCompletedTasksCounter(completedCount) {
