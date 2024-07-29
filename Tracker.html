@@ -164,7 +164,7 @@
             </div>
             <div class="image-container">
                 <!-- <h3>GTR Skyline R32 Progress</h3> -->
-                <img id="gtr_skyline_r32" src="gtr_skyline_r32.gif" alt="GTR Skyline R32 Progress">
+                <img id="gtr_skyline_r32" src="gtr_r32.gif" alt="GTR Skyline R32 Progress">
             </div>
             <div class="image-container">
                 <!-- <h3>Top G Progress</h3> -->
@@ -333,8 +333,7 @@
             const todayTasks = tasks.filter(task => new Date(task.due.date).toDateString() === new Date().toDateString());
             const completedTasks = todayTasks.filter(task => task.completed).length;
             const totalTasks = todayTasks.length;
-            const remainingTasks = totalTasks - completedTasks;
-            const completionPercentage = totalTasks > 0 ? Math.round((completedTasks / (remainingTasks + completedTasks)) * 100) : 0;
+            const completionPercentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
             const completionBarInner = document.getElementById('completion-bar-inner');
             completionBarInner.style.width = `${completionPercentage}%`;
             completionBarInner.textContent = `${completionPercentage}%`;
@@ -352,4 +351,6 @@
     </script>
 </body>
 </html>
+
+
 
