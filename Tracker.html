@@ -293,7 +293,7 @@
             }
         }
 
-     async function fetchCompletedTasks() {
+async function fetchCompletedTasks() {
     try {
         const today = new Date().toISOString().split('T')[0];
         const response = await axios.get(`https://api.todoist.com/sync/v9/completed/get_all`, {
@@ -303,7 +303,7 @@
         });
         const completedTasks = response.data.items;
         console.log('Fetched completed tasks:', completedTasks); // Debugging: Log fetched completed tasks
-        
+
         // Filter tasks to include only those completed today
         const todayCompletedTasks = completedTasks.filter(task => {
             const completedDate = new Date(task.completed_at).toISOString().split('T')[0];
