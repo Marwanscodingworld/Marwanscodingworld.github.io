@@ -349,6 +349,7 @@
             50% { transform: scale(1.5) translateY(-50%) rotate(-15deg); }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
@@ -363,10 +364,19 @@
     <!-- Your existing JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            init3D();
-            fetchTasks();
-            setInterval(fetchTasks, 20000); // Refresh tasks every 20 seconds
-        });
+    init3D();
+    fetchTasks();
+    setInterval(fetchTasks, 20000); // Refresh tasks every 20 seconds
+
+    // Add mousemove event listener after DOM content is loaded
+    document.addEventListener('mousemove', (event) => {
+        const cursorInteraction = document.getElementById('cursorInteraction');
+        if (cursorInteraction) {
+            cursorInteraction.style.left = `${event.clientX}px`;
+            cursorInteraction.style.top = `${event.clientY}px`;
+        }
+    });
+});
 
         function init3D() {
             const container = document.getElementById('three-container');
@@ -588,22 +598,25 @@
                 topgImage.classList.remove('celebration');
             }, 10000); // Remove the celebration class after 10 seconds
         }
+function updateStopwatch() {
+    const now = new Date();
+    const target = new Date();
+    target.setHours(21, 0, 0, 0); // Set target to 9 PM
+    const diff = target - now;
 
-        function updateStopwatch() {
-            const now = new Date();
-            const target = new Date();
-            target.setHours(21, 0, 0, 0); // Set target to 9 PM
-            const diff = target - now;
-
-            if (diff > 0) {
-                const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
-                const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-                const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-                document.getElementById('stopwatch').textContent = `${hours}:${minutes}:${seconds}`;
-            } else {
-                document.getElementById('stopwatch').textContent = '00:00:00';
-            }
+    const stopwatchElement = document.getElementById('stopwatch');
+    if (stopwatchElement) {
+        if (diff > 0) {
+            const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+            const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+            const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+            stopwatchElement.textContent = `${hours}:${minutes}:${seconds}`;
+        } else {
+            stopwatchElement.textContent = '00:00:00';
         }
+    }
+}
+
 
         setInterval(updateStopwatch, 1000);
 
