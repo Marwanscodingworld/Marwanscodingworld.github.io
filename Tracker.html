@@ -241,10 +241,8 @@
                         'Authorization': `Bearer ${API_KEY}`
                     }
                 });
-                const tasks = response.data.items;
+                                const tasks = response.data.items;
                 console.log('Fetched tasks:', tasks); // Debugging: Log fetched tasks
-                const localTasks = loadLocalTasks
-                });
                 const localTasks = loadLocalTasks();
 
                 tasks.forEach(task => {
@@ -415,6 +413,7 @@
     </script>
 </body>
 </html>
+
 
 
 
