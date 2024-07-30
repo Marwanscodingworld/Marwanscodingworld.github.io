@@ -685,6 +685,14 @@
 
 
         document.addEventListener('DOMContentLoaded', () => {
+    const music1 = document.getElementById('music1');
+    const music2 = document.getElementById('music2');
+    const music3 = document.getElementById('music3');
+
+    // Set volume for each track
+    music1.volume = 0.5; // 50% volume
+    music2.volume = 0.75; // 80% volume
+    music3.volume = 1.0; // 80% volume
             init3D();
             initFightText3D();
             fetchTasks();
