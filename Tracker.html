@@ -74,6 +74,52 @@
     100% {
         filter: hue-rotate(360deg);
     }
+
+      @keyframes glitch {
+        0% {
+            clip: rect(calc(var(--glitch-intensity) * 1px), 9999px, calc(var(--glitch-intensity) * 3px), 0);
+            transform: skew(0.3deg);
+        }
+        10% {
+            clip: rect(calc(var(--glitch-intensity) * 2px), 9999px, calc(var(--glitch-intensity) * 4px), 0);
+            transform: skew(0.3deg);
+        }
+        20% {
+            clip: rect(calc(var(--glitch-intensity) * 3px), 9999px, calc(var(--glitch-intensity) * 5px), 0);
+            transform: skew(0.3deg);
+        }
+        30% {
+            clip: rect(calc(var(--glitch-intensity) * 4px), 9999px, calc(var(--glitch-intensity) * 6px), 0);
+            transform: skew(0.3deg);
+        }
+        40% {
+            clip: rect(calc(var(--glitch-intensity) * 5px), 9999px, calc(var(--glitch-intensity) * 7px), 0);
+            transform: skew(0.3deg);
+        }
+        50% {
+            clip: rect(calc(var(--glitch-intensity) * 6px), 9999px, calc(var(--glitch-intensity) * 8px), 0);
+            transform: skew(0.3deg);
+        }
+        60% {
+            clip: rect(calc(var(--glitch-intensity) * 7px), 9999px, calc(var(--glitch-intensity) * 9px), 0);
+            transform: skew(0.3deg);
+        }
+        70% {
+            clip: rect(calc(var(--glitch-intensity) * 8px), 9999px, calc(var(--glitch-intensity) * 10px), 0);
+            transform: skew(0.3deg);
+        }
+        80% {
+            clip: rect(calc(var(--glitch-intensity) * 9px), 9999px, calc(var(--glitch-intensity) * 11px), 0);
+            transform: skew(0.3deg);
+        }
+        90% {
+            clip: rect(calc(var(--glitch-intensity) * 10px), 9999px, calc(var(--glitch-intensity) * 12px), 0);
+            transform: skew(0.3deg);
+        }
+        100% {
+            clip: rect(calc(var(--glitch-intensity) * 11px), 9999px, calc(var(--glitch-intensity) * 13px), 0);
+            transform: skew(0.3deg);
+        }
 }
 
 
@@ -1097,6 +1143,8 @@ function initFightText3D() {
                 completionBarInner.style.width = `${completionPercentage}%`;
                 completionBarInner.textContent = `${completionPercentage}%`;
             }
+            const glitchIntensity = completionPercentage * 0.1; // Adjust multiplier as needed
+        document.documentElement.style.setProperty('--glitch-intensity', glitchIntensity);
             updateGokuImage(completionPercentage);
             updateMotivationalPhrase(completionPercentage);
             updateMusic(completionPercentage);
