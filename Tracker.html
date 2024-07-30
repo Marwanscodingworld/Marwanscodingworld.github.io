@@ -89,6 +89,28 @@ input[type="text"], input[type="password"] {
   text-align: center;
   margin-top: 10px;
 }
+        #topgImage {
+  position: relative;
+  display: inline-block;
+}
+
+#topgImage::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#topgImage:hover::after {
+  opacity: 1;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
 
         .crt {
             position: absolute;
