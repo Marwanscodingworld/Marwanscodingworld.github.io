@@ -377,7 +377,7 @@
 #fight-text-3d-container {
     position: fixed;
     top: 50%;
-    left: 50%; /* Move the fight text to the far left */
+    left: 25%; /* Move the fight text to the far left */
     transform: translateY(-50%); /* Center it vertically */
     width: 30%;
     height: 30%;
@@ -754,11 +754,27 @@ function initFightText3D() {
             bevelSegments: 5
         });
 
-        const material = new THREE.MeshStandardMaterial({
-            color: 0x00ffff,
-            emissive: 0x00ffff,
-            metalness: 0.5,
-            roughness: 0.5
+        const material = new THREE.ShaderMaterial({
+            uniforms: {
+                color: { value: new THREE.Color(0x00ffff) },
+                opacity: { value: 0.5 }
+            },
+            vertexShader: `
+                varying vec3 vPosition;
+                void main() {
+                    vPosition = position;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform vec3 color;
+                uniform float opacity;
+                varying vec3 vPosition;
+                void main() {
+                    gl_FragColor = vec4(color, opacity);
+                }
+            `,
+            transparent: true
         });
 
         const fightText = new THREE.Mesh(geometry, material);
@@ -767,9 +783,12 @@ function initFightText3D() {
 
         camera.position.z = 5;
 
+        let angle = 0;
+
         function animate() {
             requestAnimationFrame(animate);
-            fightText.rotation.y += 0.01;  // Rotates the text
+            angle += 0.05;
+            fightText.rotation.y = Math.sin(angle) * Math.PI / 4; // Oscillate between -45 and 45 degrees
             renderer.render(scene, camera);
         }
 
