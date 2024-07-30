@@ -315,6 +315,29 @@ button, .accent{
             z-index: 5;
         }
 
+        .gokuimage {
+  position: relative;
+  display: inline-block;
+}
+
+.gokuimage::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.gokuimage:hover::after {
+  opacity: 1;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
         .stopwatch-container,
         .fight-text-container {
             position: relative;
@@ -457,7 +480,7 @@ button, .accent{
         <div class="images">
             <div class="image-container">
                 <h3>Goku Progress</h3>
-                <img id="gokuImage" src="goku_0.png" alt="Goku Progress">
+                <img id="gokuimage" src="goku_0.png" alt="Goku Progress">
             </div>
             <div class="image-container">
                 <img id="gtr_skyline_r32" src="gtr_skyline_r32.gif" alt="GTR Skyline R32 Progress">
