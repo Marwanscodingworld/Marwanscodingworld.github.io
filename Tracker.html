@@ -538,11 +538,11 @@
             position: absolute;
             bottom: 10px;
             left: 10px;
-            width: 64px;
-            height: 64px;
+            width: 256px;
+            height: 256px;
             background: url('character.png') no-repeat center center;
             background-size: cover;
-            animation: moveCharacter 45s linear infinite;
+            animation: moveCharacter 45s linear infinite, skewCharacter 2s ease-in-out infinite;
             z-index: 4;
             will-change: transform;
         }
@@ -551,6 +551,10 @@
     0% { transform: translateX(0); }
     50% { transform: translateX(calc(100vw - 74px - 10px)); }
     100% { transform: translateX(0); }
+}
+        @keyframes skewCharacter {
+    0%, 100% { transform: skew(0deg, 0deg); }
+    50% { transform: skew(10deg, 5deg); }
 }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
