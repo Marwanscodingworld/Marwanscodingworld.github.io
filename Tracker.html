@@ -179,14 +179,24 @@
             margin: 10px 0;
             color: #fff;
         }
-        .battery-container {
+   .battery-container {
     position: relative;
     width: 200px; /* Adjust the width based on your image */
     height: 50px; /* Adjust the height based on your image */
     margin: 0 auto 20px auto; /* Center the battery and add some space below it */
-    background: url('neon-password-input.png') no-repeat;
-    background-size: contain;
-    border: 2px solid #fff
+    border: 2px solid #fff; /* Add border to the container */
+    overflow: hidden; /* Ensure the fill doesn't overflow outside the container */
+    border-radius: 10px; /* Add some border radius if needed */
+}
+
+#healthBarImage {
+    width: 100%;
+    height: 100%;
+    display: block; /* Ensure the image takes full container space */
+    position: absolute; /* Position image absolutely within the container */
+    top: 0;
+    left: 0;
+    z-index: 0; /* Ensure the image is below the fill */
 }
 
 .battery-fill {
@@ -194,11 +204,11 @@
     top: 0;
     left: 0;
     height: 100%;
-    background-color: #00ff00; /* Neon green color */
+    background-color: rgba(0, 255, 0, 0.5); /* Neon green color with transparency */
     width: 0%;
     transition: width 0.5s ease;
+    z-index: 1; /* Ensure the fill is above the image */
 }
-
 
         .images {
             display: flex;
@@ -489,7 +499,7 @@
             <h1>Daily Tracker</h1>
              <div class="battery-container">
              <img id="healthBarImage" src="Health_bar_0.png" alt="Health Bar">
-        <div class="battery-fill" id="batteryFill"></div>
+                  <div class="battery-fill" id="batteryFill"></div>
     </div>
             <p>Track your daily tasks efficiently and visualize your progress.</p>
         </div>
