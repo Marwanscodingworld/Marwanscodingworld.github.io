@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Tracker</title>
@@ -338,12 +338,12 @@
             z-index: 3;
         }
 
-        .fight-text {
-            font-size: 3em;
-            font-weight: bold;
-            color: red;
-            font-family: 'Press Start 2P', sans-serif;
-        }
+       .fight-text {
+    font-size: 3em;
+    font-weight: bold;
+    color: #0ff;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.8), 0 0 10px rgba(0, 255, 255, 0.6), 0 0 15px rgba(0, 255, 255, 0.4);
+}
 
         #three-container {
             position: fixed;
@@ -354,19 +354,25 @@
             pointer-events: none;
             z-index: 5;
         }
-
-        #fight-text-3d-container {
-            position: fixed;
-            top: 50%;
-            left: 5%; /* Move the fight text far to the left */
-            width: 30%;
-            height: 30%;
-            pointer-events: none;
-            z-index: 5;
-            color: red; /* Change text color to red */
-            font-family: 'Orbitron', sans-serif; /* Use an interesting font */
-        }
-
+#fight-text-3d-container {
+    position: fixed;
+    top: 50%;
+    right: 5%; /* Move the fight text to the right */
+    width: 30%;
+    height: 30%;
+    pointer-events: none;
+    z-index: 5;
+    color: #0ff; /* Neon cyan color */
+    font-family: 'Orbitron', sans-serif;
+    opacity: 0.8; /* Make it slightly transparent */
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(0, 255, 255, 0.1),
+        rgba(0, 255, 255, 0.1) 10px,
+        rgba(0, 255, 255, 0.2) 10px,
+        rgba(0, 255, 255, 0.2) 20px
+    );
+}
         @keyframes pulsate {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -413,6 +419,12 @@
             0%, 100% { transform: scale(1) translateY(-50%) rotate(-15deg); }
             50% { transform: scale(1.5) translateY(-50%) rotate(-15deg); }
         }
+
+        @keyframes fightTextRotation {
+    0% { transform: rotateY(45deg); }
+    50% { transform: rotateY(135deg); }
+    100% { transform: rotateY(45deg); }
+}
 
         .pixelated-character {
             position: absolute;
@@ -684,57 +696,61 @@
             });
         }
 
-        function initFightText3D() {
-            const container = document.getElementById('fight-text-3d-container');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            container.appendChild(renderer.domElement);
+      function initFightText3D() {
+    const container = document.getElementById('fight-text-3d-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
 
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-            scene.add(ambientLight);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
 
-            const pointLight = new THREE.PointLight(0xffffff, 1, 100);
-            pointLight.position.set(5, 5, 5);
-            scene.add(pointLight);
+    const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
 
-            const loader = new THREE.FontLoader();
-            loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
-                const geometry = new THREE.TextGeometry('Fight!', {
-                    font: font,
-                    size: 1,
-                    height: 0.2,
-                    curveSegments: 12,
-                    bevelEnabled: true,
-                    bevelThickness: 0.1,
-                    bevelSize: 0.1,
-                    bevelOffset: 0,
-                    bevelSegments: 5
-                });
+    const loader = new THREE.FontLoader();
+    loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
+        const geometry = new THREE.TextGeometry('Fight!', {
+            font: font,
+            size: 1,
+            height: 0.2,
+            curveSegments: 12,
+            bevelEnabled: true,
+            bevelThickness: 0.1,
+            bevelSize: 0.1,
+            bevelOffset: 0,
+            bevelSegments: 5
+        });
 
-                const material = new THREE.MeshStandardMaterial({
-                    color: 0xff0000,
-                    emissive: 0xff0000,
-                    metalness: 0.5,
-                    roughness: 0.5
-                });
+        const material = new THREE.MeshStandardMaterial({
+            color: 0x00ffff,
+            emissive: 0x00ffff,
+            metalness: 0.5,
+            roughness: 0.5
+        });
 
-                const fightText = new THREE.Mesh(geometry, material);
-                fightText.position.set(-2, 0, 0);
-                scene.add(fightText);
+        const fightText = new THREE.Mesh(geometry, material);
+        fightText.position.set(-1.5, 0, 0);
+        scene.add(fightText);
 
-                camera.position.z = 5;
+        camera.position.z = 5;
 
-                function animate() {
-                    requestAnimationFrame(animate);
-                    fightText.rotation.y += 0.01;
-                    renderer.render(scene, camera);
-                }
-
-                animate();
-            });
+        function animate() {
+            requestAnimationFrame(animate);
+            fightText.rotation.y += 0.01;
+            if (fightText.rotation.y > Math.PI / 2 || fightText.rotation.y < -Math.PI / 2) {
+                fightText.rotation.y *= -1;
+            }
+            renderer.render(scene, camera);
         }
+
+        animate();
+    });
+}
+
 
         function updateStopwatch() {
             if (!stopwatchText) return;
