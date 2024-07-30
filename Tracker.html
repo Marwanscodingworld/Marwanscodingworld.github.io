@@ -251,30 +251,28 @@
             font-family: 'Press Start 2P', sans-serif;
         }
 
-        .cursor-interaction {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background: red;
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease;
-            z-index: 5;
-        }
 
-        #three-container,
-        #fight-text-3d-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50%;
-            height: 50%;
-            pointer-events: none;
-            z-index: 4;
-        }
+      #three-container {
+    position: fixed;
+    top: 50%;
+    left: 30%; /* Move the stopwatch slightly to the left */
+    width: 30%;
+    height: 30%;
+    pointer-events: none;
+    z-index: 5;
+}
 
+#fight-text-3d-container {
+    position: fixed;
+    top: 50%;
+    left: 15%; /* Move the fight text far to the left */
+    width: 30%;
+    height: 30%;
+    pointer-events: none;
+    z-index: 5;
+    color: red; /* Change text color to red */
+    font-family: 'Orbitron', sans-serif; /* Use an interesting font */
+}
         @keyframes pulsate {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -516,6 +514,8 @@
 
         let stopwatchText; // Declare globally
 
+let stopwatchText; // Declare globally
+
 function init3D() {
     const container = document.getElementById('three-container');
     const scene = new THREE.Scene();
@@ -524,7 +524,7 @@ function init3D() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
 
-    const ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft white light
+    const ambientLight = new THREE.AmbientLight(0x404040, 2);
     scene.add(ambientLight);
 
     const pointLight = new THREE.PointLight(0xffffff, 1);
@@ -559,6 +559,90 @@ function init3D() {
     });
 }
 
+let stopwatchText; // Declare globally
+
+function init3D() {
+    const container = document.getElementById('three-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0x404040, 2);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0xffffff, 1);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+
+    camera.position.z = 5;
+
+    const loader = new THREE.FontLoader();
+    loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
+        const geometry = new THREE.TextGeometry('00:00:00', {
+            font: font,
+            size: 1,
+            height: 0.2,
+            curveSegments: 12,
+            bevelEnabled: true,
+            bevelThickness: 0.1,
+            bevelSize: 0.1,
+            bevelOffset: 0,
+            bevelSegments: 5
+        });
+        const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+        stopwatchText = new THREE.Mesh(geometry, material);
+        scene.add(stopwatchText);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    });
+}
+
+function initFightText3D() {
+    const container = document.getElementById('fight-text-3d-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+
+    const loader = new THREE.FontLoader();
+    loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
+        const geometry = new THREE.TextGeometry('Fight!', {
+            font: font,
+            size: 1,
+            height: 0.2,
+            curveSegments: 12,
+            bevelEnabled: true,
+            bevelThickness: 0.1,
+            bevelSize: 0.1,
+            bevelOffset: 0,
+            bevelSegments: 5
+        });
+        const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+        const fightText = new THREE.Mesh(geometry, material);
+        scene.add(fightText);
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            fightText.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    });
+}
+
+
+
 function updateStopwatch() {
     if (!stopwatchText) return; // Ensure stopwatchText is defined
 
@@ -575,7 +659,7 @@ function updateStopwatch() {
 
         // Update the text geometry
         const loader = new THREE.FontLoader();
-        loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
+        loader.load('https://threejs.org/examples/fonts/gentilis_bold.typeface.json', function(font) {
             const geometry = new THREE.TextGeometry(timeString, {
                 font: font,
                 size: 1,
