@@ -415,7 +415,7 @@
                     shape: {
                         type: 'circle',
                         stroke: {
-                            width: 20,
+                            width: 0,
                             color: '#000000'
                         },
                         polygon: {
@@ -602,7 +602,7 @@ function init3D() {
     });
 }
 
-function initFightText3D() {
+unction initFightText3D() {
     const container = document.getElementById('fight-text-3d-container');
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -872,13 +872,17 @@ setInterval(updateStopwatch, 1000);
         }
 
         function updateFightTextEffect(completionPercentage) {
-            const fightTextContainer = document.getElementById('fight-text-3d-container');
-            if (fightTextContainer) {
-                // Apply color change based on completion percentage
-                const color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
-                fightTextContainer.style.color = color;
-            }
-        }
+    const fightTextContainer = document.getElementById('fight-text-3d-container');
+    if (fightTextContainer) {
+        // Keep the color in shades of red
+        const hue = 0; // Hue for red
+        const saturation = 100; // Full saturation
+        const lightness = 50 + (completionPercentage * 0.5); // Lightness varies from 50% to 100%
+        const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        fightTextContainer.style.color = color;
+    }
+}
+
 
         function updateCompletionBar(completedTasksCount, totalTasksCount) {
             const total = completedTasksCount + totalTasksCount;
