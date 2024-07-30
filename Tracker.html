@@ -18,6 +18,43 @@
             perspective: 1px;
             background: url('background.gif') no-repeat center center fixed;
             background-size: cover;
+            position: relative;
+        }
+
+        .crt {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            mix-blend-mode: multiply;
+            z-index: 9999;
+        }
+
+        .crt:before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.2) 50%, transparent 50%);
+            background-size: 100% 2px;
+        }
+
+        .crt:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+            background-size: 2px 100%;
         }
 
         .container {
@@ -178,24 +215,28 @@
 
         .stopwatch {
             position: fixed;
-            top: 5%;
-            left: 5%;
-            font-size: 3em;
-            font-weight: bold;
-            color: red;
-            animation: pulsate 1s infinite ease-in-out;
-            font-family: 'Orbitron', sans-serif;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            z-index: 5;
+        }
+
+        .stopwatch-container,
+        .fight-text-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
         }
 
         .fight-text {
-            position: fixed;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%) rotate(-15deg);
             font-size: 3em;
             font-weight: bold;
             color: red;
-            animation: enlargeReduce 2s infinite ease-in-out;
             font-family: 'Press Start 2P', sans-serif;
         }
 
@@ -211,7 +252,8 @@
             z-index: 3;
         }
 
-        #three-container {
+        #three-container,
+        #fight-text-3d-container {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -228,11 +270,6 @@
             100% { transform: scale(1); }
         }
 
-        @keyframes breakApart {
-            0% { letter-spacing: normal; }
-            100% { letter-spacing: 1em; }
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -240,7 +277,7 @@
 
         @keyframes slideIn {
             from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(0); opacity: 1); }
         }
 
         @keyframes zoomIn {
@@ -271,6 +308,24 @@
         @keyframes enlargeReduce {
             0%, 100% { transform: scale(1) translateY(-50%) rotate(-15deg); }
             50% { transform: scale(1.5) translateY(-50%) rotate(-15deg); }
+        }
+
+        .pixelated-character {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 64px;
+            height: 64px;
+            background: url('character.png') no-repeat center center;
+            background-size: cover;
+            animation: moveCharacter 5s linear infinite;
+            z-index: 4;
+        }
+
+        @keyframes moveCharacter {
+            0% { left: 10px; }
+            50% { left: calc(100% - 74px); }
+            100% { left: 10px; }
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -309,10 +364,11 @@
             &copy; 2024 Daily Tracker. All rights reserved.
         </div>
     </div>
-    <div id="three-container"></div>
+    <div id="three-container" class="stopwatch-container"></div>
+    <div id="fight-text-3d-container" class="fight-text-container"></div>
     <div class="cursor-interaction" id="cursorInteraction"></div>
-    <div class="stopwatch" id="stopwatch">00:00:00</div>
-    <div class="fight-text" id="fightText">Fight!</div>
+    <div class="crt"></div>
+    <div class="pixelated-character"></div>
     <audio id="backgroundMusic" loop></audio>
     <audio id="celebrationSound"></audio>
     <audio id="taskCompleteSound"></audio>
@@ -320,6 +376,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             init3D();
+            initFightText3D();
             fetchTasks();
             setInterval(fetchTasks, 20000); // Refresh tasks every 20 seconds
 
@@ -340,45 +397,21 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             container.appendChild(renderer.domElement);
 
-            // Create a grid-like texture dynamically
-            function createGridTexture() {
-                const size = 256; // Texture size
-                const canvas = document.createElement('canvas');
-                canvas.width = size;
-                canvas.height = size;
-                const context = canvas.getContext('2d');
-                context.fillStyle = 'green';
-                context.fillRect(0, 0, size, size);
+            // Create a retro 3D stopwatch
+            function createRetroStopwatch() {
+                const geometry = new THREE.CylinderGeometry(1, 1, 0.5, 32);
+                const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+                const cylinder = new THREE.Mesh(geometry, material);
 
-                // Draw grid lines
-                context.strokeStyle = 'white';
-                context.lineWidth = 2;
-                for (let i = 0; i < size; i += 16) {
-                    context.beginPath();
-                    context.moveTo(i, 0);
-                    context.lineTo(i, size);
-                    context.stroke();
-                    context.beginPath();
-                    context.moveTo(0, i);
-                    context.lineTo(size, i);
-                    context.stroke();
-                }
+                const gridHelper = new THREE.GridHelper(10, 10);
+                gridHelper.rotation.x = Math.PI / 2;
+                scene.add(gridHelper);
 
-                return new THREE.CanvasTexture(canvas);
+                return cylinder;
             }
 
-            const texture = createGridTexture();
-            const materials = [
-                new THREE.MeshStandardMaterial({ map: texture }),
-                new THREE.MeshStandardMaterial({ map: texture }),
-                new THREE.MeshStandardMaterial({ map: texture }),
-                new THREE.MeshStandardMaterial({ map: texture }),
-                new THREE.MeshStandardMaterial({ map: texture }),
-                new THREE.MeshStandardMaterial({ map: texture })
-            ];
-            const geometry = new THREE.BoxGeometry();
-            const cube = new THREE.Mesh(geometry, materials);
-            scene.add(cube);
+            const stopwatch = createRetroStopwatch();
+            scene.add(stopwatch);
 
             // Add lighting
             const ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft white light
@@ -392,12 +425,49 @@
 
             function animate() {
                 requestAnimationFrame(animate);
-                cube.rotation.x += 0.01;
-                cube.rotation.y += 0.01;
+                stopwatch.rotation.x += 0.01;
+                stopwatch.rotation.y += 0.01;
                 renderer.render(scene, camera);
             }
 
             animate();
+        }
+
+        function initFightText3D() {
+            const container = document.getElementById('fight-text-3d-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true }); // Make background transparent
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            const loader = new THREE.FontLoader();
+
+            loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
+                const geometry = new THREE.TextGeometry('Fight!', {
+                    font: font,
+                    size: 1,
+                    height: 0.2,
+                    curveSegments: 12,
+                    bevelEnabled: true,
+                    bevelThickness: 0.1,
+                    bevelSize: 0.1,
+                    bevelOffset: 0,
+                    bevelSegments: 5
+                });
+                const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+                const fightText = new THREE.Mesh(geometry, material);
+                scene.add(fightText);
+                camera.position.z = 5;
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    fightText.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                }
+
+                animate();
+            });
         }
 
         function updateStopwatch() {
@@ -583,13 +653,18 @@
         function updateStopwatchEffect(completionPercentage) {
             const stopwatch = document.getElementById('stopwatch');
             if (stopwatch) {
-                if (completionPercentage === 100) {
-                    stopwatch.style.animation = 'breakApart 1s infinite';
-                    stopwatch.style.letterSpacing = '1em';
-                } else {
-                    stopwatch.style.animation = '';
-                    stopwatch.style.letterSpacing = 'normal';
-                }
+                // Apply scaling effect based on completion percentage
+                const scale = 1 + (completionPercentage / 100);
+                stopwatch.style.transform = `scale(${scale})`;
+            }
+        }
+
+        function updateFightTextEffect(completionPercentage) {
+            const fightTextContainer = document.getElementById('fight-text-3d-container');
+            if (fightTextContainer) {
+                // Apply color change based on completion percentage
+                const color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+                fightTextContainer.style.color = color;
             }
         }
 
@@ -607,6 +682,7 @@
             updateMusic(completionPercentage);
             updateStopwatchEffect(completionPercentage);
             updateBackgroundEffects(completionPercentage);
+            updateFightTextEffect(completionPercentage);
 
             // Apply warp effect based on completion percentage
             const body = document.body;
