@@ -34,17 +34,16 @@
         }
 
         .gif-effect {
-    position: absolute;
-    margin-right: 200px
-    left: 40px; /* Adjust the position as needed */
-    top: 50%;
-    transform: translateY(-50%);
-    width: 600px; /* Adjust the size as needed */
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
-    animation: glow 1.5s infinite alternate, blur-sharpen 3s infinite alternate, color-cycle 5s infinite;
-}
+        position: absolute;
+        left: 40px; /* Adjust the position as needed */
+        top: 50%;
+        transform: translateY(-50%);
+        width: 600px; /* Adjust the size as needed */
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
+        animation: glow 1.5s infinite alternate, blur-sharpen 3s infinite alternate, color-cycle 5s infinite, glitch 2s infinite;
+    }
 
 @keyframes glow {
     from {
@@ -74,54 +73,34 @@
     100% {
         filter: hue-rotate(360deg);
     }
+}
 
       @keyframes glitch {
         0% {
-            clip: rect(calc(var(--glitch-intensity) * 1px), 9999px, calc(var(--glitch-intensity) * 3px), 0);
-            transform: skew(0.3deg);
-        }
-        10% {
-            clip: rect(calc(var(--glitch-intensity) * 2px), 9999px, calc(var(--glitch-intensity) * 4px), 0);
-            transform: skew(0.3deg);
+            transform: none;
+            opacity: 1;
         }
         20% {
-            clip: rect(calc(var(--glitch-intensity) * 3px), 9999px, calc(var(--glitch-intensity) * 5px), 0);
-            transform: skew(0.3deg);
-        }
-        30% {
-            clip: rect(calc(var(--glitch-intensity) * 4px), 9999px, calc(var(--glitch-intensity) * 6px), 0);
-            transform: skew(0.3deg);
+            transform: skewX(-10deg);
+            opacity: 0.8;
         }
         40% {
-            clip: rect(calc(var(--glitch-intensity) * 5px), 9999px, calc(var(--glitch-intensity) * 7px), 0);
-            transform: skew(0.3deg);
-        }
-        50% {
-            clip: rect(calc(var(--glitch-intensity) * 6px), 9999px, calc(var(--glitch-intensity) * 8px), 0);
-            transform: skew(0.3deg);
+            transform: skewX(10deg);
+            opacity: 0.8;
         }
         60% {
-            clip: rect(calc(var(--glitch-intensity) * 7px), 9999px, calc(var(--glitch-intensity) * 9px), 0);
-            transform: skew(0.3deg);
-        }
-        70% {
-            clip: rect(calc(var(--glitch-intensity) * 8px), 9999px, calc(var(--glitch-intensity) * 10px), 0);
-            transform: skew(0.3deg);
+            transform: none;
+            opacity: 1;
         }
         80% {
-            clip: rect(calc(var(--glitch-intensity) * 9px), 9999px, calc(var(--glitch-intensity) * 11px), 0);
-            transform: skew(0.3deg);
-        }
-        90% {
-            clip: rect(calc(var(--glitch-intensity) * 10px), 9999px, calc(var(--glitch-intensity) * 12px), 0);
-            transform: skew(0.3deg);
+            transform: skewX(-10deg);
+            opacity: 0.8;
         }
         100% {
-            clip: rect(calc(var(--glitch-intensity) * 11px), 9999px, calc(var(--glitch-intensity) * 13px), 0);
-            transform: skew(0.3deg);
+            transform: none;
+            opacity: 1;
         }
-}
-
+    }
 
         .input-fields {
             display: flex;
@@ -1143,8 +1122,11 @@ function initFightText3D() {
                 completionBarInner.style.width = `${completionPercentage}%`;
                 completionBarInner.textContent = `${completionPercentage}%`;
             }
-            const glitchIntensity = completionPercentage * 0.1; // Adjust multiplier as needed
-        document.documentElement.style.setProperty('--glitch-intensity', glitchIntensity);
+             const glitchDuration = 1.5 - (completionPercentage / 100); // Adjust duration as needed
+        const gifElement = document.querySelector('.gif-effect');
+        if (gifElement) {
+            gifElement.style.animationDuration = `${glitchDuration}s, 3s, 5s, ${glitchDuration}s`;
+        }
             updateGokuImage(completionPercentage);
             updateMotivationalPhrase(completionPercentage);
             updateMusic(completionPercentage);
