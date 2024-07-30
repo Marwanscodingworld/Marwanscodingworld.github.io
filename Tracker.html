@@ -310,7 +310,8 @@
         @keyframes vibrate {
             0% { transform: translate(0, 0); }
             25% { transform: translate(2px, 2px); }
-            50% { transform: translate(0, 2px); }
+            50% { transform: translate(0, 2px);
+        }
             75% { transform: translate(2px, 0); }
             100% { transform: translate(0, 0); }
         }
@@ -554,7 +555,29 @@
             }
 
             animate();
+          });
+
+    function updateStopwatch() {
+    const now = new Date();
+    const target = new Date();
+    target.setHours(21, 0, 0, 0); // Set target to 9 PM
+    const diff = target - now;
+
+    const stopwatchElement = document.getElementById('stopwatch');
+    if (stopwatchElement) {
+        if (diff > 0) {
+            const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+            const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+            const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+            stopwatchElement.textContent = `${hours}:${minutes}:${seconds}`;
+        } else {
+            stopwatchElement.textContent = '00:00:00';
         }
+    }
+}
+
+setInterval(updateStopwatch, 1000);
+
 
         function initFightText3D() {
             const container = document.getElementById('fight-text-3d-container');
@@ -591,25 +614,6 @@
 
                 animate();
             });
-        }
-
-        function updateStopwatch() {
-            const now = new Date();
-            const target = new Date();
-            target.setHours(21, 0, 0, 0); // Set target to 9 PM
-            const diff = target - now;
-
-            const stopwatchElement = document.getElementById('stopwatch');
-            if (stopwatchElement) {
-                if (diff > 0) {
-                    const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
-                    const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-                    const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-                    stopwatchElement.textContent = `${hours}:${minutes}:${seconds}`;
-                } else {
-                    stopwatchElement.textContent = '00:00:00';
-                }
-            }
         }
 
         setInterval(updateStopwatch, 1000);
@@ -819,18 +823,16 @@
                 body.classList.remove('warping');
             }
 
-            // Update page aesthetics based on completion percentage
             const header = document.querySelector('.header');
-            if (header) {
-                header.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
-            }
-            const footer = document.querySelector('.footer');
-            if (footer) {
-                footer.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
-            }
-
-            // Apply vibrational effect based on completion percentage
-            const container = document.querySelector('.container');
+    if (header) {
+        header.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+    }
+    const footer = document.querySelector('.footer');
+    if (footer) {
+        footer.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+    }
+            
+  const container = document.querySelector('.container');
             const vibrateIntensity = completionPercentage / 10;
             if (container) {
                 container.style.animation = `vibrate ${0.1 * vibrateIntensity}s infinite`;
@@ -877,7 +879,6 @@
             const musicIndex = Math.min(Math.floor(completionPercentage / 34), 2);
             const backgroundMusic = document.getElementById('backgroundMusic');
 
-            // Only change the music if the track needs to be updated
             if (backgroundMusic && !backgroundMusic.src.includes(musicTracks[musicIndex])) {
                 backgroundMusic.src = musicTracks[musicIndex];
                 console.log(`Changing music to: ${musicTracks[musicIndex]}`); // Debugging: Log the music change
@@ -907,7 +908,6 @@
             }
         }
 
-        // Ensure that the music plays in a loop
         const backgroundMusic = document.getElementById('backgroundMusic');
         if (backgroundMusic) {
             backgroundMusic.addEventListener('ended', function() {
