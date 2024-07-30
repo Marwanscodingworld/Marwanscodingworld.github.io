@@ -513,70 +513,107 @@
             });
         });
 
-        function init3D() {
-            const container = document.getElementById('three-container');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true }); // Make background transparent
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            container.appendChild(renderer.domElement);
+        let stopwatchText; // Declare globally
 
-            // Create a retro 3D stopwatch
-            function createRetroStopwatch() {
-                const geometry = new THREE.CylinderGeometry(1, 1, 0.5, 32);
-                const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-                const cylinder = new THREE.Mesh(geometry, material);
+function init3D() {
+    const container = document.getElementById('three-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
 
-                const gridHelper = new THREE.GridHelper(10, 10);
-                gridHelper.rotation.x = Math.PI / 2;
-                scene.add(gridHelper);
+    const ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft white light
+    scene.add(ambientLight);
 
-                return cylinder;
-            }
+    const pointLight = new THREE.PointLight(0xffffff, 1);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
 
-            const stopwatch = createRetroStopwatch();
-            scene.add(stopwatch);
+    camera.position.z = 5;
 
-            // Add lighting
-            const ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft white light
-            scene.add(ambientLight);
+    const loader = new THREE.FontLoader();
+    loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
+        const geometry = new THREE.TextGeometry('00:00:00', {
+            font: font,
+            size: 1,
+            height: 0.2,
+            curveSegments: 12,
+            bevelEnabled: true,
+            bevelThickness: 0.1,
+            bevelSize: 0.1,
+            bevelOffset: 0,
+            bevelSegments: 5
+        });
+        const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+        stopwatchText = new THREE.Mesh(geometry, material);
+        scene.add(stopwatchText);
 
-            const pointLight = new THREE.PointLight(0xffffff, 1);
-            pointLight.position.set(5, 5, 5);
-            scene.add(pointLight);
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
 
-            camera.position.z = 5;
+        animate();
+    });
+}
 
-            function animate() {
-                requestAnimationFrame(animate);
-                stopwatch.rotation.x += 0.01;
-                stopwatch.rotation.y += 0.01;
-                renderer.render(scene, camera);
-            }
+function updateStopwatch() {
+    if (!stopwatchText) return; // Ensure stopwatchText is defined
 
-            animate();
-          });
-
-    function updateStopwatch() {
     const now = new Date();
     const target = new Date();
     target.setHours(21, 0, 0, 0); // Set target to 9 PM
     const diff = target - now;
 
-    const stopwatchElement = document.getElementById('stopwatch');
-    if (stopwatchElement) {
-        if (diff > 0) {
-            const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
-            const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-            const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-            stopwatchElement.textContent = `${hours}:${minutes}:${seconds}`;
-        } else {
-            stopwatchElement.textContent = '00:00:00';
-        }
+    if (diff > 0) {
+        const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+        const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+        const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+        const timeString = `${hours}:${minutes}:${seconds}`;
+
+        // Update the text geometry
+        const loader = new THREE.FontLoader();
+        loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
+            const geometry = new THREE.TextGeometry(timeString, {
+                font: font,
+                size: 1,
+                height: 0.2,
+                curveSegments: 12,
+                bevelEnabled: true,
+                bevelThickness: 0.1,
+                bevelSize: 0.1,
+                bevelOffset: 0,
+                bevelSegments: 5
+            });
+            stopwatchText.geometry.dispose();
+            stopwatchText.geometry = geometry;
+        });
+    } else {
+        const timeString = '00:00:00';
+
+        // Update the text geometry
+        const loader = new THREE.FontLoader();
+        loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
+            const geometry = new THREE.TextGeometry(timeString, {
+                font: font,
+                size: 1,
+                height: 0.2,
+                curveSegments: 12,
+                bevelEnabled: true,
+                bevelThickness: 0.1,
+                bevelSize: 0.1,
+                bevelOffset: 0,
+                bevelSegments: 5
+            });
+            stopwatchText.geometry.dispose();
+            stopwatchText.geometry = geometry;
+        });
     }
 }
 
 setInterval(updateStopwatch, 1000);
+
 
 
         function initFightText3D() {
