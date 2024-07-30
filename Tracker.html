@@ -890,7 +890,7 @@ function initFightText3D() {
     const container = document.getElementById('fight-text-3d-container');
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    const renderer = new THREE.WebGLRenderer({ alpha: true }); // Ensure transparent background
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
 
@@ -918,7 +918,7 @@ function initFightText3D() {
         const material = new THREE.ShaderMaterial({
             uniforms: {
                 color: { value: new THREE.Color(0x00ffff) },
-                opacity: { value: 0.5 }
+                opacity: { value: 0.8 } // Increase opacity for better visibility
             },
             vertexShader: `
                 varying vec3 vPosition;
