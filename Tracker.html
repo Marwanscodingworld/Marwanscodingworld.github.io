@@ -1069,13 +1069,13 @@ const healthBarImages = [
     'health_bar_12.png', // 81-87%
     'health_bar_13.png', // 88-93%
     'health_bar_14.png', // 94-99%
-    'health_bar_15.png'  // 100%
+     // 100%
 ];
 
       function updateBatteryFill(completionPercentage) {
     const healthBarImage = document.getElementById('healthBarImage');
     if (healthBarImage) {
-        const imageIndex = Math.min(Math.floor(completionPercentage / 6.25), 15);
+        const imageIndex = Math.min(Math.floor(completionPercentage / 6.25), 14);
         healthBarImage.src = healthBarImages[imageIndex];
         console.log(`Health bar image updated to: ${healthBarImages[imageIndex]}`); // Debugging
     }
