@@ -530,6 +530,8 @@
     <script>
         const loginButton = document.getElementById('login-button');
         const loginMessage = document.getElementById('login-message');
+        const loginScreen = document.querySelector('.login-screen');
+        const mainContent = document.querySelector('.main-content');
 
         loginButton.addEventListener('click', (event) => {
             event.preventDefault();
@@ -540,13 +542,15 @@
             if (username === 'player1' && password === 'password123') {
                 loginMessage.textContent = 'Login successful!';
                 loginMessage.style.color = '#33CCFF';
-                // Redirect to the main game screen
-                window.location.href = '#';
+                // Hide login screen and show main content
+                loginScreen.style.display = 'none';
+                mainContent.style.display = 'block';
             } else {
                 loginMessage.textContent = 'Invalid username or password!';
                 loginMessage.style.color = '#FF0000';
             }
         });
+
 
         document.addEventListener('DOMContentLoaded', () => {
             init3D();
