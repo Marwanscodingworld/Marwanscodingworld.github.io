@@ -24,14 +24,19 @@
             position: relative;
         }
 
-        .login-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100vh;
-        }
+       .login-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 3px solid #00ff00;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+}
 
   .gif-effect {
     position: absolute;
@@ -109,52 +114,65 @@
 }
 
         .input-fields {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
 
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            height: 30px;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #33CCFF;
-            border-radius: 5px;
-            background-color: #000;
-            color: #CC33FF;
-        }
+      input[type="text"], input[type="password"] {
+    width: 80%;
+    height: 30px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 2px solid #33CCFF;
+    border-radius: 5px;
+    background-color: #000;
+    color: #CC33FF;
+    font-family: 'Press Start 2P', Arial, sans-serif;
+    font-size: 14px;
+    text-align: center;
+}
 
         .login-screen h2 {
-            color: #33CCFF;
-            text-align: center;
-        }
-
+    color: #33CCFF;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Press Start 2P', Arial, sans-serif;
+    font-size: 24px;
+}
         .login-screen label {
             color: #CC33FF;
         }
 
-        .login-screen button {
-            width: 100%;
-            height: 40px;
-            margin-top: 10px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #FF99CC;
-            color: #000;
-            cursor: pointer;
-        }
+       .login-screen button {
+    width: 80%;
+    height: 40px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 2px solid #FF99CC;
+    border-radius: 5px;
+    background-color: #FF99CC;
+    color: #000;
+    cursor: pointer;
+    font-family: 'Press Start 2P', Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
+}
 
         .login-screen button:hover {
-            background-color: #FFFF66;
-        }
+    background-color: #FFFF66;
+}
 
-        #login-message {
-            color: #CC33FF;
-            text-align: center;
-            margin-top: 10px;
-        }
+
+      #login-message {
+    color: #CC33FF;
+    text-align: center;
+    margin-top: 10px;
+    font-family: 'Press Start 2P', Arial, sans-serif;
+    font-size: 14px;
+}
+
 
         #topgImage {
             position: relative;
