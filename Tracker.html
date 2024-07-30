@@ -625,6 +625,7 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 </head>
 <body>
+     <div class="custom-cursor" id="customCursor"></div>
      <div class="glowing-text">READY PLAYER ONE</div>
     <div class="login-screen">
         <h2>Login to Todoist Retro Arcade</h2>
@@ -688,6 +689,40 @@
     <audio id="taskCompleteSound"></audio>
 
     <script>
+        const customCursor = document.getElementById('customCursor');
+        const frames = 15; // Total number of frames (cursor0.png to cursor14.png)
+        let currentFrame = 0;
+        let isMoving = false;
+
+        // Preload frames
+        const images = [];
+        for (let i = 0; i < frames; i++) {
+            const img = new Image();
+            img.src = `cursor${i}.png`; // Make sure the path matches your filenames
+            images.push(img);
+        }
+
+              document.addEventListener('mousemove', (e) => {
+            isMoving = true;
+            customCursor.style.left = `${e.clientX}px`;
+            customCursor.style.top = `${e.clientY}px`;
+
+            // Update the cursor image
+            currentFrame = (currentFrame + 1) % frames;
+            customCursor.style.backgroundImage = `url(${images[currentFrame].src})`;
+        });
+
+        document.addEventListener('mouseout', () => {
+            isMoving = false;
+        });
+
+        // Optional: Reset to the first frame when the mouse stops moving
+        setInterval(() => {
+            if (!isMoving) {
+                customCursor.style.backgroundImage = `url(${images[0].src})`;
+            }
+        }, 100); // Adjust the interval as needed
+        
         const loginButton = document.getElementById('login-button');
         const loginMessage = document.getElementById('login-message');
         const loginScreen = document.querySelector('.login-screen');
@@ -713,51 +748,9 @@
         
        
 
-  async function fetchAniCursor(url) {
-            const response = await fetch(url);
-            const data = new Uint8Array(await response.arrayBuffer());
-            return data;
-        }
 
-        function createAniCursorStyle(data) {
-            const blob = new Blob([data], { type: 'image/vnd.microsoft.icon' });
-            const url = URL.createObjectURL(blob);
-            return url;
-        }
 
-        function applyCursor(selector, cursorUrl) {
-            const style = document.createElement('style');
-            style.innerText = `
-                ${selector} {
-                    cursor: url(${cursorUrl}), auto;
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        let isMoving = false;
-        const idleCursorUrl = 'cursor.cur'; // Path to your .cur file
-        const movingCursorUrl = 'animatedcursor.ani'; // Path to your .ani file
-
-        document.addEventListener('mousemove', async () => {
-            if (!isMoving) {
-                isMoving = true;
-                const aniData = await fetchAniCursor(movingCursorUrl);
-                const aniCursorUrl = createAniCursorStyle(aniData);
-                applyCursor('body', aniCursorUrl);
-
-                setTimeout(() => {
-                    if (!isMoving) {
-                        applyCursor('body', idleCursorUrl);
-                    }
-                    isMoving = false;
-                }, 300); // Check every 300ms if the cursor is moving
-            }
-        });
-
-        // Initial cursor
-        applyCursor('body', idleCursorUrl);
-
+ 
 
 
         document.addEventListener('DOMContentLoaded', () => {
