@@ -24,6 +24,28 @@
             position: relative;
         }
 
+        .cursor {
+    position: absolute;
+    width: 32px; /* Adjust according to the cursor size */
+    height: 32px; /* Adjust according to the cursor size */
+    background: url('custom-cursor.png') no-repeat center center;
+    background-size: contain;
+    pointer-events: none;
+    animation: rotate-cursor 5s infinite;
+}
+
+@keyframes rotate-cursor {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(90deg);
+    }
+    100% {
+        transform: rotate(-180deg);
+    }
+}
+
        .login-screen {
     display: flex;
     flex-direction: column;
@@ -171,6 +193,7 @@
     font-size: 16px;
     text-align: center;
 }
+        
 
         .login-screen button:hover {
     background-color: #FFFF66;
@@ -717,6 +740,9 @@
 
             document.addEventListener('mousemove', (event) => {
                 const cursorInteraction = document.getElementById('cursorInteraction');
+                const cursor = document.createElement('div');
+        cursor.classList.add('cursor');
+        document.body.appendChild(cursor);
                 if (cursorInteraction) {
                     cursorInteraction.style.left = `${event.clientX}px`;
                     cursorInteraction.style.top = `${event.clientY}px`;
