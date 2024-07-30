@@ -22,14 +22,30 @@
             position: relative;
         }
 
-        .login-screen {
-  width: 300px;
-  margin: 100px auto;
-  padding: 20px;
-  background-color: #000;
-  border: 1px solid #33CCFF;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #33CCFF;
+        
+.login-screen {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.input-fields {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+input[type="text"], input[type="password"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  color: #fff;
 }
 
 .login-screen h2 {
@@ -407,8 +423,14 @@ button, .accent{
 </head>
 <body>
     <div class="login-screen">
-  <img class="login-screen-art" src="loginscreen_transparent.png" alt="Login Screen Art">
-  <!-- Other login screen elements -->
+  <img src="neon-background.png" alt="Neon Background">
+  <div class="input-fields">
+    <img src="neon-username-input.png" alt="Username Input">
+    <input type="text" placeholder="Username">
+    <img src="neon-password-input.png" alt="Password Input">
+    <input type="password" placeholder="Password">
+  </div>
+  <img src="neon-login-button.png" alt="Login Button">
 </div>
   <h2>Login to Todoist Retro Arcade</h2>
   <form>
