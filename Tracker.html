@@ -265,7 +265,7 @@
 #fight-text-3d-container {
     position: fixed;
     top: 50%;
-    left: 15%; /* Move the fight text far to the left */
+    left: 5%; /* Move the fight text far to the left */
     width: 30%;
     height: 30%;
     pointer-events: none;
@@ -624,20 +624,26 @@ function initFightText3D() {
             bevelSegments: 5
         });
         const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-        const fightText = new THREE.Mesh(geometry, material);
+        fightText = new THREE.Mesh(geometry, material);
         scene.add(fightText);
 
         camera.position.z = 5;
 
+        let direction = 1; // Rotation direction
+
         function animate() {
             requestAnimationFrame(animate);
-            fightText.rotation.y += 0.01;
+            fightText.rotation.y += 0.01 * direction;
+            if (fightText.rotation.y > 0.1 || fightText.rotation.y < -0.1) {
+                direction *= -1; // Reverse direction to keep text front-facing
+            }
             renderer.render(scene, camera);
         }
 
         animate();
     });
 }
+
 
 
 
@@ -721,7 +727,7 @@ setInterval(updateStopwatch, 1000);
                     bevelOffset: 0,
                     bevelSegments: 5
                 });
-                const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+                const material = new THREE.MeshStandardMaterial({ color: 0xf5b642 });
                 const fightText = new THREE.Mesh(geometry, material);
                 scene.add(fightText);
                 camera.position.z = 5;
