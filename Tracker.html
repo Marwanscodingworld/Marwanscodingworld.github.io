@@ -1309,8 +1309,12 @@ const healthBarImages = [
             }
                updateVolume(completionPercentage);
         }
- function updateVolume(completionPercentage) {
-        const volume = Math.min(completionPercentage / 100, 1);
+   function updateVolume(completionPercentage) {
+        // Scale the volume from 0.15 (15%) to 1.0 (100%)
+        const minVolume = 0.2;
+        const maxVolume = 1.0;
+        const volume = minVolume + (maxVolume - minVolume) * (completionPercentage / 100);
+
         if (backgroundMusic) {
             backgroundMusic.volume = volume;
             console.log(`Setting volume to: ${volume}`);
