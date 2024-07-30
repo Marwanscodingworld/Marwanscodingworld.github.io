@@ -315,12 +315,12 @@ button, .accent{
             z-index: 5;
         }
 
-        .gokuimage {
+        #gokuimage {
   position: relative;
   display: inline-block;
 }
 
-.gokuimage::after {
+#gokuimage::after {
   content: "";
   position: absolute;
   top: -10px;
@@ -333,7 +333,7 @@ button, .accent{
   transition: opacity 0.3s ease-in-out;
 }
 
-.gokuimage:hover::after {
+#gokuimage:hover::after {
   opacity: 1;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
