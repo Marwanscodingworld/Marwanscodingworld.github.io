@@ -377,7 +377,7 @@
 #fight-text-3d-container {
     position: fixed;
     top: 50%;
-    left: 40%; /* Move the fight text to the far left */
+    left: 50%; /* Move the fight text to the far left */
     transform: translateY(-50%); /* Center it vertically */
     width: 30%;
     height: 30%;
@@ -487,7 +487,7 @@
         <div class="header">
             <h1>Daily Tracker</h1>
              <div class="battery-container">
-             <img id="healthBarImage" src="health_bar_0.png" alt="Health Bar">
+             <img id="healthBarImage" src="Health_bar_0.png" alt="Health Bar">
         <div class="battery-fill" id="batteryFill"></div>
     </div>
             <p>Track your daily tasks efficiently and visualize your progress.</p>
@@ -769,13 +769,14 @@ function initFightText3D() {
 
         function animate() {
             requestAnimationFrame(animate);
-            fightText.style.animation = 'fightTextRotation 5s infinite';
+            fightText.rotation.y += 0.01;  // Rotates the text
             renderer.render(scene, camera);
         }
 
         animate();
     });
 }
+
 
 
         function updateStopwatch() {
@@ -1054,21 +1055,21 @@ function initFightText3D() {
             }
         }
 const healthBarImages = [
-    'health_bar_0.png',  // 0-6%
-    'health_bar_1.png',  // 7-13%
-    'health_bar_2.png',  // 14-20%
-    'health_bar_3.png',  // 21-27%
-    'health_bar_4.png',  // 28-33%
-    'health_bar_5.png',  // 34-40%
-    'health_bar_6.png',  // 41-47%
-    'health_bar_7.png',  // 48-53%
-    'health_bar_8.png',  // 54-60%
-    'health_bar_9.png',  // 61-67%
-    'health_bar_10.png', // 68-73%
-    'health_bar_11.png', // 74-80%
-    'health_bar_12.png', // 81-87%
-    'health_bar_13.png', // 88-93%
-    'health_bar_14.png', // 94-99%
+    'Health_bar_0.png',  // 0-6%
+    'Health_bar_1.png',  // 7-13%
+    'Health_bar_2.png',  // 14-20%
+    'Health_bar_3.png',  // 21-27%
+    'Health_bar_4.png',  // 28-33%
+    'Health_bar_5.png',  // 34-40%
+    'Health_bar_6.png',  // 41-47%
+    'Health_bar_7.png',  // 48-53%
+    'Health_bar_8.png',  // 54-60%
+    'Health_bar_9.png',  // 61-67%
+    'Health_bar_10.png', // 68-73%
+    'Health_bar_11.png', // 74-80%
+    'Health_bar_12.png', // 81-87%
+    'Health_bar_13.png', // 88-93%
+    'Health_bar_14.png', // 94-99%
      // 100%
 ];
 
