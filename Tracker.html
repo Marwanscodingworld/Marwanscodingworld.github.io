@@ -10,7 +10,7 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
         body {
-            cursor: none;
+            cursor: url('cursor.cur'), auto;
             font-family: 'Pixelify Sans', Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -23,29 +23,10 @@
             background-size: cover;
             position: relative;
         }
-
-        .cursor {
-    position: absolute;
-    width: 32px; /* Adjust according to the cursor size */
-    height: 32px; /* Adjust according to the cursor size */
-    background: url('custom-cursor.png') no-repeat center center;
-    background-size: contain;
-    pointer-events: none;
-    animation: rotate-cursor 5s infinite;
-            z-index: 9999;
-}
-
-@keyframes rotate-cursor {
-    0% {
-        transform: rotate(0deg);
-    }
-    50% {
-        transform: rotate(90deg);
-    }
-    100% {
-        transform: rotate(-180deg);
-    }
-}
+ .animated-cursor {
+            cursor: url('animatedcursor.ani'), auto; 
+ }
+     
 
        .login-screen {
     display: flex;
@@ -735,6 +716,37 @@
             }
         });
 
+        document.addEventListener('DOMContentLoaded', () => {
+    const cursor = document.createElement('div');
+    cursor.classList.add('cursor');
+    cursor.style.backgroundImage = "url('animatedcursor.ani')"; // Animated cursor
+    document.body.appendChild(cursor);
+
+    let isMoving = false;
+    let moveTimeout;
+
+    const setCursorMoving = () => {
+        cursor.style.display = 'block'; // Show animated cursor
+        document.body.style.cursor = 'none'; // Hide default cursor
+        isMoving = true;
+        clearTimeout(moveTimeout);
+        moveTimeout = setTimeout(() => {
+            cursor.style.display = 'none'; // Hide animated cursor
+            document.body.style.cursor = "url('cursor.cur'), auto"; // Show default cursor
+            isMoving = false;
+        }, 100); // Change to stationary cursor after 100ms of no movement
+    };
+
+    document.addEventListener('mousemove', (event) => {
+        cursor.style.left = `${event.clientX}px`;
+        cursor.style.top = `${event.clientY}px`;
+        if (!isMoving) {
+            setCursorMoving();
+        }
+    });
+});
+
+
 
         document.addEventListener('DOMContentLoaded', () => {
             init3D();
@@ -742,16 +754,6 @@
             fetchTasks();
             setInterval(fetchTasks, 20000); // Refresh tasks every 20 seconds
 
-            document.addEventListener('mousemove', (event) => {
-                const cursorInteraction = document.getElementById('cursorInteraction');
-                const cursor = document.createElement('div');
-        cursor.classList.add('cursor');
-        document.body.appendChild(cursor);
-                if (cursorInteraction) {
-                    cursorInteraction.style.left = `${event.clientX}px`;
-                    cursorInteraction.style.top = `${event.clientY}px`;
-                }
-            });
 
             particlesJS('particles-js', {
                 particles: {
