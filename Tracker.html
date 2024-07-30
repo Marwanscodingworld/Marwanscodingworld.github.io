@@ -22,95 +22,85 @@
             position: relative;
         }
 
-        
-.login-screen {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-}
+        .login-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+        }
 
-.input-fields {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+        .input-fields {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-input[type="text"], input[type="password"] {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  border: none;
-  background: transparent;
-  color: #fff;
-}
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            height: 30px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #33CCFF;
+            border-radius: 5px;
+            background-color: #000;
+            color: #CC33FF;
+        }
 
-.login-screen h2 {
-  color: #33CCFF;
-  text-align: center;
-}
+        .login-screen h2 {
+            color: #33CCFF;
+            text-align: center;
+        }
 
-.login-screen label {
-  color: #CC33FF;
-}
+        .login-screen label {
+            color: #CC33FF;
+        }
 
-.login-screen input {
-  width: 100%;
-  height: 30px;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #33CCFF;
-  border-radius: 5px;
-  background-color: #000;
-  color: #CC33FF;
-}
+        .login-screen button {
+            width: 100%;
+            height: 40px;
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #FF99CC;
+            color: #000;
+            cursor: pointer;
+        }
 
-.login-screen button {
-  width: 100%;
-  height: 40px;
-  margin-top: 10px;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #FF99CC;
-  color: #000;
-  cursor: pointer;
-}
+        .login-screen button:hover {
+            background-color: #FFFF66;
+        }
 
-.login-screen button:hover {
-  background-color: #FFFF66;
-}
+        #login-message {
+            color: #CC33FF;
+            text-align: center;
+            margin-top: 10px;
+        }
 
-#login-message {
-  color: #CC33FF;
-  text-align: center;
-  margin-top: 10px;
-}
         #topgImage {
-  position: relative;
-  display: inline-block;
-}
+            position: relative;
+            display: inline-block;
+        }
 
-#topgImage::after {
-  content: "";
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  width: 120%;
-  height: 120%;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-}
+        #topgImage::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 120%;
+            height: 120%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
 
-#topgImage:hover::after {
-  opacity: 1;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-}
+        #topgImage:hover::after {
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
 
         .crt {
             position: absolute;
@@ -246,7 +236,8 @@ input[type="text"], input[type="password"] {
             margin-top: 40px;
             flex-wrap: wrap;
         }
-button, .accent{
+
+        button, .accent {
             background-color: #FF99CC; /* hot pink */
             color: #000; /* black text */
             border: none;
@@ -254,9 +245,11 @@ button, .accent{
             font-size: 16px;
             cursor: pointer;
         }
+        
         button:hover, .accent:hover {
             background-color: #FFFF66; /* neon yellow */
         }
+
         .completion-bar {
             margin: 20px 0;
             text-align: center;
@@ -337,13 +330,12 @@ button, .accent{
             z-index: 5;
         }
 
-
         .stopwatch-container,
         .fight-text-container {
             position: relative;
             width: 200px;
             height: 200px;
-            z-index:3
+            z-index: 3;
         }
 
         .fight-text {
@@ -353,28 +345,28 @@ button, .accent{
             font-family: 'Press Start 2P', sans-serif;
         }
 
+        #three-container {
+            position: fixed;
+            top: 50%;
+            left: 30%; /* Move the stopwatch slightly to the left */
+            width: 30%;
+            height: 30%;
+            pointer-events: none;
+            z-index: 5;
+        }
 
-      #three-container {
-    position: fixed;
-    top: 50%;
-    left: 30%; /* Move the stopwatch slightly to the left */
-    width: 30%;
-    height: 30%;
-    pointer-events: none;
-    z-index: 5;
-}
+        #fight-text-3d-container {
+            position: fixed;
+            top: 50%;
+            left: 5%; /* Move the fight text far to the left */
+            width: 30%;
+            height: 30%;
+            pointer-events: none;
+            z-index: 5;
+            color: red; /* Change text color to red */
+            font-family: 'Orbitron', sans-serif; /* Use an interesting font */
+        }
 
-#fight-text-3d-container {
-    position: fixed;
-    top: 50%;
-    left: 5%; /* Move the fight text far to the left */
-    width: 30%;
-    height: 30%;
-    pointer-events: none;
-    z-index: 5;
-    color: red; /* Change text color to red */
-    font-family: 'Orbitron', sans-serif; /* Use an interesting font */
-}
         @keyframes pulsate {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -446,25 +438,16 @@ button, .accent{
 </head>
 <body>
     <div class="login-screen">
-  <img src="neon-background.png" alt="Neon Background">
-  <div class="input-fields">
-    <img src="neon-username-input.png" alt="Username Input">
-    <input type="text" placeholder="Username">
-    <img src="neon-password-input.png" alt="Password Input">
-    <input type="password" placeholder="Password">
-  </div>
-  <img src="neon-login-button.png" alt="Login Button">
-</div>
-  <h2>Login to Todoist Retro Arcade</h2>
-  <form>
-    <label for="username">Username:</label>
-    <input type="text" id="username" placeholder="Enter your username">
-    <label for="password">Password:</label>
-    <input type="password" id="password" placeholder="Enter your password">
-    <button id="login-button">Login</button>
-  </form>
-  <p id="login-message"></p>
-</div>
+        <h2>Login to Todoist Retro Arcade</h2>
+        <form>
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Enter your username">
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter your password">
+            <button id="login-button">Login</button>
+        </form>
+        <p id="login-message"></p>
+    </div>
     <div id="particles-js"></div>
     <div class="container">
         <div class="header">
@@ -480,7 +463,7 @@ button, .accent{
         <div class="images">
             <div class="image-container">
                 <h3>Goku Progress</h3>
-                <img id="gokuimage" src="goku_0.png" alt="Goku Progress">
+                <img id="gokuImage" src="goku_0.png" alt="Goku Progress">
             </div>
             <div class="image-container">
                 <img id="gtr_skyline_r32" src="gtr_skyline_r32.gif" alt="GTR Skyline R32 Progress">
@@ -493,6 +476,7 @@ button, .accent{
             <h2>Task List</h2>
             <div id="task-list-content"></div>
         </div>
+        <div class="motivational-text" id="motivationalText">Just getting started!</div>
         <div class="footer">
             <div class="counter" id="completedTasksCounter">0</div>
             &copy; 2024 Daily Tracker. All rights reserved.
@@ -508,25 +492,26 @@ button, .accent{
     <audio id="taskCompleteSound"></audio>
 
     <script>
+        const loginButton = document.getElementById('login-button');
+        const loginMessage = document.getElementById('login-message');
 
-    const loginButton = document.getElementById('login-button');
-const loginMessage = document.getElementById('login-message');
+        loginButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-loginButton.addEventListener('click', () => {
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-  
-  // Fake login logic
-  if (username === 'player1' && password === 'password123') {
-    loginMessage.textContent = 'Login successful!';
-    loginMessage.style.color = '#33CCFF';
-    // Redirect to the main game screen
-    window.location.href = '#';
-  } else {
-    loginMessage.textContent = 'Invalid username or password!';
-    loginMessage.style.color = '#FF0000';
-  }
-});
+            // Fake login logic
+            if (username === 'player1' && password === 'password123') {
+                loginMessage.textContent = 'Login successful!';
+                loginMessage.style.color = '#33CCFF';
+                // Redirect to the main game screen
+                window.location.href = '#';
+            } else {
+                loginMessage.textContent = 'Invalid username or password!';
+                loginMessage.style.color = '#FF0000';
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             init3D();
             initFightText3D();
@@ -653,186 +638,172 @@ loginButton.addEventListener('click', () => {
             });
         });
 
-        let stopwatchText; // Declare globally
- // Declare globally
+        let stopwatchText;
 
-function init3D() {
-    const container = document.getElementById('three-container');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
+        function init3D() {
+            const container = document.getElementById('three-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
 
-    const ambientLight = new THREE.AmbientLight(0x404040, 2);
-    scene.add(ambientLight);
+            const ambientLight = new THREE.AmbientLight(0x404040, 2);
+            scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight(0xffffff, 1);
-    pointLight.position.set(5, 5, 5);
-    scene.add(pointLight);
+            const pointLight = new THREE.PointLight(0xffffff, 1);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
 
-    camera.position.z = 5;
+            camera.position.z = 5;
 
-    const loader = new THREE.FontLoader();
-    loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
-        const geometry = new THREE.TextGeometry('00:00:00', {
-            font: font,
-            size: 1,
-            height: 0.2,
-            curveSegments: 12,
-            bevelEnabled: true,
-            bevelThickness: 0.1,
-            bevelSize: 0.1,
-            bevelOffset: 0,
-            bevelSegments: 5
-        });
-        const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-        stopwatchText = new THREE.Mesh(geometry, material);
-        stopwatchText.position.set(-2, 0, 0); // Move slightly to the left
-        scene.add(stopwatchText);
+            const loader = new THREE.FontLoader();
+            loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
+                const geometry = new THREE.TextGeometry('00:00:00', {
+                    font: font,
+                    size: 1,
+                    height: 0.2,
+                    curveSegments: 12,
+                    bevelEnabled: true,
+                    bevelThickness: 0.1,
+                    bevelSize: 0.1,
+                    bevelOffset: 0,
+                    bevelSegments: 5
+                });
+                const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+                stopwatchText = new THREE.Mesh(geometry, material);
+                stopwatchText.position.set(-2, 0, 0);
+                scene.add(stopwatchText);
 
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
+                function animate() {
+                    requestAnimationFrame(animate);
+                    renderer.render(scene, camera);
+                }
+
+                animate();
+            });
         }
 
-        animate();
-    });
-}
+        function initFightText3D() {
+            const container = document.getElementById('fight-text-3d-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
 
-function initFightText3D() {
-    const container = document.getElementById('fight-text-3d-container');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
 
-    // Add ambient light
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft white light
-    scene.add(ambientLight);
+            const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
 
-    // Add point light
-    const pointLight = new THREE.PointLight(0xffffff, 1, 100); // White light with some distance attenuation
-    pointLight.position.set(5, 5, 5);
-    scene.add(pointLight);
+            const loader = new THREE.FontLoader();
+            loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
+                const geometry = new THREE.TextGeometry('Fight!', {
+                    font: font,
+                    size: 1,
+                    height: 0.2,
+                    curveSegments: 12,
+                    bevelEnabled: true,
+                    bevelThickness: 0.1,
+                    bevelSize: 0.1,
+                    bevelOffset: 0,
+                    bevelSegments: 5
+                });
 
-    const loader = new THREE.FontLoader();
-    loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
-        const geometry = new THREE.TextGeometry('Fight!', {
-            font: font,
-            size: 1,
-            height: 0.2,
-            curveSegments: 12,
-            bevelEnabled: true,
-            bevelThickness: 0.1,
-            bevelSize: 0.1,
-            bevelOffset: 0,
-            bevelSegments: 5
-        });
+                const material = new THREE.MeshStandardMaterial({
+                    color: 0xff0000,
+                    emissive: 0xff0000,
+                    metalness: 0.5,
+                    roughness: 0.5
+                });
 
-        // Update material properties
-        const material = new THREE.MeshStandardMaterial({
-            color: 0xff0000, // Red color
-            emissive: 0xff0000, // Red glow
-            metalness: 0.5, // Medium reflectivity
-            roughness: 0.5 // Medium surface roughness
-        });
+                const fightText = new THREE.Mesh(geometry, material);
+                fightText.position.set(-2, 0, 0);
+                scene.add(fightText);
 
-        fightText = new THREE.Mesh(geometry, material);
-        fightText.position.set(container.offsetWidth / -2, 0, 0); // Move further to the left
-        scene.add(fightText);
+                camera.position.z = 5;
 
-        camera.position.z = 5;
+                function animate() {
+                    requestAnimationFrame(animate);
+                    fightText.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                }
 
-        let direction = 1; // Rotation direction
+                animate();
+            });
+        }
 
-        function animate() {
-            requestAnimationFrame(animate);
-            fightText.rotation.y += 0.01 * direction;
-            if (fightText.rotation.y > 0.1 || fightText.rotation.y < -0.1) {
-                direction *= -1; // Reverse direction to keep text front-facing
+        function updateStopwatch() {
+            if (!stopwatchText) return;
+
+            const now = new Date();
+            const target = new Date();
+            target.setHours(21, 0, 0, 0);
+            const diff = target - now;
+
+            if (diff > 0) {
+                const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+                const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+                const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+                const timeString = `${hours}:${minutes}:${seconds}`;
+
+                const loader = new THREE.FontLoader();
+                loader.load('https://threejs.org/examples/fonts/gentilis_bold.typeface.json', function(font) {
+                    const geometry = new THREE.TextGeometry(timeString, {
+                        font: font,
+                        size: 1,
+                        height: 0.2,
+                        curveSegments: 12,
+                        bevelEnabled: true,
+                        bevelThickness: 0.1,
+                        bevelSize: 0.1,
+                        bevelOffset: 0,
+                        bevelSegments: 5
+                    });
+                    stopwatchText.geometry.dispose();
+                    stopwatchText.geometry = geometry;
+                });
+            } else {
+                const timeString = '00:00:00';
+
+                const loader = new THREE.FontLoader();
+                loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
+                    const geometry = new THREE.TextGeometry(timeString, {
+                        font: font,
+                        size: 1,
+                        height: 0.2,
+                        curveSegments: 12,
+                        bevelEnabled: true,
+                        bevelThickness: 0.1,
+                        bevelSize: 0.1,
+                        bevelOffset: 0,
+                        bevelSegments: 5
+                    });
+                    stopwatchText.geometry.dispose();
+                    stopwatchText.geometry = geometry;
+                });
             }
-            renderer.render(scene, camera);
         }
 
-        animate();
-    });
-}
-
-
-
-
-function updateStopwatch() {
-    if (!stopwatchText) return; // Ensure stopwatchText is defined
-
-    const now = new Date();
-    const target = new Date();
-    target.setHours(21, 0, 0, 0); // Set target to 9 PM
-    const diff = target - now;
-
-    if (diff > 0) {
-        const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
-        const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-        const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-        const timeString = `${hours}:${minutes}:${seconds}`;
-
-        // Update the text geometry
-        const loader = new THREE.FontLoader();
-        loader.load('https://threejs.org/examples/fonts/gentilis_bold.typeface.json', function(font) {
-            const geometry = new THREE.TextGeometry(timeString, {
-                font: font,
-                size: 1,
-                height: 0.2,
-                curveSegments: 12,
-                bevelEnabled: true,
-                bevelThickness: 0.1,
-                bevelSize: 0.1,
-                bevelOffset: 0,
-                bevelSegments: 5
-            });
-            stopwatchText.geometry.dispose();
-            stopwatchText.geometry = geometry;
-        });
-    } else {
-        const timeString = '00:00:00';
-
-        // Update the text geometry
-        const loader = new THREE.FontLoader();
-        loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
-            const geometry = new THREE.TextGeometry(timeString, {
-                font: font,
-                size: 1,
-                height: 0.2,
-                curveSegments: 12,
-                bevelEnabled: true,
-                bevelThickness: 0.1,
-                bevelSize: 0.1,
-                bevelOffset: 0,
-                bevelSegments: 5
-            });
-            stopwatchText.geometry.dispose();
-            stopwatchText.geometry = geometry;
-        });
-    }
-}
-
-setInterval(updateStopwatch, 1000);
+        setInterval(updateStopwatch, 1000);
 
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
         let previousCompletedTasksCount = 0;
         let totalTasksCount = 0;
         const gokuImages = [
-            'goku_0.png',   // 0-10%
-            'goku_10.png',  // 11-20%
-            'goku_20.png',  // 21-30%
-            'goku_30.png',  // 31-40%
-            'goku_40.png',  // 41-50%
-            'goku_50.png',  // 51-60%
-            'goku_60.png',  // 61-70%
-            'goku_70.png',  // 71-80%
-            'goku_80.png',  // 81-90%
-            'goku_90.png',  // 91-100%
+            'goku_0.png',
+            'goku_10.png',
+            'goku_20.png',
+            'goku_30.png',
+            'goku_40.png',
+            'goku_50.png',
+            'goku_60.png',
+            'goku_70.png',
+            'goku_80.png',
+            'goku_90.png'
         ];
 
         function loadLocalTasks() {
@@ -855,7 +826,7 @@ setInterval(updateStopwatch, 1000);
                     }
                 });
                 const tasks = response.data.items;
-                console.log('Fetched tasks:', tasks); // Debugging: Log fetched tasks
+                console.log('Fetched tasks:', tasks);
                 const localTasks = loadLocalTasks();
 
                 tasks.forEach(task => {
@@ -866,7 +837,7 @@ setInterval(updateStopwatch, 1000);
 
                 updateTaskList(tasks);
                 totalTasksCount = tasks.length;
-                fetchCompletedTasks(); // Fetch completed tasks for today
+                fetchCompletedTasks();
             } catch (error) {
                 console.error('Error fetching data:', error.response ? error.response.data : error.message);
             }
@@ -888,10 +859,10 @@ setInterval(updateStopwatch, 1000);
                 });
 
                 const completedTasks = response.data.items;
-                console.log('Fetched completed tasks:', completedTasks); // Debugging: Log fetched completed tasks
+                console.log('Fetched completed tasks:', completedTasks);
 
                 const completedTasksCount = completedTasks.length;
-                console.log('Completed Tasks Count:', completedTasksCount); // Log the count of completed tasks
+                console.log('Completed Tasks Count:', completedTasksCount);
                 updateCompletedTasksCounter(completedTasksCount);
                 if (completedTasksCount > previousCompletedTasksCount) {
                     triggerCelebration();
@@ -907,7 +878,7 @@ setInterval(updateStopwatch, 1000);
             const counterElement = document.getElementById('completedTasksCounter');
             if (counterElement) {
                 counterElement.textContent = completedCount;
-                counterElement.style.color = `hsl(${completedCount * 36}, 100%, 50%)`; // Change color based on the number
+                counterElement.style.color = `hsl(${completedCount * 36}, 100%, 50%)`;
                 counterElement.classList.add('animate');
 
                 setTimeout(() => {
@@ -968,12 +939,12 @@ setInterval(updateStopwatch, 1000);
                 setTimeout(() => {
                     gokuImage.classList.remove('celebration');
                     topgImage.classList.remove('celebration');
-                }, 10000); // Remove the celebration class after 10 seconds
+                }, 10000);
             }
         }
 
         function updateBackgroundEffects(completionPercentage) {
-            const brightness = 0.8 - (completionPercentage / 100) * 0.8; // Ranges from 0.8 to 0
+            const brightness = 0.8 - (completionPercentage / 100) * 0.8;
 
             document.documentElement.style.setProperty('--brightness', brightness);
         }
@@ -981,29 +952,26 @@ setInterval(updateStopwatch, 1000);
         function updateStopwatchEffect(completionPercentage) {
             const stopwatch = document.getElementById('stopwatch');
             if (stopwatch) {
-                // Apply scaling effect based on completion percentage
                 const scale = 1 + (completionPercentage / 100);
                 stopwatch.style.transform = `scale(${scale})`;
             }
         }
 
         function updateFightTextEffect(completionPercentage) {
-    const fightTextContainer = document.getElementById('fight-text-3d-container');
-    if (fightTextContainer) {
-        // Keep the color in shades of red
-        const hue = 0; // Hue for red
-        const saturation = 100; // Full saturation
-        const lightness = 50 + (completionPercentage * 0.5); // Lightness varies from 50% to 100%
-        const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        fightTextContainer.style.color = color;
-    }
-}
-
+            const fightTextContainer = document.getElementById('fight-text-3d-container');
+            if (fightTextContainer) {
+                const hue = 0;
+                const saturation = 100;
+                const lightness = 50 + (completionPercentage * 0.5);
+                const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+                fightTextContainer.style.color = color;
+            }
+        }
 
         function updateCompletionBar(completedTasksCount, totalTasksCount) {
             const total = completedTasksCount + totalTasksCount;
             const completionPercentage = total > 0 ? Math.round((completedTasksCount / total) * 100) : 0;
-            console.log(`Total tasks: ${totalTasksCount}, Completed tasks: ${completedTasksCount}, Completion percentage: ${completionPercentage}`); // Debugging
+            console.log(`Total tasks: ${totalTasksCount}, Completed tasks: ${completedTasksCount}, Completion percentage: ${completionPercentage}`);
             const completionBarInner = document.getElementById('completion-bar-inner');
             if (completionBarInner) {
                 completionBarInner.style.width = `${completionPercentage}%`;
@@ -1016,10 +984,9 @@ setInterval(updateStopwatch, 1000);
             updateBackgroundEffects(completionPercentage);
             updateFightTextEffect(completionPercentage);
 
-            // Apply warp effect based on completion percentage
             const body = document.body;
-            const warpIntensity = completionPercentage / 100; // Warping intensity from 0 to 1
-            const warpDuration = 5 - (4 * warpIntensity); // Duration ranges from 5s to 1s
+            const warpIntensity = completionPercentage / 100;
+            const warpDuration = 5 - (4 * warpIntensity);
             document.documentElement.style.setProperty('--warp-duration', `${warpDuration}s`);
 
             if (completionPercentage > 0) {
@@ -1029,15 +996,15 @@ setInterval(updateStopwatch, 1000);
             }
 
             const header = document.querySelector('.header');
-    if (header) {
-        header.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
-    }
-    const footer = document.querySelector('.footer');
-    if (footer) {
-        footer.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
-    }
-            
-  const container = document.querySelector('.container');
+            if (header) {
+                header.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+            }
+            const footer = document.querySelector('.footer');
+            if (footer) {
+                footer.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+            }
+
+            const container = document.querySelector('.container');
             const vibrateIntensity = completionPercentage / 10;
             if (container) {
                 container.style.animation = `vibrate ${0.1 * vibrateIntensity}s infinite`;
@@ -1049,7 +1016,7 @@ setInterval(updateStopwatch, 1000);
             const gokuImage = document.getElementById('gokuImage');
             if (gokuImage) {
                 gokuImage.src = gokuImages[imageIndex];
-                console.log(`Goku image updated to: ${gokuImages[imageIndex]}`); // Debugging
+                console.log(`Goku image updated to: ${gokuImages[imageIndex]}`);
             }
         }
 
@@ -1075,9 +1042,9 @@ setInterval(updateStopwatch, 1000);
         }
 
         const musicTracks = [
-            'music1.mp3', // 0-33%
-            'music2.mp3', // 34-66%
-            'music3.mp3'  // 67-100%
+            'music1.mp3',
+            'music2.mp3',
+            'music3.mp3'
         ];
 
         function updateMusic(completionPercentage) {
@@ -1086,12 +1053,12 @@ setInterval(updateStopwatch, 1000);
 
             if (backgroundMusic && !backgroundMusic.src.includes(musicTracks[musicIndex])) {
                 backgroundMusic.src = musicTracks[musicIndex];
-                console.log(`Changing music to: ${musicTracks[musicIndex]}`); // Debugging: Log the music change
-                backgroundMusic.load(); // Ensure the new track is loaded
+                console.log(`Changing music to: ${musicTracks[musicIndex]}`);
+                backgroundMusic.load();
                 backgroundMusic.play().then(() => {
                     console.log('Audio is playing.');
                 }).catch(error => {
-                    console.error('Error playing audio:', error); // Debugging: Log any errors
+                    console.error('Error playing audio:', error);
                     alert('Please interact with the page to enable audio playback.');
                 });
             }
@@ -1127,14 +1094,14 @@ setInterval(updateStopwatch, 1000);
                 backgroundMusic.play().then(() => {
                     console.log('Audio playback started.');
                 }).catch(error => {
-                    console.error('Error starting audio playback:', error); // Debugging: Log any errors
+                    console.error('Error starting audio playback:', error);
                     alert('Please interact with the page to enable audio playback.');
                 });
             }
         }
 
         fetchTasks();
-        setInterval(fetchTasks, 20000); // Refresh tasks every 20 seconds
+        setInterval(fetchTasks, 20000);
     </script>
 </body>
 </html>
