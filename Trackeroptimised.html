@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Tracker</title>
@@ -32,10 +32,9 @@
       background-size: contain; /* Ensure the background image is correctly sized */
     background-repeat: no-repeat;
         } 
- }
      
 
-       .login-screen {
+    .login-screen {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -523,15 +522,14 @@
         }
 
         @keyframes slideIn {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1); }
-        }
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; } /* Removed extra parenthesis */
+}
 
-        @keyframes zoomIn {
-            from { transform: scale(0.5); opacity: 0; }
-            to { transform: scale(1); opacity: 1); }
-        }
-
+@keyframes zoomIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; } /* Removed extra parenthesis */
+}
         @keyframes celebration {
             0% { transform: scale(1); }
             25% { transform: scale(1.1); }
