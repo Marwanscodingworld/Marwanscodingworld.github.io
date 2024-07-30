@@ -10,7 +10,7 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
         body {
-            cursor: url('cursor.cur'), auto;
+            cursor: none;
             font-family: 'Pixelify Sans', Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -23,8 +23,13 @@
             background-size: cover;
             position: relative;
         }
- .animated-cursor {
-            cursor: url('animatedcursor.ani'), auto; 
+  .custom-cursor {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            pointer-events: none;
+            z-index: 9999;
+        } 
  }
      
 
@@ -706,17 +711,52 @@
             }
         });
         
-        let timeout;
+       
 
-document.addEventListener('mousemove', () => {
-    clearTimeout(timeout);
-    document.body.style.cursor = 'url(animatedcursor.ani), auto';
+  async function fetchAniCursor(url) {
+            const response = await fetch(url);
+            const data = new Uint8Array(await response.arrayBuffer());
+            return data;
+        }
 
-    timeout = setTimeout(() => {
-        document.body.style.cursor = 'url(cursor.cur), auto';
-    }, 1000);  // 1 second delay to switch back to the static cursor
-});
+        function createAniCursorStyle(data) {
+            const blob = new Blob([data], { type: 'image/vnd.microsoft.icon' });
+            const url = URL.createObjectURL(blob);
+            return url;
+        }
 
+        function applyCursor(selector, cursorUrl) {
+            const style = document.createElement('style');
+            style.innerText = `
+                ${selector} {
+                    cursor: url(${cursorUrl}), auto;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        let isMoving = false;
+        const idleCursorUrl = 'cursor.cur'; // Path to your .cur file
+        const movingCursorUrl = 'animatedcursor.ani'; // Path to your .ani file
+
+        document.addEventListener('mousemove', async () => {
+            if (!isMoving) {
+                isMoving = true;
+                const aniData = await fetchAniCursor(movingCursorUrl);
+                const aniCursorUrl = createAniCursorStyle(aniData);
+                applyCursor('body', aniCursorUrl);
+
+                setTimeout(() => {
+                    if (!isMoving) {
+                        applyCursor('body', idleCursorUrl);
+                    }
+                    isMoving = false;
+                }, 300); // Check every 300ms if the cursor is moving
+            }
+        });
+
+        // Initial cursor
+        applyCursor('body', idleCursorUrl);
 
 
 
