@@ -63,7 +63,7 @@
             height: 100%;
             top: 0;
             left: 0;
-            z-index: 0;
+            z-index: 1;
             pointer-events: none;
         }
 
@@ -241,6 +241,7 @@
             position: relative;
             width: 200px;
             height: 200px;
+            z-index:3
         }
 
         .fight-text {
@@ -259,7 +260,7 @@
             pointer-events: none;
             transform: translate(-50%, -50%);
             transition: transform 0.1s ease;
-            z-index: 3;
+            z-index: 5;
         }
 
         #three-container,
@@ -271,7 +272,7 @@
             width: 50%;
             height: 50%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 4;
         }
 
         @keyframes pulsate {
