@@ -184,7 +184,7 @@
     height: 50px; /* Adjust the height based on your image */
     margin: 0 auto 20px auto; /* Center the battery and add some space below it */
     background: url('neon-password-input.png') no-repeat;
-    background-size: contain;
+    background-size: 0% 100%;
 }
 
 .battery-fill {
@@ -1051,9 +1051,9 @@
         }
 
         function updateBatteryFill(completionPercentage) {
-    const batteryFill = document.getElementById('batteryFill');
-    if (batteryFill) {
-        batteryFill.style.width = `${completionPercentage}%`;
+    const batteryContainer = document.getElementById('batteryContainer');
+    if (batteryContainer) {
+        batteryContainer.style.backgroundSize = `${completionPercentage}% 100%`;
     }
 }
 
