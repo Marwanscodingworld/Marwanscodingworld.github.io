@@ -73,19 +73,20 @@
       z-index: 2;
 } 
  
-     .gif-effect::before {
-    content: '';
+.gif-wrapper {
     position: absolute;
-    top: -10px; /* Adjusting to make the glow wider */
-    left: -10px; /* Adjusting to make the glow wider */
-    width: calc(100% + 20px); /* Adjusting to make the glow wider */
-    height: calc(100% + 20px); /* Adjusting to make the glow wider */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 620px; /* Adjust the width to be slightly larger than the GIF */
+    height: auto;
+    padding: 10px; /* Add padding to create space for the glow */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3), 0 0 60px rgba(255, 255, 255, 0.2);
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
     animation: glow 1.5s infinite alternate;
-    pointer-events: none; 
-         z-index:-1;
+    z-index: 2;
 }
+     
 @keyframes glow {
     from {
         box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3), 0 0 60px rgba(255, 255, 255, 0.2);
@@ -659,7 +660,9 @@
         </form>
         <p id="login-message"></p>
     </div>
+    <div class="gif-wrapper">
     <img src="beserk.gif" alt="Interesting GIF" class="gif-effect">
+</div>
     <div id="particles-js"></div>
     <div class="container">
         <div class="header">
