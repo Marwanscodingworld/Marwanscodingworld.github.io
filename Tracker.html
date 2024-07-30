@@ -556,12 +556,50 @@
     0%, 100% { transform: skew(0deg, 0deg); }
     50% { transform: skew(10deg, 5deg); }
 }
+
+        .glowing-text {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 48px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000, 0 0 50px #ff0000, 0 0 60px #ff0000, 0 0 70px #ff0000;
+    position: relative;
+    animation: glow 1.5s infinite alternate, fire 2s infinite;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000, 0 0 50px #ff0000, 0 0 60px #ff0000, 0 0 70px #ff0000;
+    }
+    to {
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff4500, 0 0 30px #ff4500, 0 0 40px #ff4500, 0 0 50px #ff4500, 0 0 60px #ff4500, 0 0 70px #ff4500, 0 0 80px #ff4500;
+    }
+}
+
+@keyframes fire {
+    0% {
+        clip-path: inset(0% 0% 0% 0%);
+    }
+    25% {
+        clip-path: inset(10% 0% 0% 0%);
+    }
+    50% {
+        clip-path: inset(0% 10% 0% 0%);
+    }
+    75% {
+        clip-path: inset(0% 0% 10% 0%);
+    }
+    100% {
+        clip-path: inset(0% 0% 0% 10%);
+    }
+}
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 </head>
 <body>
+     <div class="glowing-text">READY PLAYER ONE</div>
     <div class="login-screen">
         <h2>Login to Todoist Retro Arcade</h2>
         <form>
