@@ -26,12 +26,56 @@
 
         .login-screen {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: center;
             align-items: center;
             width: 100%;
             height: 100vh;
         }
+
+        .gif-effect {
+    position: absolute;
+    margin-right: 30px
+    left: 20px; /* Adjust the position as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 150px; /* Adjust the size as needed */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
+    animation: glow 1.5s infinite alternate, blur-sharpen 3s infinite alternate, color-cycle 5s infinite;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.7), 0 0 60px rgba(255, 255, 255, 0.5);
+    }
+}
+
+@keyframes blur-sharpen {
+    from {
+        filter: blur(2px);
+    }
+    to {
+        filter: blur(0);
+    }
+}
+
+@keyframes color-cycle {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        filter: hue-rotate(180deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
 
         .input-fields {
             display: flex;
@@ -484,6 +528,7 @@
 </head>
 <body>
     <div class="login-screen">
+        <img src="beserk.gif" alt="Interesting GIF" class="gif-effect">
         <h2>Login to Todoist Retro Arcade</h2>
         <form>
             <label for="username">Username:</label>
