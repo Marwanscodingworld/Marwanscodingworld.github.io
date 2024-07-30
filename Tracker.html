@@ -376,7 +376,8 @@
 #fight-text-3d-container {
     position: fixed;
     top: 50%;
-    right: 5%; /* Move the fight text to the right */
+    left: 5%; /* Move the fight text to the far left */
+    transform: translateY(-50%); /* Center it vertically */
     width: 30%;
     height: 30%;
     pointer-events: none;
@@ -392,6 +393,7 @@
         rgba(0, 255, 255, 0.2) 20px
     );
 }
+
         @keyframes pulsate {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -717,8 +719,7 @@
                 animate();
             });
         }
-
-      function initFightText3D() {
+function initFightText3D() {
     const container = document.getElementById('fight-text-3d-container');
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -762,10 +763,7 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            fightText.rotation.y += 0.01;
-            if (fightText.rotation.y > Math.PI / 2 || fightText.rotation.y < -Math.PI / 2) {
-                fightText.rotation.y *= -1;
-            }
+            fightText.style.animation = 'fightTextRotation 5s infinite';
             renderer.render(scene, camera);
         }
 
