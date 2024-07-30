@@ -623,10 +623,10 @@
             }
 
             // Update star speeds based on completion percentage
-            const longestDuration = 15 - (completionPercentage * 0.1); // 15s at 0%, 5s at 100%
+            const longestDuration = 150 - (completionPercentage * 1); // Slowed down significantly
             const starsDuration = `${longestDuration}s`;
-            const stars2Duration = `${longestDuration / 2}s`;
-            const stars3Duration = `${longestDuration / 3}s`;
+            const stars2Duration = `${longestDuration * 2}s`;
+            const stars3Duration = `${longestDuration * 3}s`;
 
             document.documentElement.style.setProperty('--stars-duration', starsDuration);
             document.documentElement.style.setProperty('--stars2-duration', stars2Duration);
