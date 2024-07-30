@@ -48,19 +48,21 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
     animation: blur-sharpen 3s infinite alternate, color-cycle 5s infinite, glitch 2s infinite;
+      z-index: 2;
 } 
  
      .gif-effect::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: -10px; /* Adjusting to make the glow wider */
+    left: -10px; /* Adjusting to make the glow wider */
+    width: calc(100% + 20px); /* Adjusting to make the glow wider */
+    height: calc(100% + 20px); /* Adjusting to make the glow wider */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
     animation: glow 1.5s infinite alternate;
     pointer-events: none; 
+         z-index:-1;
 }
 @keyframes glow {
     from {
