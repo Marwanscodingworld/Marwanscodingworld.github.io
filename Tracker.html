@@ -200,7 +200,7 @@
         }
 
         .cursor-interaction {
-            position: fixed;
+            position: absolute;
             width: 50px;
             height: 50px;
             background: red;
@@ -272,6 +272,34 @@
             0%, 100% { transform: scale(1) translateY(-50%) rotate(-15deg); }
             50% { transform: scale(1.5) translateY(-50%) rotate(-15deg); }
         }
+        
+        @keyframes moveStars {
+            from { background-position: 0 0; }
+            to { background-position: 10000px 10000px; }
+        }
+
+        .stars, .stars2, .stars3 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            opacity: var(--stars-opacity);
+            animation: moveStars var(--stars-duration) linear infinite;
+            pointer-events: none;
+        }
+
+        .stars2 {
+            background: transparent url('stars2.png') repeat top center;
+            animation: moveStars var(--stars2-duration) linear infinite;
+        }
+
+        .stars3 {
+            background: transparent url('stars3.png') repeat top center;
+            animation: moveStars var(--stars3-duration) linear infinite;
+        }
+
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -311,6 +339,9 @@
     </div>
     <div id="three-container"></div>
     <div class="cursor-interaction" id="cursorInteraction"></div>
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
     <audio id="backgroundMusic" loop></audio>
     <audio id="celebrationSound"></audio>
     <audio id="taskCompleteSound"></audio>
@@ -746,3 +777,4 @@
     </script>
 </body>
 </html>
+
