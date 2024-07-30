@@ -177,7 +177,7 @@
         }
 
         .stopwatch {
-            position: absolute;
+            position: fixed;
             top: 5%;
             left: 5%;
             font-size: 3em;
@@ -188,7 +188,7 @@
         }
 
         .fight-text {
-            position: absolute;
+            position: fixed;
             top: 50%;
             right: 10px;
             transform: translateY(-50%) rotate(-15deg);
@@ -245,7 +245,7 @@
 
         @keyframes zoomIn {
             from { transform: scale(0.5); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            to { transform: scale(1); opacity: 1); }
         }
 
         @keyframes celebration {
@@ -272,34 +272,6 @@
             0%, 100% { transform: scale(1) translateY(-50%) rotate(-15deg); }
             50% { transform: scale(1.5) translateY(-50%) rotate(-15deg); }
         }
-        
-        @keyframes moveStars {
-            from { background-position: 0 0; }
-            to { background-position: 10000px 10000px; }
-        }
-
-        .stars, .stars2, .stars3 {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            opacity: var(--stars-opacity);
-            animation: moveStars var(--stars-duration) linear infinite;
-            pointer-events: none;
-        }
-
-        .stars2 {
-            background: transparent url('stars2.png') repeat top center;
-            animation: moveStars var(--stars2-duration) linear infinite;
-        }
-
-        .stars3 {
-            background: transparent url('stars3.png') repeat top center;
-            animation: moveStars var(--stars3-duration) linear infinite;
-        }
-
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -339,9 +311,8 @@
     </div>
     <div id="three-container"></div>
     <div class="cursor-interaction" id="cursorInteraction"></div>
-    <div class="stars"></div>
-    <div class="stars2"></div>
-    <div class="stars3"></div>
+    <div class="stopwatch" id="stopwatch">00:00:00</div>
+    <div class="fight-text" id="fightText">Fight!</div>
     <audio id="backgroundMusic" loop></audio>
     <audio id="celebrationSound"></audio>
     <audio id="taskCompleteSound"></audio>
@@ -605,12 +576,8 @@
 
         function updateBackgroundEffects(completionPercentage) {
             const brightness = 0.8 - (completionPercentage / 100) * 0.8; // Ranges from 0.8 to 0
-            const starsOpacity = 0.2 + (completionPercentage / 100) * 0.8; // Ranges from 0.2 to 1
-            const parallaxSpeed = 1 + (completionPercentage / 100) * 4; // Ranges from 1 to 5
 
             document.documentElement.style.setProperty('--brightness', brightness);
-            document.documentElement.style.setProperty('--stars-opacity', starsOpacity);
-            document.documentElement.style.setProperty('--parallax-speed', parallaxSpeed);
         }
 
         function updateStopwatchEffect(completionPercentage) {
@@ -652,16 +619,6 @@
             } else {
                 body.classList.remove('warping');
             }
-
-            // Update star speeds based on completion percentage
-            const longestDuration = 150 - (completionPercentage * 1); // Slowed down significantly
-            const starsDuration = `${longestDuration}s`;
-            const stars2Duration = `${longestDuration * 2}s`;
-            const stars3Duration = `${longestDuration * 3}s`;
-
-            document.documentElement.style.setProperty('--stars-duration', starsDuration);
-            document.documentElement.style.setProperty('--stars2-duration', stars2Duration);
-            document.documentElement.style.setProperty('--stars3-duration', stars3Duration);
 
             // Update page aesthetics based on completion percentage
             const header = document.querySelector('.header');
@@ -777,4 +734,3 @@
     </script>
 </body>
 </html>
-
