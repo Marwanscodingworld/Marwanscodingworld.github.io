@@ -1305,9 +1305,17 @@ const healthBarImages = [
                     console.error('Error playing audio:', error);
                     alert('Please interact with the page to enable audio playback.');
                 });
+                currentTrackIndex = musicIndex;
             }
+               updateVolume(completionPercentage);
         }
-
+ function updateVolume(completionPercentage) {
+        const volume = Math.min(completionPercentage / 100, 1);
+        if (backgroundMusic) {
+            backgroundMusic.volume = volume;
+            console.log(`Setting volume to: ${volume}`);
+        }
+    }
         function playCelebrationSound() {
             const celebrationSound = document.getElementById('celebrationSound');
             if (celebrationSound) {
