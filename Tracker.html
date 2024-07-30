@@ -706,36 +706,18 @@
                 loginMessage.style.color = '#FF0000';
             }
         });
+        
+        let timeout;
 
-        document.addEventListener('DOMContentLoaded', () => {
-    const cursor = document.createElement('div');
-    cursor.classList.add('cursor');
-    cursor.style.backgroundImage = "url('animatedcursor.ani')"; // Animated cursor
-    document.body.appendChild(cursor);
+document.addEventListener('mousemove', () => {
+    clearTimeout(timeout);
+    document.body.style.cursor = 'url(animatedcursor.ani), auto';
 
-    let isMoving = false;
-    let moveTimeout;
-
-    const setCursorMoving = () => {
-        cursor.style.display = 'block'; // Show animated cursor
-        document.body.style.cursor = 'none'; // Hide default cursor
-        isMoving = true;
-        clearTimeout(moveTimeout);
-        moveTimeout = setTimeout(() => {
-            cursor.style.display = 'none'; // Hide animated cursor
-            document.body.style.cursor = "url('cursor.cur'), auto"; // Show default cursor
-            isMoving = false;
-        }, 100); // Change to stationary cursor after 100ms of no movement
-    };
-
-    document.addEventListener('mousemove', (event) => {
-        cursor.style.left = `${event.clientX}px`;
-        cursor.style.top = `${event.clientY}px`;
-        if (!isMoving) {
-            setCursorMoving();
-        }
-    });
+    timeout = setTimeout(() => {
+        document.body.style.cursor = 'url(cursor.cur), auto';
+    }, 1000);  // 1 second delay to switch back to the static cursor
 });
+
 
 
 
