@@ -790,7 +790,7 @@ function initFightText3D() {
         });
 
         const fightText = new THREE.Mesh(geometry, material);
-        fightText.position.set(-2.5, 0, 0); // Center the text based on its size
+        fightText.position.set(-1.5, 0, 0); // Adjusted to -1.5 for better centering
         scene.add(fightText);
 
         camera.position.z = 5;
@@ -807,6 +807,7 @@ function initFightText3D() {
         animate();
     });
 }
+
 
 
 
