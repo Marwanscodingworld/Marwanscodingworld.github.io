@@ -533,7 +533,7 @@ function init3D() {
     camera.position.z = 5;
 
     const loader = new THREE.FontLoader();
-    loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
+    loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
         const geometry = new THREE.TextGeometry('00:00:00', {
             font: font,
             size: 1,
@@ -683,7 +683,7 @@ function updateStopwatch() {
 
         // Update the text geometry
         const loader = new THREE.FontLoader();
-        loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
+        loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
             const geometry = new THREE.TextGeometry(timeString, {
                 font: font,
                 size: 1,
@@ -702,47 +702,6 @@ function updateStopwatch() {
 }
 
 setInterval(updateStopwatch, 1000);
-
-
-
-        function initFightText3D() {
-            const container = document.getElementById('fight-text-3d-container');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true }); // Make background transparent
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            container.appendChild(renderer.domElement);
-
-            const loader = new THREE.FontLoader();
-
-            loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
-                const geometry = new THREE.TextGeometry('Fight!', {
-                    font: font,
-                    size: 1,
-                    height: 0.2,
-                    curveSegments: 12,
-                    bevelEnabled: true,
-                    bevelThickness: 0.1,
-                    bevelSize: 0.1,
-                    bevelOffset: 0,
-                    bevelSegments: 5
-                });
-                const material = new THREE.MeshStandardMaterial({ color: 0xf5b642 });
-                const fightText = new THREE.Mesh(geometry, material);
-                scene.add(fightText);
-                camera.position.z = 5;
-
-                function animate() {
-                    requestAnimationFrame(animate);
-                    fightText.rotation.y += 0.01;
-                    renderer.render(scene, camera);
-                }
-
-                animate();
-            });
-        }
-
-        setInterval(updateStopwatch, 1000);
 
         const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
         let previousCompletedTasksCount = 0;
