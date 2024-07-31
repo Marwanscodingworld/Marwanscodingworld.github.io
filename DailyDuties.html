@@ -680,7 +680,7 @@
     border-radius: 5px;
 }
 
-button {
+pikachu-update-button {
     display: block;
     margin: 10px auto;
     padding: 10px 20px;
@@ -694,9 +694,15 @@ button {
     border-radius: 5px;
 }
 
-button:hover {
+pikachu-update-button:hover {
     background-color: #333;
     border: 2px solid #FFFF00; /* Yellow border */
+}
+        #weight-info p {
+    font-family: 'Press Start 2P', Arial, sans-serif;
+    font-size: 14px;
+    color: #FFFF00; /* Yellow color */
+    margin: 5px 0;
 }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -768,7 +774,12 @@ button:hover {
         <img id="pikachu-gif" src="pikachu.gif" alt="Progressive Pikachu">
     </div>
     <input type="number" id="pikachu-weightInput" placeholder="Enter your weight">
-    <button onclick="updatePikachuGif()">Update GIF</button>
+    <pikachu-update-button onclick="updatePikachuGif()">Update GIF</button>
+     <div id="weight-info" style="display: none; text-align: center; margin-top: 10px;">
+        <p id="current-weight"></p>
+        <p id="target-weight"></p>
+        <p id="weight-left"></p>
+    </div>
     <div class="cursor-interaction" id="cursorInteraction"></div>
     <div class="crt"></div>
     <div class="pixelated-character"></div>
@@ -1535,8 +1546,8 @@ const healthBarImages = [
         }
 
     const pikachuGifElement = document.getElementById('pikachu-gif');
-        const pikachuStartingWeight = 70;  // Replace with your starting weight
-        const pikachuTargetWeight = 60;    // Replace with your target weight
+        const pikachuStartingWeight = 56;  // Replace with your starting weight
+        const pikachuTargetWeight = 70;    // Replace with your target weight
         const pikachuTotalFrames = 84;     // Set the total number of frames in your GIF
         const pikachuFrameHeight = 512;    // Height of each frame in pixels
 
@@ -1560,6 +1571,21 @@ const healthBarImages = [
         function displayPikachuFrame(frame) {
             pikachuGifElement.style.top = `-${frame * pikachuFrameHeight}px`;
         }
+
+        function displayWeightInfo(currentWeight) {
+    const weightInfoDiv = document.getElementById('weight-info');
+    const currentWeightElement = document.getElementById('current-weight');
+    const targetWeightElement = document.getElementById('target-weight');
+    const weightLeftElement = document.getElementById('weight-left');
+
+    const weightLeft = pikachuTargetWeight - currentWeight;
+
+    currentWeightElement.textContent = `Your current weight is: ${currentWeight}`;
+    targetWeightElement.textContent = `Target weight is: ${pikachuTargetWeight}`;
+    weightLeftElement.textContent = `Weight left to gain: ${weightLeft > 0 ? weightLeft : 0}`;
+
+    weightInfoDiv.style.display = 'block';
+}
 
         fetchTasks();
         setInterval(fetchTasks, 20000);
