@@ -789,14 +789,17 @@
     </div>
     <div id="three-container" class="stopwatch-container"></div>
     <div id="fight-text-3d-container" class="fight-text-container"></div>
-      <img id="pikachu-image" src="pikachu/pikachu0.png" alt="Progressive Pikachu">
-    </div>
-    <input type="number" id="pikachu-weightInput" placeholder="Enter your weight">
-    <pikachu-update-button onclick="updatePikachuImage()">Update GIF</button>
-     <div id="weight-info" style="display: none; text-align: center; margin-top: 10px;">
-        <p id="current-weight"></p>
-        <p id="target-weight"></p>
-        <p id="weight-left"></p>
+    <div class="pikachu-container">
+    <div class="pikachu-grid">
+        <img id="pikachu-image" src="pikachu/pikachu0.png" alt="Progressive Pikachu">
+        <input type="number" id="pikachu-weightInput" placeholder="Enter your weight">
+        <button class="pikachu-update-button" onclick="updatePikachuImage()">Update GIF</button>
+        <!-- Weight Information -->
+        <div id="weight-info">
+            <p id="current-weight"></p>
+            <p id="target-weight"></p>
+            <p id="weight-left"></p>
+        </div>
     </div>
     <div class="cursor-interaction" id="cursorInteraction"></div>
     <div class="crt"></div>
