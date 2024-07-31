@@ -1223,6 +1223,8 @@ function initFightText3D() {
             }
              calculateScore(completedCount);
         }
+        
+        document.addEventListener('DOMContentLoaded', fetchHighScore);
 
         function updateTaskList(tasks) {
             const taskListContent = document.getElementById('task-list-content');
