@@ -659,12 +659,32 @@
     margin-top: 20px;
     text-align: center; /* Centering the image container */
 }
+        .pikachu-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pikachu-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 10px;
+    align-items: center;
+    text-align: center;
+}
+
+#pikachu-image {
+    width: 512px;
+    height: 512px;
+    grid-column: 1 / -1;
+}
 
 #pikachu-weightInput, .pikachu-update-button {
     display: block;
-    margin: 10px auto;
+    margin: 0 auto;
     padding: 10px;
-    width: 220px; /* Increased width for better appearance */
+    width: 220px;
     text-align: center;
     font-family: 'Press Start 2P', Arial, sans-serif;
     font-size: 14px;
@@ -687,6 +707,13 @@
 .pikachu-update-button:hover {
     background-color: #333;
     border: 2px solid #FFFF00; /* Yellow border */
+}
+
+#weight-info {
+    display: none; /* Initially hidden */
+    text-align: center;
+    margin-top: 10px;
+    grid-column: 1 / -1;
 }
 
 #weight-info p {
