@@ -652,6 +652,52 @@
             50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
+        #pikachu-gif-container {
+    position: relative;
+    width: 512px;
+    height: 512px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+#pikachu-gif {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#pikachu-weightInput {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    font-family: 'Press Start 2P', Arial, sans-serif;
+    font-size: 14px;
+    color: #FFFF00; /* Yellow color */
+    background-color: #000;
+    border: 2px solid #FFFF00; /* Yellow border */
+    border-radius: 5px;
+}
+
+button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #FFFF00; /* Yellow color */
+    border: none;
+    font-size: 16px;
+    font-family: 'Press Start 2P', Arial, sans-serif;
+    cursor: pointer;
+    border: 2px solid #FFFF00; /* Yellow border */
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #333;
+    border: 2px solid #FFFF00; /* Yellow border */
+}
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -718,6 +764,11 @@
     </div>
     <div id="three-container" class="stopwatch-container"></div>
     <div id="fight-text-3d-container" class="fight-text-container"></div>
+     <div id="pikachu-gif-container">
+        <img id="pikachu-gif" src="pikachu.gif" alt="Progressive Pikachu">
+    </div>
+    <input type="number" id="pikachu-weightInput" placeholder="Enter your weight">
+    <button onclick="updatePikachuGif()">Update GIF</button>
     <div class="cursor-interaction" id="cursorInteraction"></div>
     <div class="crt"></div>
     <div class="pixelated-character"></div>
@@ -1481,6 +1532,33 @@ const healthBarImages = [
                     alert('Please interact with the page to enable audio playback.');
                 });
             }
+        }
+
+    const pikachuGifElement = document.getElementById('pikachu-gif');
+        const pikachuStartingWeight = 70;  // Replace with your starting weight
+        const pikachuTargetWeight = 60;    // Replace with your target weight
+        const pikachuTotalFrames = 84;     // Set the total number of frames in your GIF
+        const pikachuFrameHeight = 512;    // Height of each frame in pixels
+
+        function updatePikachuGif() {
+            const weightInput = document.getElementById('pikachu-weightInput').value;
+            let frame = calculatePikachuFrame(weightInput);
+            displayPikachuFrame(frame);
+        }
+
+        function calculatePikachuFrame(weight) {
+            if (weight <= pikachuStartingWeight) return 0;
+            if (weight >= pikachuTargetWeight) return pikachuTotalFrames - 1;
+
+            let weightRange = pikachuStartingWeight - pikachuTargetWeight;
+            let weightDifference = pikachuStartingWeight - weight;
+            let frameIndex = Math.floor((weightDifference / weightRange) * pikachuTotalFrames);
+
+            return frameIndex;
+        }
+
+        function displayPikachuFrame(frame) {
+            pikachuGifElement.style.top = `-${frame * pikachuFrameHeight}px`;
         }
 
         fetchTasks();
