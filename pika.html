@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Tracker</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            cursor: none;
+            font-family: 'Pixelify Sans', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background: url('background.gif') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        .custom-cursor {
+            position: fixed;
+            width: 128px;
+            height: 128px;
+            pointer-events: none;
+            z-index: 9999;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .glowing-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 48px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000, 0 0 50px #ff0000, 0 0 60px #ff0000, 0 0 70px #ff0000;
+            position: relative;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .gif-wrapper {
+            position: absolute;
+            left: 240px;
+            top: 65%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 480px;
+            padding: 10px;
+            border-radius: 10px;
+            z-index: 9;
+        }
+
+        .gif-effect {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.4);
+            animation: blur-sharpen 3s infinite alternate, color-cycle 5s infinite, glitch 3s infinite;
+            z-index: 10;
+        }
+
+        @keyframes blur-sharpen {
+            from {
+                filter: blur(2px);
+            }
+            to {
+                filter: blur(0);
+            }
+        }
+
+        @keyframes color-cycle {
+            0% {
+                filter: hue-rotate(0deg);
+            }
+            50% {
+                filter: hue-rotate(180deg);
+            }
+            100% {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        @keyframes glitch {
+            0% {
+                clip-path: inset(0 0 0 0);
+                transform: translate(0, 0);
+                opacity: 1;
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.4);
+            }
+            20%, 40%, 60%, 80% {
+                clip-path: inset(20% 0 10% 0);
+                transform: translate(-5px, -5px);
+                opacity: 0.8;
+                box-shadow: none;
+            }
+        }
+
+        .login-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 3px solid #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .input-fields {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            height: 30px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 2px solid #33CCFF;
+            border-radius: 5px;
+            background-color: #000;
+            color: #CC33FF;
+            font-family: 'Press Start 2P', Arial, sans-serif;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .login-screen h2 {
+            color: #33CCFF;
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Press Start 2P', Arial, sans-serif;
+            font-size: 24px;
+        }
+
+        .login-screen label {
+            color: #CC33FF;
+        }
+
+        .login-screen button {
+            width: 100%;
+            height: 40px;
+            margin-top: 10px;
+            padding: 10px;
+            border: 2px solid #FF99CC;
+            border-radius: 5px;
+            background-color: #FF99CC;
+            color: #000;
+            cursor: pointer;
+            font-family: 'Press Start 2P', Arial, sans-serif;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .login-screen button:hover {
+            background-color: #FFFF66;
+        }
+
+        #login-message {
+            color: #CC33FF;
+            text-align: center;
+            margin-top: 10px;
+            font-family: 'Press Start 2P', Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        #topgImage {
+            position: relative;
+            display: inline-block;
+        }
+
+        #topgImage::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 120%;
+            height: 120%;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #topgImage:hover::after {
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .crt {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            mix-blend-mode: multiply;
+            z-index: 9999;
+        }
+
+        .crt:before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.2) 50%, transparent 50%);
+            background-size: 100% 2px;
+        }
+
+        .crt:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+            background-size: 2px 100%;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            border-radius: 10px;
+            animation: fadeIn 1.5s ease;
+            flex-grow: 1;
+            overflow-y: auto;
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr;
+                        grid-gap: 20px;
+        }
+
+        .header,
+        .task-list,
+        .footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-top: 20px;
+            transition: color 1s ease;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #33CCFF;
+        }
+
+        .header p {
+            margin: 10px 0;
+            color: #fff;
+        }
+
+        .battery-container {
+            position: relative;
+            width: 200px;
+            height: 50px;
+            margin: 0 auto 20px auto;
+            border: 2px solid #fff;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        #healthBarImage {
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .battery-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: rgba(0, 255, 0, 0.5);
+            width: 0%;
+            transition: width 0.5s ease;
+            z-index: 1;
+        }
+
+        .images {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .image-container {
+            width: 30%;
+            padding: 20px;
+            background-color: #444;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.5);
+            animation: zoomIn 1s ease;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .task-list {
+            margin-top: 30px;
+        }
+
+        .task {
+            margin-bottom: 20px;
+            background-color: #555;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.5);
+            animation: slideIn 0.5s ease;
+        }
+
+        .task h3 {
+            margin: 0;
+            color: #33CCFF;
+        }
+
+        .task p {
+            margin: 5px 0;
+            color: #CC33FF;
+        }
+
+        .task label {
+            display: block;
+            margin-top: 5px;
+            color: #fff;
+        }
+
+        .charts {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        button, .accent {
+            background-color: #FF99CC;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover, .accent:hover {
+            background-color: #FFFF66;
+        }
+
+        .completion-bar {
+            margin: 20px 0;
+            text-align: center;
+            height: 20px;
+            width: 100%;
+            background-color: #444;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.5);
+        }
+
+        .completion-bar-inner {
+            height: 100%;
+            background: linear-gradient(to right, #333, #ff0000);
+            color: white;
+            line-height: 20px;
+            text-align: center;
+            border-radius: 10px 0 0 10px;
+            transition: width 1s ease, background 1s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+            transition: color 1s ease;
+        }
+
+        .counter {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: color 0.5s ease;
+        }
+
+        .motivational-text {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            transition: color 1s ease;
+        }
+
+        .start-game {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #ff0000;
+            color: #fff;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .start-game img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .start-game:hover {
+            background-color: #cc0000;
+        }
+
+        .stopwatch {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            z-index: 5;
+        }
+
+        .stopwatch-container,
+        .fight-text-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            z-index: 3;
+            text-shadow: none;
+        }
+
+        .fight-text {
+            font-size: 3em;
+            font-weight: bold;
+            color: #0ff;
+            text-shadow: none;
+        }
+
+        #three-container {
+            position: fixed;
+            top: 50%;
+            left: 30%;
+            width: 30%;
+            height: 30%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        #fight-text-3d-container {
+            position: absolute;
+            top: 4%;
+            left: 35%;
+            transform: translateY(-50%);
+            width: 30%;
+            height: 30%;
+            pointer-events: none;
+            z-index: 10;
+            color: #0ff;
+            font-family: 'Orbitron', sans-serif;
+            opacity: 0.8;
+            text-shadow: none;
+        }
+
+        @keyframes pulsate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes celebration {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1.2); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .celebration {
+            animation: celebration 10s ease;
+        }
+
+        @keyframes vibrate {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(2px, 2px); }
+            50% { transform: translate(0, 2px); }
+            75% { transform: translate(2px, 0); }
+            100% { transform: translate(0, 0); }
+        }
+
+        @keyframes enlargeReduce {
+            0%, 100% { transform: scale(1) translateY(-50%) rotate(-15deg); }
+            50% { transform: scale(1.5) translateY(-50%) rotate(-15deg); }
+        }
+
+        @keyframes fightTextRotation {
+            0% { transform: rotateY(45deg); }
+            50% { transform: rotateY(135deg); }
+            100% { transform: rotateY(45deg); }
+        }
+
+        .pixelated-character {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 256px;
+            height: 256px;
+            background: url('character.png') no-repeat center center;
+            background-size: cover;
+            animation: moveAndSkewCharacter 45s linear infinite;
+            z-index: 4;
+            will-change: transform;
+        }
+        @keyframes moveAndSkewCharacter {
+            0% { transform: translateX(0) skew(0deg, 0deg); }
+            25% { transform: translateX(calc(25vw - 64px)) skew(10deg, 5deg); }
+            50% { transform: translateX(calc(50vw - 64px)) skew(0deg, 0deg); }
+            75% { transform: translateX(calc(75vw - 64px)) skew(-10deg, -5deg); }
+            100% { transform: translateX(calc(100vw - 128px - 10px)) skew(0deg, 0deg); }
+        }
+
+        .glowing-text {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 48px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000, 0 0 50px #ff0000, 0 0 60px #ff0000, 0 0 70px #ff0000;
+            position: relative;
+            animation: glows 1.5s infinite alternate, fire 2s infinite;
+        }
+
+        @keyframes glows {
+            from {
+                text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000, 0 0 60px #ff0000, 0 0 80px #ff0000, 0 0 100px #ff0000, 0 0 120px #ff0000, 0 0 140px #ff0000, 0 0 160px #ff0000;
+            }
+            to {
+                text-shadow: 0 0 60px #ff0000, 0 0 120px #ff4500, 0 0 180px #ff4500, 0 0 240px #ff4500, 0 0 300px #ff4500, 0 0 360px #ff4500, 0 0 420px #ff4500, 0 0 480px #ff4500;
+            }
+        }
+
+        @keyframes fire {
+            0% {
+                clip-path: inset(0% 0% 0% 0%);
+            }
+            25% {
+                clip-path: inset(10% 0% 0% 0%);
+            }
+            50% {
+                clip-path: inset(0% 10% 0% 0%);
+            }
+            75% {
+                clip-path: inset(0% 0% 10% 0%);
+            }
+            100% {
+                clip-path: inset(0% 0% 0% 10%);
+            }
+        }
+
+        .high-score-container {
+            position: fixed;
+            bottom: 50px;
+            left: 45px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border: 2px solid #33CCFF;
+            border-radius: 10px;
+            text-align: center;
+            font-family: 'Press Start 2P', Arial, sans-serif;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            z-index: 1000;
+            animation: retroBounce 2s infinite alternate;
+        }
+
+        .high-score-label {
+            font-size: 16px;
+            color: #CC33FF;
+            margin: 0;
+        }
+
+        .high-score {
+            font-size: 24px;
+            color: #FFFF66;
+            margin: 0;
+        }
+
+        @keyframes retroBounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+      /* Pikachu Image Styles */
+#pikachu-image {
+    width: 512px;
+    height: 512px;
+    margin-top: 20px;
+    text-align: center; /* Centering the image container */
+}
+        .pikachu-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pikachu-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 10px;
+    align-items: center;
+    text-align: center;
+}
+
+#pikachu-image {
+    width: 512px;
+    height: 512px;
+    grid-column: 1 / -1;
+}
+
+#pikachu-weightInput, .pikachu-update-button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    width: 220px;
+    text-align: center;
+    font-family: 'Press Start 2P', Arial, sans-serif;
+    font-size: 14px;
+    background-color: #000;
+    border-radius: 5px;
+}
+
+#pikachu-weightInput {
+    color: #FFFF00; /* Yellow color */
+    border: 2px solid #FFFF00; /* Yellow border */
+}
+
+.pikachu-update-button {
+    background-color: #000;
+    color: #FFFF00; /* Yellow color */
+    border: 2px solid #FFFF00; /* Yellow border */
+    cursor: pointer;
+}
+
+.pikachu-update-button:hover {
+    background-color: #333;
+    border: 2px solid #FFFF00; /* Yellow border */
+}
+
+#weight-info {
+    display: none; /* Initially hidden */
+    text-align: center;
+    margin-top: 10px;
+    grid-column: 1 / -1;
+}
+
+#weight-info p {
+    font-family: 'Press Start 2P', Arial, sans-serif;
+    font-size: 14px;
+    color: #FFFF00; /* Yellow color */
+    margin: 5px 0;
+}
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+    <div class="custom-cursor" id="customCursor"></div>
+    <div class="glowing-text">READY PLAYER ONE</div>
+    <div class="login-screen">
+        <h2>Login to Todoist Retro Arcade</h2>
+        <form>
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Enter your username">
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter your password">
+            <button id="login-button">Login</button>
+        </form>
+        <p id="login-message"></p>
+    </div>
+    <div class="gif-wrapper">
+        <img src="beserk.gif" alt="Interesting GIF" class="gif-effect">
+    </div>
+    <div id="particles-js"></div>
+    <div class="container">
+        <div class="header">
+            <h1>Daily Tracker</h1>
+            <div class="battery-container">
+                <img id="healthBarImage" src="Health_bar_0.png" alt="Health Bar">
+                <div class="battery-fill" id="batteryFill"></div>
+            </div>
+            <p>Track your daily tasks efficiently and visualize your progress.</p>
+        </div>
+        <div class="start-game" onclick="startGame()">
+            <img src="start-game.png" alt="Start Game">
+        </div>
+        <div class="completion-bar">
+            <div id="completion-bar-inner" class="completion-bar-inner" style="width: 0%">0%</div>
+        </div>
+        <div class="images">
+            <div class="image-container">
+                <h3>Goku Progress</h3>
+                <img id="gokuImage" src="goku_0.png" alt="Goku Progress">
+            </div>
+            <div class="image-container">
+                <img id="gtr_skyline_r32" src="gtr_skyline_r32.gif" alt="GTR Skyline R32 Progress">
+            </div>
+            <div class="image-container">
+                <img id="topgImage" src="topg.gif" alt="Top G Progress">
+            </div>
+        </div>
+        <div class="task-list">
+            <h2>Task List</h2>
+            <div id="task-list-content"></div>
+        </div>
+        <div class="motivational-text" id="motivationalText">Just getting started!</div>
+        <div class="footer">
+            <div class="counter" id="completedTasksCounter">0</div>
+            <div class="high-score-container">
+                <p class="high-score-label">High Score</p>
+                <p class="high-score" id="highScore">0</p>
+            </div>
+            &copy; 2024 Daily Tracker. All rights reserved.
+        </div>
+    </div>
+    <div id="three-container" class="stopwatch-container"></div>
+    <div id="fight-text-3d-container" class="fight-text-container"></div>
+    <div class="pikachu-container">
+    <div class="pikachu-grid">
+        <img id="pikachu-image" src="pikachu/pikachu0.png" alt="Progressive Pikachu">
+        <input type="number" id="pikachu-weightInput" placeholder="Enter your weight">
+        <button class="pikachu-update-button" onclick="updatePikachuImage()">Update GIF</button>
+        <!-- Weight Information -->
+        <div id="weight-info">
+            <p id="current-weight"></p>
+            <p id="target-weight"></p>
+            <p id="weight-left"></p>
+        </div>
+    </div>
+    <div class="cursor-interaction" id="cursorInteraction"></div>
+    <div class="crt"></div>
+    <div class="pixelated-character"></div>
+    <audio id="backgroundMusic" loop></audio>
+    <audio id="celebrationSound"></audio>
+    <audio id="taskCompleteSound"></audio>
+</body>
+</html> 
+    <script>
+        const highScoreElement = document.getElementById('highScore');
+const highScoreFile = 'highscore.json';
+let highScore = 0;
+
+// Fetch high score from file
+async function fetchHighScore() {
+    try {
+        const response = await fetch(highScoreFile);
+        const data = await response.json();
+        highScore = data.highScore;
+        highScoreElement.textContent = highScore;
+    } catch (error) {
+        console.error('Error fetching high score:', error);
+    }
+}
+
+// Update high score file
+async function updateHighScore(newHighScore) {
+    try {
+        highScore = newHighScore;
+        highScoreElement.textContent = highScore;
+
+        await fetch(highScoreFile, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ highScore: newHighScore })
+        });
+    } catch (error) {
+        console.error('Error updating high score:', error);
+    }
+}
+
+// Calculate score with multiplier and check high score
+function calculateScore(completedTasksCount) {
+    const multiplier = 100; // Adjust the multiplier value as needed
+    const score = completedTasksCount * multiplier;
+
+    if (score > highScore) {
+        updateHighScore(score);
+    }
+}
+        const customCursor = document.getElementById('customCursor');
+        const frames = 15; // Total number of frames (cursor0.png to cursor14.png)
+        let currentFrame = 0;
+        let isMoving = false;
+
+        // Preload frames
+        const images = [];
+        for (let i = 0; i < frames; i++) {
+            const img = new Image();
+            img.src = `cursor${i}.png`; // Make sure the path matches your filenames
+            images.push(img);
+        }
+
+              document.addEventListener('mousemove', (e) => {
+            isMoving = true;
+            customCursor.style.left = `${e.clientX}px`;
+            customCursor.style.top = `${e.clientY}px`;
+
+            // Update the cursor image
+            currentFrame = (currentFrame + 1) % frames;
+            customCursor.style.backgroundImage = `url(${images[currentFrame].src})`;
+        });
+
+        document.addEventListener('mouseout', () => {
+            isMoving = false;
+        });
+
+        // Optional: Reset to the first frame when the mouse stops moving
+        setInterval(() => {
+            if (!isMoving) {
+                customCursor.style.backgroundImage = `url(${images[0].src})`;
+            }
+        }, 100); // Adjust the interval as needed
+        
+        const loginButton = document.getElementById('login-button');
+        const loginMessage = document.getElementById('login-message');
+        const loginScreen = document.querySelector('.login-screen');
+        const mainContent = document.querySelector('.main-content');
+
+        loginButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Fake login logic
+            if (username === 'player1' && password === 'password123') {
+                loginMessage.textContent = 'Login successful!';
+                loginMessage.style.color = '#33CCFF';
+                // Hide login screen and show main content
+                loginScreen.style.display = 'none';
+                mainContent.style.display = 'block';
+            } else {
+                loginMessage.textContent = 'Invalid username or password!';
+                loginMessage.style.color = '#FF0000';
+            }
+        });
+        
+       
+
+
+
+ 
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            init3D();
+            initFightText3D();
+            fetchTasks();
+            setInterval(fetchTasks, 60000); // Refresh tasks every 20 seconds
+
+
+            particlesJS('particles-js', {
+                particles: {
+                    number: {
+                        value: 100,
+                        density: {
+                            enable: true,
+                            value_area: 800
+                        }
+                    },
+                    color: {
+                        value: '#ffffff'
+                    },
+                    shape: {
+                        type: 'circle',
+                        stroke: {
+                            width: 0,
+                            color: '#000000'
+                        },
+                        polygon: {
+                            nb_sides: 5
+                        },
+                        image: {
+                            src: 'img/github.svg',
+                            width: 100,
+                            height: 100
+                        }
+                    },
+                    opacity: {
+                        value: 0.5,
+                        random: false,
+                        anim: {
+                            enable: false,
+                            speed: 1,
+                            opacity_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    size: {
+                        value: 3,
+                        random: true,
+                        anim: {
+                            enable: false,
+                            speed: 40,
+                            size_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: '#ffffff',
+                        opacity: 0.4,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 6,
+                        direction: 'none',
+                        random: false,
+                        straight: false,
+                        out_mode: 'out',
+                        bounce: false,
+                        attract: {
+                            enable: false,
+                            rotateX: 600,
+                            rotateY: 1200
+                        }
+                    }
+                },
+                interactivity: {
+                    detect_on: 'canvas',
+                    events: {
+                        onhover: {
+                            enable: true,
+                            mode: 'repulse'
+                        },
+                        onclick: {
+                            enable: true,
+                            mode: 'push'
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        grab: {
+                            distance: 400,
+                            line_linked: {
+                                opacity: 1
+                            }
+                        },
+                        bubble: {
+                            distance: 400,
+                            size: 40,
+                            duration: 2,
+                            opacity: 8,
+                            speed: 3
+                        },
+                        repulse: {
+                            distance: 200,
+                            duration: 0.4
+                        },
+                        push: {
+                            particles_nb: 4
+                        },
+                        remove: {
+                            particles_nb: 2
+                        }
+                    }
+                },
+                retina_detect: true
+            });
+        });
+
+        let stopwatchText;
+
+        function init3D() {
+            const container = document.getElementById('three-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0x404040, 2);
+            scene.add(ambientLight);
+
+            const pointLight = new THREE.PointLight(0xffffff, 1);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
+
+            camera.position.z = 5;
+
+            const loader = new THREE.FontLoader();
+            loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
+                const geometry = new THREE.TextGeometry('00:00:00', {
+                    font: font,
+                    size: 1,
+                    height: 0.2,
+                    curveSegments: 12,
+                    bevelEnabled: true,
+                    bevelThickness: 0.1,
+                    bevelSize: 0.1,
+                    bevelOffset: 0,
+                    bevelSegments: 5
+                });
+                const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+                stopwatchText = new THREE.Mesh(geometry, material);
+                stopwatchText.position.set(-2, 0, 0);
+                scene.add(stopwatchText);
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    renderer.render(scene, camera);
+                }
+
+                animate();
+            });
+        }
+function initFightText3D() {
+    const container = document.getElementById('fight-text-3d-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true }); // Ensure transparent background
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+
+    const loader = new THREE.FontLoader();
+    loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
+        const geometry = new THREE.TextGeometry('Fight!', {
+            font: font,
+            size: 1,
+            height: 0.2,
+            curveSegments: 12,
+            bevelEnabled: true,
+            bevelThickness: 0.1,
+            bevelSize: 0.1,
+            bevelOffset: 0,
+            bevelSegments: 5
+        });
+
+        const material = new THREE.ShaderMaterial({
+            uniforms: {
+                color: { value: new THREE.Color(0x00ffff) },
+                opacity: { value: 0.8 } // Increase opacity for better visibility
+            },
+            vertexShader: `
+                varying vec3 vPosition;
+                void main() {
+                    vPosition = position;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform vec3 color;
+                uniform float opacity;
+                varying vec3 vPosition;
+                void main() {
+                    gl_FragColor = vec4(color, opacity);
+                }
+            `,
+            transparent: true
+        });
+
+        const fightText = new THREE.Mesh(geometry, material);
+        fightText.position.set(-1.5, 0, 0); // Adjusted to -1.5 for better centering
+        scene.add(fightText);
+
+        camera.position.z = 5;
+
+        let angle = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            angle += 0.01; // Slow down the oscillation
+            fightText.rotation.y = Math.sin(angle) * Math.PI / 8; // Oscillate between -22.5 and 22.5 degrees
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    });
+}
+
+
+
+
+        function updateStopwatch() {
+            if (!stopwatchText) return;
+
+            const now = new Date();
+            const target = new Date();
+            target.setHours(21, 0, 0, 0);
+            const diff = target - now;
+
+            if (diff > 0) {
+                const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+                const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+                const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+                const timeString = `${hours}:${minutes}:${seconds}`;
+
+                const loader = new THREE.FontLoader();
+                loader.load('https://threejs.org/examples/fonts/gentilis_bold.typeface.json', function(font) {
+                    const geometry = new THREE.TextGeometry(timeString, {
+                        font: font,
+                        size: 1,
+                        height: 0.2,
+                        curveSegments: 12,
+                        bevelEnabled: true,
+                        bevelThickness: 0.1,
+                        bevelSize: 0.1,
+                        bevelOffset: 0,
+                        bevelSegments: 5
+                    });
+                    stopwatchText.geometry.dispose();
+                    stopwatchText.geometry = geometry;
+                });
+            } else {
+                const timeString = '00:00:00';
+
+                const loader = new THREE.FontLoader();
+                loader.load('https://threejs.org/examples/fonts/optimer_regular.typeface.json', function(font) {
+                    const geometry = new THREE.TextGeometry(timeString, {
+                        font: font,
+                        size: 1,
+                        height: 0.2,
+                        curveSegments: 12,
+                        bevelEnabled: true,
+                        bevelThickness: 0.1,
+                        bevelSize: 0.1,
+                        bevelOffset: 0,
+                        bevelSegments: 5
+                    });
+                    stopwatchText.geometry.dispose();
+                    stopwatchText.geometry = geometry;
+                });
+            }
+        }
+
+        setInterval(updateStopwatch, 1000);
+
+        const API_KEY = '7bcb0b4e2990089c89ef2d809885176038c47a1e';
+        let previousCompletedTasksCount = 0;
+        let totalTasksCount = 0;
+        const gokuImages = [
+            'goku_0.png',
+            'goku_10.png',
+            'goku_20.png',
+            'goku_30.png',
+            'goku_40.png',
+            'goku_50.png',
+            'goku_60.png',
+            'goku_70.png',
+            'goku_80.png',
+            'goku_90.png'
+        ];
+
+        function loadLocalTasks() {
+            const tasks = localStorage.getItem('tasks');
+            return tasks ? JSON.parse(tasks) : {};
+        }
+
+        function saveLocalTasks(tasks) {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+       async function fetchTasks(attempt = 1) {
+    try {
+        const response = await axios.post('https://api.todoist.com/sync/v9/sync', {
+            sync_token: '*',
+            resource_types: ['items']
+        }, {
+            headers: {
+                'Authorization': `Bearer ${API_KEY}`
+            }
+        });
+        const tasks = response.data.items;
+        updateTaskList(tasks);
+        totalTasksCount = tasks.length;
+        fetchCompletedTasks();
+    } catch (error) {
+        if (error.response && error.response.status === 429) {
+            const retryAfter = error.response.headers['retry-after'] ? parseInt(error.response.headers['retry-after']) : 2 ** attempt;
+            console.warn(`Rate limited. Retrying in ${retryAfter} seconds...`);
+            setTimeout(() => fetchTasks(attempt + 1), retryAfter * 1000);
+        } else {
+            console.error('Error fetching data:', error.message);
+        }
+    }
+}
+        
+        async function fetchCompletedTasks() {
+            try {
+                const today = new Date();
+                const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate()).toISOString();
+                const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString();
+
+                const response = await axios.post('https://api.todoist.com/sync/v9/completed/get_all', {
+                    since: startOfDay,
+                    until: endOfDay
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`
+                    }
+                });
+
+                const completedTasks = response.data.items;
+                console.log('Fetched completed tasks:', completedTasks);
+
+                const completedTasksCount = completedTasks.length;
+                console.log('Completed Tasks Count:', completedTasksCount);
+                updateCompletedTasksCounter(completedTasksCount);
+                if (completedTasksCount > previousCompletedTasksCount) {
+                    triggerCelebration();
+                }
+                previousCompletedTasksCount = completedTasksCount;
+                updateCompletionBar(completedTasksCount, totalTasksCount);
+            } catch (error) {
+                console.error('Error fetching completed tasks:', error.response ? error.response.data : error.message);
+            }
+        }
+
+        function updateCompletedTasksCounter(completedCount) {
+            const counterElement = document.getElementById('completedTasksCounter');
+            if (counterElement) {
+                counterElement.textContent = completedCount;
+                counterElement.style.color = `hsl(${completedCount * 36}, 100%, 50%)`;
+                counterElement.classList.add('animate');
+
+                setTimeout(() => {
+                    counterElement.classList.remove('animate');
+                }, 500);
+            }
+             calculateScore(completedCount);
+        }
+        
+        document.addEventListener('DOMContentLoaded', fetchHighScore);
+
+        function updateTaskList(tasks) {
+            const taskListContent = document.getElementById('task-list-content');
+            if (taskListContent) {
+                taskListContent.innerHTML = '';
+                tasks.forEach(task => {
+                    if (task.due && task.due.date) {
+                        const taskDate = new Date(task.due.date).toLocaleString();
+                        const taskElement = document.createElement('div');
+                        taskElement.className = 'task';
+                        taskElement.innerHTML = `
+                            <h3>${task.content}</h3>
+                            <p>Due: ${taskDate}</p>
+                            <label><input type="checkbox" ${task.completed ? 'checked' : ''} onchange="updateTaskStatus(${task.id}, ${!task.completed})"> Done</label>
+                        `;
+                        taskListContent.appendChild(taskElement);
+                    }
+                });
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            }
+        }
+
+        async function updateTaskStatus(taskId, isChecked) {
+            try {
+                const endpoint = isChecked ? 'close' : 'reopen';
+                await axios.post(`https://api.todoist.com/rest/v1/tasks/${taskId}/${endpoint}`, {}, {
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`
+                    }
+                });
+
+                const localTasks = loadLocalTasks();
+                localTasks[taskId] = isChecked;
+                saveLocalTasks(localTasks);
+
+                fetchTasks();
+                playTaskCompleteSound();
+            } catch (error) {
+                console.error('Error updating task status:', error.response ? error.response.data : error.message);
+            }
+        }
+
+        function triggerCelebration() {
+            const gokuImage = document.getElementById('gokuImage');
+            const topgImage = document.getElementById('topgImage');
+
+            if (gokuImage && topgImage) {
+                gokuImage.classList.add('celebration');
+                topgImage.classList.add('celebration');
+                playCelebrationSound();
+
+                setTimeout(() => {
+                    gokuImage.classList.remove('celebration');
+                    topgImage.classList.remove('celebration');
+                }, 10000);
+            }
+        }
+
+        function updateBackgroundEffects(completionPercentage) {
+            const brightness = 0.8 - (completionPercentage / 100) * 0.8;
+
+            document.documentElement.style.setProperty('--brightness', brightness);
+        }
+
+        function updateStopwatchEffect(completionPercentage) {
+            const stopwatch = document.getElementById('stopwatch');
+            if (stopwatch) {
+                const scale = 1 + (completionPercentage / 100);
+                stopwatch.style.transform = `scale(${scale})`;
+            }
+        }
+
+        function updateFightTextEffect(completionPercentage) {
+            const fightTextContainer = document.getElementById('fight-text-3d-container');
+            if (fightTextContainer) {
+                const hue = 0;
+                const saturation = 100;
+                const lightness = 50 + (completionPercentage * 0.5);
+                const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+                fightTextContainer.style.color = color;
+            }
+        }
+
+        function updateCompletionBar(completedTasksCount, totalTasksCount) {
+            const total = completedTasksCount + totalTasksCount;
+            const completionPercentage = total > 0 ? Math.round((completedTasksCount / total) * 100) : 0;
+            console.log(`Total tasks: ${totalTasksCount}, Completed tasks: ${completedTasksCount}, Completion percentage: ${completionPercentage}`);
+            const completionBarInner = document.getElementById('completion-bar-inner');
+            if (completionBarInner) {
+                completionBarInner.style.width = `${completionPercentage}%`;
+                completionBarInner.textContent = `${completionPercentage}%`;
+            }
+             const glitchDuration = 1.5 - (completionPercentage / 100); // Adjust duration as needed
+        const gifElement = document.querySelector('.gif-effect');
+        if (gifElement) {
+            gifElement.style.animationDuration = `1.5s, 3s, 5s, ${glitchDuration}s`;
+        }
+            updateGokuImage(completionPercentage);
+            updateMotivationalPhrase(completionPercentage);
+            updateMusic(completionPercentage);
+            updateStopwatchEffect(completionPercentage);
+            updateBackgroundEffects(completionPercentage);
+            updateFightTextEffect(completionPercentage);
+            updateBatteryFill(completionPercentage);
+
+            const body = document.body;
+            const warpIntensity = completionPercentage / 100;
+            const warpDuration = 5 - (4 * warpIntensity);
+            document.documentElement.style.setProperty('--warp-duration', `${warpDuration}s`);
+
+            if (completionPercentage > 0) {
+                body.classList.add('warping');
+            } else {
+                body.classList.remove('warping');
+            }
+
+            const header = document.querySelector('.header');
+            if (header) {
+                header.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+            }
+            const footer = document.querySelector('.footer');
+            if (footer) {
+                footer.style.color = `hsl(${completionPercentage * 1.2}, 100%, 50%)`;
+            }
+
+            const container = document.querySelector('.container');
+            const vibrateIntensity = completionPercentage / 10;
+            if (container) {
+                container.style.animation = `vibrate ${0.1 * vibrateIntensity}s infinite`;
+            }
+        }
+const healthBarImages = [
+    'Health_bar_0.png',  // 0-6%
+    'Health_bar_1.png',  // 7-13%
+    'Health_bar_2.png',  // 14-20%
+    'Health_bar_3.png',  // 21-27%
+    'Health_bar_4.png',  // 28-33%
+    'Health_bar_5.png',  // 34-40%
+    'Health_bar_6.png',  // 41-47%
+    'Health_bar_7.png',  // 48-53%
+    'Health_bar_8.png',  // 54-60%
+    'Health_bar_9.png',  // 61-67%
+    'Health_bar_10.png', // 68-73%
+    'Health_bar_11.png', // 74-80%
+    'Health_bar_12.png', // 81-87%
+    'Health_bar_13.png', // 88-93%
+    'Health_bar_14.png', // 94-99%
+     // 100%
+];
+
+      function updateBatteryFill(completionPercentage) {
+    const healthBarImage = document.getElementById('healthBarImage');
+    if (healthBarImage) {
+        const imageIndex = Math.min(Math.floor(completionPercentage / 6.25), 14);
+        healthBarImage.src = healthBarImages[imageIndex];
+        console.log(`Health bar image updated to: ${healthBarImages[imageIndex]}`); // Debugging
+    }
+}
+
+        function updateGokuImage(completionPercentage) {
+            let imageIndex = Math.min(Math.floor(completionPercentage / 10), 9);
+            const gokuImage = document.getElementById('gokuImage');
+            if (gokuImage) {
+                gokuImage.src = gokuImages[imageIndex];
+                console.log(`Goku image updated to: ${gokuImages[imageIndex]}`);
+            }
+        }
+
+        const motivationalPhrases = [
+            "Just getting started!",
+            "Keep the momentum going!",
+            "You're doing great!",
+            "Keep pushing, almost there!",
+            "Halfway there, stay strong!",
+            "You're on fire!",
+            "Almost at the finish line!",
+            "Just a little more to go!",
+            "So close, don't give up now!",
+            "You did it, you're amazing!"
+        ];
+
+        function updateMotivationalPhrase(completionPercentage) {
+            const phraseIndex = Math.min(Math.floor(completionPercentage / 10), 9);
+            const motivationalText = document.getElementById('motivationalText');
+            if (motivationalText) {
+                motivationalText.textContent = motivationalPhrases[phraseIndex];
+            }
+        }
+
+        const musicTracks = [
+            'music1.mp3',
+            'music2.mp3',
+            'music3.mp3'
+        ];
+
+        function updateMusic(completionPercentage) {
+            const musicIndex = Math.min(Math.floor(completionPercentage / 34), 2);
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            
+
+            if (backgroundMusic && !backgroundMusic.src.includes(musicTracks[musicIndex])) {
+                backgroundMusic.src = musicTracks[musicIndex];
+                console.log(`Changing music to: ${musicTracks[musicIndex]}`);
+                backgroundMusic.load();
+                backgroundMusic.play().then(() => {
+                    console.log('Audio is playing.');
+                }).catch(error => {
+                    console.error('Error playing audio:', error);
+                    alert('Please interact with the page to enable audio playback.');
+                });
+                currentTrackIndex = musicIndex;
+            }
+               updateVolume(completionPercentage);
+        }
+   function updateVolume(completionPercentage) {
+        // Scale the volume from 0.15 (15%) to 1.0 (100%)
+        const minVolume = 0.2;
+        const maxVolume = 1.0;
+        const volume = minVolume + (maxVolume - minVolume) * (completionPercentage / 100);
+
+        if (backgroundMusic) {
+            backgroundMusic.volume = volume;
+            console.log(`Setting volume to: ${volume}`);
+        }
+    }
+        function playCelebrationSound() {
+            const celebrationSound = document.getElementById('celebrationSound');
+            if (celebrationSound) {
+                celebrationSound.src = 'celebration_sound.mp3';
+                celebrationSound.play();
+            }
+        }
+
+        function playTaskCompleteSound() {
+            const taskCompleteSound = document.getElementById('taskCompleteSound');
+            if (taskCompleteSound) {
+                taskCompleteSound.src = 'task_complete.mp3';
+                taskCompleteSound.play();
+            }
+        }
+
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        if (backgroundMusic) {
+            backgroundMusic.addEventListener('ended', function() {
+                this.currentTime = 0;
+                this.play();
+            });
+        }
+
+        function startGame() {
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            if (backgroundMusic) {
+                backgroundMusic.play().then(() => {
+                    console.log('Audio playback started.');
+                }).catch(error => {
+                    console.error('Error starting audio playback:', error);
+                    alert('Please interact with the page to enable audio playback.');
+                });
+            }
+        }
+        const pikachuImageElement = document.getElementById('pikachu-image');
+const pikachuStartingWeight = 56;  // Replace with your starting weight
+const pikachuTargetWeight = 70;    // Replace with your target weight
+const pikachuTotalFrames = 84;     // Total number of frames (pikachu0.png to pikachu83.png)
+const pikachuFrameDuration = 8.4 / pikachuTotalFrames * 1000; // Duration per frame in milliseconds
+
+let currentWeight = pikachuStartingWeight;
+
+function updatePikachuImage() {
+    currentWeight = document.getElementById('pikachu-weightInput').value;
+    const weightInfoDiv = document.getElementById('weight-info');
+    weightInfoDiv.style.display = 'block';
+
+    displayWeightInfo(currentWeight);
+    cyclePikachuFrames();
+}
+
+function cyclePikachuFrames() {
+    const weightRange = pikachuTargetWeight - pikachuStartingWeight;
+    const weightDifference = currentWeight - pikachuStartingWeight;
+    const maxFrame = Math.floor((weightDifference / weightRange) * pikachuTotalFrames);
+
+    let currentFrame = 0;
+    clearInterval(window.pikachuFrameInterval);
+    window.pikachuFrameInterval = setInterval(() => {
+        if (currentFrame > maxFrame) currentFrame = 0;
+        pikachuImageElement.src = `pikachu/pikachu${currentFrame}.png`;
+        currentFrame++;
+    }, pikachuFrameDuration);
+}
+
+function displayWeightInfo(currentWeight) {
+    const currentWeightElement = document.getElementById('current-weight');
+    const targetWeightElement = document.getElementById('target-weight');
+    const weightLeftElement = document.getElementById('weight-left');
+
+    const weightLeft = pikachuTargetWeight - currentWeight;
+
+    currentWeightElement.textContent = `Your current weight is: ${currentWeight}`;
+    targetWeightElement.textContent = `Target weight is: ${pikachuTargetWeight}`;
+    weightLeftElement.textContent = `Weight left to gain: ${weightLeft > 0 ? weightLeft : 0}`;
+}
+
+
+
+        fetchTasks();
+        setInterval(fetchTasks, 20000);
+    </script>
+</body>
+</html>
