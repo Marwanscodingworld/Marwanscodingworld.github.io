@@ -621,6 +621,38 @@
         clip-path: inset(0% 0% 0% 10%);
     }
 }
+        .high-score-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border: 2px solid #33CCFF;
+    border-radius: 10px;
+    text-align: center;
+    font-family: 'Press Start 2P', Arial, sans-serif;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    z-index: 1000;
+    animation: retroBounce 2s infinite alternate;
+}
+
+.high-score-label {
+    font-size: 16px;
+    color: #CC33FF;
+    margin: 0;
+}
+
+.high-score {
+    font-size: 24px;
+    color: #FFFF66;
+    margin: 0;
+}
+
+@keyframes retroBounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -678,6 +710,10 @@
         <div class="motivational-text" id="motivationalText">Just getting started!</div>
         <div class="footer">
             <div class="counter" id="completedTasksCounter">0</div>
+            <div class="high-score-container">
+    <p class="high-score-label">High Score</p>
+    <p class="high-score" id="highScore">0</p>
+</div>
             &copy; 2024 Daily Tracker. All rights reserved.
         </div>
     </div>
@@ -691,6 +727,49 @@
     <audio id="taskCompleteSound"></audio>
 
     <script>
+        const highScoreElement = document.getElementById('highScore');
+const highScoreFile = 'highscore.json';
+let highScore = 0;
+
+// Fetch high score from file
+async function fetchHighScore() {
+    try {
+        const response = await fetch(highScoreFile);
+        const data = await response.json();
+        highScore = data.highScore;
+        highScoreElement.textContent = highScore;
+    } catch (error) {
+        console.error('Error fetching high score:', error);
+    }
+}
+
+// Update high score file
+async function updateHighScore(newHighScore) {
+    try {
+        highScore = newHighScore;
+        highScoreElement.textContent = highScore;
+
+        await fetch(highScoreFile, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ highScore: newHighScore })
+        });
+    } catch (error) {
+        console.error('Error updating high score:', error);
+    }
+}
+
+// Calculate score with multiplier and check high score
+function calculateScore(completedTasksCount) {
+    const multiplier = 100; // Adjust the multiplier value as needed
+    const score = completedTasksCount * multiplier;
+
+    if (score > highScore) {
+        updateHighScore(score);
+    }
+}
         const customCursor = document.getElementById('customCursor');
         const frames = 15; // Total number of frames (cursor0.png to cursor14.png)
         let currentFrame = 0;
@@ -1142,6 +1221,7 @@ function initFightText3D() {
                     counterElement.classList.remove('animate');
                 }, 500);
             }
+             calculateScore(completedCount);
         }
 
         function updateTaskList(tasks) {
